@@ -10,19 +10,18 @@ namespace $ {
 			return this.$.$mol_fail( new Error( 'id is not defined' ) )
 		}
 		
+		domain(): $hyoo_talks_domain {
+			return this.$.$mol_fail( new Error( 'domain is not defined' ) )
+		}
+		
 		text( next?: string ) {
 			return this.value( 'text' , next ) ?? ''
 		}
 		
 		author( next?: $hyoo_talks_person ) {
 			const id = this.value( 'author' , next && next.id() )
-			if( id ) return this.Person( id )
+			if( id ) return this.domain().person( id )
 			return null
-		}
-		
-		@ $mol_mem
-		Person( id: string ) {
-			return new this.$.$hyoo_talks_person
 		}
 		
 	}

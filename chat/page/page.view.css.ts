@@ -9,6 +9,19 @@ namespace $.$$ {
 			shrink: 0,
 		},
 		
+		Title: {
+			boxShadow: 'none',
+			background: {
+				color: 'transparent',
+			},
+			':placeholder-shown': {
+				boxShadow: 'inset 0 0 0 1px var(--mol_theme_line)',
+				background: {
+					color: $mol_theme.field,
+				},
+			},
+		},
+		
 		Body: {
 			padding: 0,
 			flex: {

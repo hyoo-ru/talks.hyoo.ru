@@ -10,7 +10,8 @@ namespace $.$$ {
 		}
 		
 		side() {
-			return Math.random() < .5 ? 'other' : 'self'
+			const message = this.message()
+			return message.domain().user() === message.author() ? 'self' : 'other'
 		}
 		
 	}

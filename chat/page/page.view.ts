@@ -2,28 +2,31 @@ namespace $.$$ {
 	
 	export class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
 		
-		messages( next?: string[] ) {
-			return this.Store().value( 'chat/messages', next ) as string[] ?? []
+		@ $mol_mem
+		domain() {
+			return this.remote().sub( '', super.domain() )
 		}
 		
 		@ $mol_mem
-		Message( id: string ) {
-			const message = this.Store().sub( `message=${id}`, new $hyoo_talks_message({
-				text: '',
-				author: null,
-				moment: '',
-			}) )
-			message.id = $mol_const( id )
-			return message
+		chat() {
+			return this.domain().chat( this.chat_id() )
+		}
+		
+		title( next?: string ) {
+			return this.chat().title( next )
+		}
+		
+		messages( next?: $hyoo_talks_message[] ) {
+			return this.chat().messages( next )
+		}
+		
+		message( id: string ) {
+			return this.domain().message( id )
 		}
 		
 		@ $mol_mem
 		bubbles() {
-			return this.messages().map( id => this.Bubble( id ) )
-		}
-		
-		bubble_text( id: string, next?: string ) {
-			return this.Message( id ).text( next )
+			return this.messages().map( msg => this.Bubble( msg.id() ) )
 		}
 		
 		draft_controls () {
@@ -35,7 +38,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		draft( reset?: null ) {
-			return this.Message( $mol_guid() )
+			return this.domain().message( $mol_guid() )
 		}
 		
 		draft_text( next?: string ) {
@@ -43,11 +46,17 @@ namespace $.$$ {
 		}
 
 		draft_send() {
-			if( !this.draft().text() ) return
-			this.messages([ ... this.messages(), this.draft().id() ])
+			
+			const draft = this.draft()
+			if( !draft.text() ) return
+			
+			draft.author( this.domain().user() )
+			this.messages([ ... this.messages(), draft ])
 			this.draft( null )
+			
 			this.$.$mol_wait_rest()
 			this.Body().scroll_top( Number.MAX_SAFE_INTEGER )
+			
 		}
 		
 	}

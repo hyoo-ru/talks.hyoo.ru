@@ -7,7 +7,7 @@ namespace $.$$ {
 		}
 		
 		uri() {
-			return `https://gravatar.com/avatar/${ this.person()?.id() ?? '' }?d=robohash`
+			return this.person()?.avatar() ?? ''
 		}
 		
 	}
