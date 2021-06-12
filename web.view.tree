@@ -32,8 +32,86 @@ $mol_page $mol_view
 		<= Foot $mol_view
 			sub <= foot /$mol_view
 
-$mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
+$mol_hotkey $mol_plugin
+	event *
+		^
+		keydown?event <=> keydown?event null
+	key *
+	mod_ctrl false
+	mod_alt false
+	mod_shift false
+
+$mol_string $mol_view
+	dom_name \input
+	enabled true
+	minimal_height 40
+	autocomplete false
+	selection?val /number
+	auto /
+		<= selection_watcher null
+	field *
+		^
+		disabled <= disabled false
+		value <= value_changed?val <=> value?val \
+		placeholder <= hint \
+		spellcheck <= spellcheck false
+		autocomplete <= autocomplete_native \
+		selectionEnd <= selection_end 0
+		selectionStart <= selection_start 0
+	attr *
+		^
+		maxlength <= length_max Infinity
+		type <= type?val \text
+	event *
+		^
+		input?event <=> event_change?event null
+		keydown?event <=> event_key_press?event null
+	plugins /
+		<= Submit $mol_hotkey
+			key * enter?event <=> submit?event null
+
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 8
+	width_limit Infinity
+	sub / <= title
+
+$mol_dimmer $mol_paragraph
+	haystack \
+	needle \
+	sub <= parts /$mol_view_content
+	Low!id $mol_paragraph
+		sub /
+			<= string!id \
+	High!id $mol_paragraph
+		sub /
+			<= string!id \
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
+$hyoo_talks_person_avatar $mol_image
+	person $hyoo_talks_person
+
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
+
+$mol_float $mol_view
+	style *
+		^
+		minHeight \auto
 
 $mol_speck $mol_view
 	attr *
@@ -81,8 +159,6 @@ $mol_check $mol_button_minor
 				sub /
 					<= title \
 
-$mol_check_icon $mol_check
-
 $mol_svg $mol_view
 	dom_name \svg
 	dom_name_space \http://www.w3.org/2000/svg
@@ -110,56 +186,6 @@ $mol_icon $mol_svg_root
 	sub /
 		<= Path $mol_svg_path
 			geometry <= path \
-
-$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
-
-$mol_lights_toggle $mol_check_icon
-	Icon <= Lights_icon $mol_icon_brightness_6
-	hint @ \Toggle lights
-	checked?val <=> lights?val false
-
-$mol_paragraph $mol_view
-	line_height 24
-	letter_width 8
-	width_limit Infinity
-	sub / <= title
-
-$mol_dimmer $mol_paragraph
-	haystack \
-	needle \
-	sub <= parts /$mol_view_content
-	Low!id $mol_paragraph
-		sub /
-			<= string!id \
-	High!id $mol_paragraph
-		sub /
-			<= string!id \
-
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
-
-$hyoo_talks_person_avatar $mol_image
-	person $hyoo_talks_person
-
-$mol_list $mol_view
-	render_visible_only true
-	render_over 0
-	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
-	view_window /
-		0
-		0
-
-$mol_float $mol_view
-	style *
-		^
-		minHeight \auto
 
 $mol_icon_chevron $mol_icon path \M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z
 
@@ -325,44 +351,6 @@ $hyoo_talks_message_bubble $mol_view
 		haystack <= text \
 		needle <= highlight \
 
-$mol_hotkey $mol_plugin
-	event *
-		^
-		keydown?event <=> keydown?event null
-	key *
-	mod_ctrl false
-	mod_alt false
-	mod_shift false
-
-$mol_string $mol_view
-	dom_name \input
-	enabled true
-	minimal_height 40
-	autocomplete false
-	selection?val /number
-	auto /
-		<= selection_watcher null
-	field *
-		^
-		disabled <= disabled false
-		value <= value_changed?val <=> value?val \
-		placeholder <= hint \
-		spellcheck <= spellcheck false
-		autocomplete <= autocomplete_native \
-		selectionEnd <= selection_end 0
-		selectionStart <= selection_start 0
-	attr *
-		^
-		maxlength <= length_max Infinity
-		type <= type?val \text
-	event *
-		^
-		input?event <=> event_change?event null
-		keydown?event <=> event_key_press?event null
-	plugins /
-		<= Submit $mol_hotkey
-			key * enter?event <=> submit?event null
-
 $mol_text_code_token $mol_dimmer
 	attr *
 		^
@@ -430,11 +418,12 @@ $mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92
 $mol_icon_arrow_up_bold $mol_icon path \M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z
 
 $hyoo_talks_chat_page $mol_page
-	title @ \Chat
 	messages?val /string
-	Message!id $hyoo_talks_message
-	Store $mol_store_shared
-		server \wss://6dc779c90b1d4a4aa4de6915c36efaef.apig.ru-moscow-1.hc.sbercloud.ru/sync
+	chat $hyoo_talks_chat
+	chat_id \global
+	Title $mol_string
+		value?val <=> title?val \
+		hint @ \Chat title
 	- tools /
 		<= Search $mol_search_jumper
 			query?val <=> search?val \
@@ -453,7 +442,7 @@ $hyoo_talks_chat_page $mol_page
 			click?val <=> draft_send?val null
 	Bubble!id $hyoo_talks_message_bubble
 		minimal_height 40
-		message <= Message!id $hyoo_talks_message
+		message <= message!id $hyoo_talks_message
 		- highlight <= search
 	plugins /
 		<= Send_key $mol_hotkey
@@ -461,18 +450,51 @@ $hyoo_talks_chat_page $mol_page
 			key *
 				enter?event <=> draft_send?event null
 
+$mol_theme_auto $mol_plugin
+	attr * mol_theme <= theme \
+
+$mol_check_icon $mol_check
+
+$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
+
+$mol_lights_toggle $mol_check_icon
+	Icon <= Lights_icon $mol_icon_brightness_6
+	hint @ \Toggle lights
+	checked?val <=> lights?val false
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z
+
 $hyoo_talks $mol_book2
+	domain $hyoo_talks_domain
 	plugins /
 		<= Theme $mol_theme_auto
 	pages /
 		<= Roster $mol_page
-			title \Talks
+			title @ \Talks
 			tools /
 				<= Lights $mol_lights_toggle
-		<= Chat $hyoo_talks_chat_page
+				<= Chat_new $mol_link
+					arg * chat <= chat_new_id \
+					hint @ \New Chat
+					sub /
+						<= Chat_new_icon $mol_icon_plus
+			body /
+				<= Links $mol_list rows <= links /
+	Chat_page!id $hyoo_talks_chat_page
+		chat <= chat!id $hyoo_talks_chat
+		tools /
+			<= Chat_close $mol_link
+				arg * chat null
+				sub /
+					<= Chat_icon $mol_icon_cross
 	Placeholder $mol_page
 		Title null
 		Tools null
+	Chat_link!id $mol_link
+		arg <= chat_arg!id *
+		title <= chat_title!id \
 
 $mol_view_tree_test_attributes_super $mol_view
 	some *
