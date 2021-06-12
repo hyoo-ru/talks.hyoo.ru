@@ -4194,7 +4194,16 @@ var $;
         server() {
             return `wss://sync-hyoo-ru.herokuapp.com/`;
         }
+        heartbeat() {
+            const timer = this.$.setInterval(() => {
+                this.socket().send('');
+            }, 30000);
+            return {
+                destructor: () => clearInterval(timer)
+            };
+        }
         socket() {
+            this.heartbeat();
             const atom = $.$mol_atom2.current;
             const socket = new $.$mol_dom_context.WebSocket(this.server());
             socket.onmessage = $.$mol_fiber.func(event => {
@@ -4250,6 +4259,9 @@ var $;
     ], $mol_store_shared.prototype, "sub", null);
     __decorate([
         $.$mol_mem
+    ], $mol_store_shared.prototype, "heartbeat", null);
+    __decorate([
+        $.$mol_mem
     ], $mol_store_shared.prototype, "socket", null);
     __decorate([
         $.$mol_fiber.method
@@ -4263,7 +4275,7 @@ var $;
 (function ($) {
     class $hyoo_talks_domain extends $.$mol_store_shared {
         server() {
-            return 'wss://6dc779c90b1d4a4aa4de6915c36efaef.apig.ru-moscow-1.hc.sbercloud.ru/sync';
+            return 'wss://552584f568524540a1e2d8de6b8f1394.apig.ru-moscow-1.hc.sbercloud.ru/';
         }
         user() {
             let id = this.$.$mol_store_local.value('user');
@@ -8575,7 +8587,7 @@ var $;
                 return this.side() === 'self';
             }
             links() {
-                return this.text().match(/https?:\/\/\S+/g) ?? [];
+                return (this.text().match(/https?:\/\/\S+/g) ?? []).map(uri => uri.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/'));
             }
             previews() {
                 return this.links().map((_, i) => this.Preview(i));

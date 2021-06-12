@@ -1944,6 +1944,9 @@ declare namespace $ {
         selection_range<Key extends keyof $mol_store_shared_data>(key: Key, next?: number[][]): number[][];
         sub<Key extends string, Lens extends $mol_store<any> = $mol_store<$mol_store_shared_data>>(key: Key, lens?: Lens): NonNullable<NonNullable<Lens>>;
         server(): string;
+        heartbeat(): {
+            destructor: () => void;
+        };
         socket(): WebSocket;
         send(key: string, next?: any): void;
     }
@@ -3312,7 +3315,7 @@ declare namespace $.$$ {
         author(): $hyoo_talks_person;
         side(): "other" | "self";
         editable(): boolean;
-        links(): RegExpMatchArray;
+        links(): string[];
         previews(): $mol_link[];
         preview_uri(index: number): string;
     }
