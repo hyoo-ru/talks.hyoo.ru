@@ -28,6 +28,15 @@ namespace $.$$ {
 				padding: 0,
 			},
 			
+			
+			'@': {
+				hyoo_talks_placeholder_transparent: {
+					'true': {
+						backgroundColor: 'transparent',
+					}
+				}
+			},
+		
 		},
 		
 	} )

@@ -4,6 +4,14 @@ namespace $.$$ {
 	
 	$mol_style_define( $hyoo_talks_chat_page, {
 		
+		'@': {
+			hyoo_talks_chat_page_transparent: {
+				'true': {
+					backgroundColor: 'transparent',
+				}
+			}
+		},
+		
 		flex: {
 			basis: rem(60),
 			shrink: 0,
