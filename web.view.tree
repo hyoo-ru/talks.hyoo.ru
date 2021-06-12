@@ -87,6 +87,22 @@ $mol_dimmer $mol_paragraph
 		sub /
 			<= string!id \
 
+$mol_link $mol_view
+	dom_name \a
+	attr *
+		^
+		href <= uri \
+		title <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+	sub /$mol_view_content
+		<= title
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
+
 $mol_image $mol_view
 	dom_name \img
 	field *
@@ -94,8 +110,13 @@ $mol_image $mol_view
 		src <= uri \
 		alt <= title
 
-$hyoo_talks_person_avatar $mol_image
+$hyoo_talks_person_avatar $mol_link
 	person $hyoo_talks_person
+	current false
+	sub /
+		<= Image $mol_image
+			title \
+			uri <= image \
 
 $mol_list $mol_view
 	render_visible_only true
@@ -249,22 +270,6 @@ $mol_grid_cell $mol_view
 	minimal_height 40
 
 $mol_grid_number $mol_grid_cell
-
-$mol_link $mol_view
-	dom_name \a
-	attr *
-		^
-		href <= uri \
-		title <= hint \
-		target <= target \_self
-		download <= file_name \
-		mol_link_current <= current false
-	sub /$mol_view_content
-		<= title
-	arg *
-	event *
-		^
-		click?event <=> click?event <=> event_click?event null
 
 $mol_link_iconed $mol_link
 	sub /
