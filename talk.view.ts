@@ -7,10 +7,17 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
+		only_chat() : boolean {
+			const val = this.$.$mol_state_arg.value( 'hyoo_talks' )
+			return val !== null
+		}
+		
+		@ $mol_mem
 		pages() {
 			const chat = this.chat_id_current()
+			const only_chat = this.only_chat()
 			return [
-				this.Roster(),
+				... only_chat ? [] : [ this.Roster() ],
 				... chat ? [ this.Chat_page( chat ) ] : []
 			]
 		}
