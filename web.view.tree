@@ -70,22 +70,16 @@ $mol_string $mol_view
 		<= Submit $mol_hotkey
 			key * enter?event <=> submit?event null
 
-$mol_paragraph $mol_view
-	line_height 24
-	letter_width 8
-	width_limit Infinity
-	sub / <= title
-
-$mol_dimmer $mol_paragraph
-	haystack \
-	needle \
-	sub <= parts /$mol_view_content
-	Low!id $mol_paragraph
-		sub /
-			<= string!id \
-	High!id $mol_paragraph
-		sub /
-			<= string!id \
+$mol_list $mol_view
+	render_visible_only true
+	render_over 0
+	sub <= rows /$mol_view
+	Empty $mol_view
+	Gap_before $mol_view style * paddingTop <= gap_before 0
+	Gap_after $mol_view style * paddingTop <= gap_after 0
+	view_window /
+		0
+		0
 
 $mol_link $mol_view
 	dom_name \a
@@ -117,17 +111,6 @@ $hyoo_talks_person_avatar $mol_link
 		<= Image $mol_image
 			title \
 			uri <= image \
-
-$mol_list $mol_view
-	render_visible_only true
-	render_over 0
-	sub <= rows /$mol_view
-	Empty $mol_view
-	Gap_before $mol_view style * paddingTop <= gap_before 0
-	Gap_after $mol_view style * paddingTop <= gap_after 0
-	view_window /
-		0
-		0
 
 $mol_float $mol_view
 	style *
@@ -219,6 +202,23 @@ $mol_check_expand $mol_check
 		paddingLeft <= level_style \0px
 	checked?val <=> expanded?val false
 	enabled <= expandable false
+
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 8
+	width_limit Infinity
+	sub / <= title
+
+$mol_dimmer $mol_paragraph
+	haystack \
+	needle \
+	sub <= parts /$mol_view_content
+	Low!id $mol_paragraph
+		sub /
+			<= string!id \
+	High!id $mol_paragraph
+		sub /
+			<= string!id \
 
 $mol_grid $mol_scroll
 	row_height 32
@@ -342,20 +342,6 @@ $mol_text_image $mol_view
 	sub /
 		<= title?val \
 
-$hyoo_talks_message_bubble $mol_view
-	message $hyoo_talks_message
-	attr *
-		^
-		hyoo_talks_message_bubble_side <= side \other
-	sub /
-		<= Author $hyoo_talks_person_avatar
-			person <= author $hyoo_talks_person
-		<= Text $mol_text
-			text <= text \
-	Text2 $mol_dimmer
-		haystack <= text \
-		needle <= highlight \
-
 $mol_text_code_token $mol_dimmer
 	attr *
 		^
@@ -417,6 +403,36 @@ $mol_textarea $mol_view
 			render_visible_only false
 			row_numb!index <= row_numb!index 0
 			sidebar_showed <= sidebar_showed
+
+$mol_embed_native $mol_view
+	dom_name \object
+	attr *
+		^
+		data <= uri \
+		type <= mime \
+	sub /
+		\
+
+$hyoo_talks_message_bubble $mol_list
+	message $hyoo_talks_message
+	attr *
+		^
+		hyoo_talks_message_bubble_side <= side \other
+	rows /
+		<= Main $mol_view
+			sub /
+				<= Author $hyoo_talks_person_avatar
+					person <= author $hyoo_talks_person
+				<= Text $mol_textarea
+					value?val <=> text?val \
+					enabled <= editable false
+		<= Previews $mol_view
+			sub <= previews /
+	Preview!index $mol_link
+		uri <= preview_uri!index \
+		sub /
+			<= Preview_embed!index $mol_embed_native
+				uri <= preview_uri!index \
 
 $mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z
 

@@ -2444,44 +2444,37 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_paragraph extends $mol_view {
-        line_height(): number;
-        letter_width(): number;
-        width_limit(): number;
-        sub(): readonly any[];
+    class $mol_list extends $mol_view {
+        render_visible_only(): boolean;
+        render_over(): number;
+        sub(): readonly $mol_view[];
+        Empty(): $mol_view;
+        Gap_before(): $mol_view;
+        Gap_after(): $mol_view;
+        view_window(): readonly any[];
+        rows(): readonly $mol_view[];
+        gap_before(): number;
+        gap_after(): number;
     }
 }
 
+declare namespace $ {
+    function $mol_support_css_overflow_anchor(this: $): boolean;
+}
+
+declare namespace $ {
+}
+
 declare namespace $.$$ {
-    class $mol_paragraph extends $.$mol_paragraph {
-        maximal_width(): number;
-        width_limit(): number;
-        minimal_width(): number;
+    class $mol_list extends $.$mol_list {
+        sub(): readonly $mol_view[];
+        render_visible_only(): boolean;
+        view_window(): [number, number];
+        gap_before(): number;
+        gap_after(): number;
+        sub_visible(): $mol_view[];
         minimal_height(): number;
-    }
-}
-
-declare namespace $ {
-    class $mol_dimmer extends $mol_paragraph {
-        haystack(): string;
-        needle(): string;
-        sub(): readonly $mol_view_content[];
-        Low(id: any): $$.$mol_paragraph;
-        High(id: any): $$.$mol_paragraph;
-        parts(): readonly $mol_view_content[];
-        string(id: any): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_dimmer extends $.$mol_dimmer {
-        parts(): any[];
-        strings(): string[];
-        string(index: number): string;
-        view_find(check: (path: $mol_view, text?: string) => boolean, path?: $mol_view[]): Generator<$mol_view[]>;
+        force_render(path: Set<$mol_view>): void;
     }
 }
 
@@ -2580,41 +2573,6 @@ declare namespace $.$$ {
         title(): string;
         image(): string;
         uri(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_list extends $mol_view {
-        render_visible_only(): boolean;
-        render_over(): number;
-        sub(): readonly $mol_view[];
-        Empty(): $mol_view;
-        Gap_before(): $mol_view;
-        Gap_after(): $mol_view;
-        view_window(): readonly any[];
-        rows(): readonly $mol_view[];
-        gap_before(): number;
-        gap_after(): number;
-    }
-}
-
-declare namespace $ {
-    function $mol_support_css_overflow_anchor(this: $): boolean;
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_list extends $.$mol_list {
-        sub(): readonly $mol_view[];
-        render_visible_only(): boolean;
-        view_window(): [number, number];
-        gap_before(): number;
-        gap_after(): number;
-        sub_visible(): $mol_view[];
-        minimal_height(): number;
-        force_render(path: Set<$mol_view>): void;
     }
 }
 
@@ -2834,6 +2792,48 @@ declare namespace $.$$ {
     class $mol_check_expand extends $.$mol_check_expand {
         level_style(): string;
         expandable(): boolean;
+    }
+}
+
+declare namespace $ {
+    class $mol_paragraph extends $mol_view {
+        line_height(): number;
+        letter_width(): number;
+        width_limit(): number;
+        sub(): readonly any[];
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_paragraph extends $.$mol_paragraph {
+        maximal_width(): number;
+        width_limit(): number;
+        minimal_width(): number;
+        minimal_height(): number;
+    }
+}
+
+declare namespace $ {
+    class $mol_dimmer extends $mol_paragraph {
+        haystack(): string;
+        needle(): string;
+        sub(): readonly $mol_view_content[];
+        Low(id: any): $$.$mol_paragraph;
+        High(id: any): $$.$mol_paragraph;
+        parts(): readonly $mol_view_content[];
+        string(id: any): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_dimmer extends $.$mol_dimmer {
+        parts(): any[];
+        strings(): string[];
+        string(index: number): string;
+        view_find(check: (path: $mol_view, text?: string) => boolean, path?: $mol_view[]): Generator<$mol_view[]>;
     }
 }
 
@@ -3124,34 +3124,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $hyoo_talks_message_bubble extends $mol_view {
-        message(): $hyoo_talks_message;
-        attr(): {
-            hyoo_talks_message_bubble_side: string;
-        };
-        sub(): readonly any[];
-        Text2(): $$.$mol_dimmer;
-        side(): string;
-        author(): $hyoo_talks_person;
-        Author(): $$.$hyoo_talks_person_avatar;
-        text(): string;
-        Text(): $$.$mol_text;
-        highlight(): string;
-    }
-}
-
-declare namespace $.$$ {
-}
-
-declare namespace $.$$ {
-    class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
-        text(): string;
-        author(): $hyoo_talks_person;
-        side(): "other" | "self";
-    }
-}
-
-declare namespace $ {
     class $mol_text_code_token extends $mol_dimmer {
         attr(): {
             mol_text_code_token_type: string;
@@ -3272,6 +3244,59 @@ declare namespace $.$$ {
         hover(event: PointerEvent): void;
         press(event: KeyboardEvent): void;
         row_numb(index: number): number;
+    }
+}
+
+declare namespace $ {
+    class $mol_embed_native extends $mol_view {
+        dom_name(): string;
+        attr(): {
+            data: string;
+            type: string;
+        };
+        sub(): readonly any[];
+        uri(): string;
+        mime(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $hyoo_talks_message_bubble extends $mol_list {
+        message(): $hyoo_talks_message;
+        attr(): {
+            hyoo_talks_message_bubble_side: string;
+        };
+        rows(): readonly any[];
+        Preview(index: any): $$.$mol_link;
+        side(): string;
+        author(): $hyoo_talks_person;
+        Author(): $$.$hyoo_talks_person_avatar;
+        text(val?: any): any;
+        editable(): boolean;
+        Text(): $$.$mol_textarea;
+        Main(): $mol_view;
+        previews(): readonly any[];
+        Previews(): $mol_view;
+        preview_uri(index: any): string;
+        Preview_embed(index: any): $mol_embed_native;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
+    class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
+        text(next?: string): string;
+        author(): $hyoo_talks_person;
+        side(): "other" | "self";
+        editable(): boolean;
+        links(): RegExpMatchArray;
+        previews(): $mol_link[];
+        preview_uri(index: number): string;
     }
 }
 
