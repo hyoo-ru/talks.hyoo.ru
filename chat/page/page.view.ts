@@ -3,13 +3,14 @@ namespace $.$$ {
 	export class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
 		
 		@ $mol_mem
-		domain() {
-			return this.remote().sub( '', super.domain() )
+		chat() {
+			const domain = new this.$.$hyoo_talks_domain
+			return domain.chat( this.chat_id() )
 		}
 		
 		@ $mol_mem
-		chat() {
-			return this.domain().chat( this.chat_id() )
+		domain() {
+			return this.chat().domain()
 		}
 		
 		title( next?: string ) {
@@ -50,7 +51,11 @@ namespace $.$$ {
 			const draft = this.draft()
 			if( !draft.text() ) return
 			
-			draft.author( this.domain().user() )
+			const user = this.domain().user()
+			
+			draft.author( user )
+			user.chats([ ... new Set([ ... user.chats(), this.chat() ]) ])
+			
 			this.messages([ ... this.messages(), draft ])
 			this.draft( null )
 			

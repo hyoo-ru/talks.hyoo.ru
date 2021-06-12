@@ -2,6 +2,7 @@ namespace $ {
 	
 	export class $hyoo_talks_person extends $mol_store<{
 		name: string,
+		chats: string[],
 	}> {
 		
 		id(): string {
@@ -18,6 +19,12 @@ namespace $ {
 		
 		avatar() {
 			return  `https://gravatar.com/avatar/${ this.id() }?d=robohash`
+		}
+		
+		chats( next?: $hyoo_talks_chat[] ) {
+			const ids = this.value( 'chats' , next && next.map( m => m.id() ) )
+			if( !ids ) return []
+			return ids.map( id => this.domain().chat( id ) )
 		}
 		
 	}

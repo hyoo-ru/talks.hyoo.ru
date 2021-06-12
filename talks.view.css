@@ -1,7 +1,7 @@
 [hyoo_talks][mol_theme="$mol_theme_light"] {
     --mol_theme_back: hsla( 0 , 0% , 90%, .25 );
     --mol_theme_field: hsla( 0 , 0% , 100%, .5 );
-    --mol_theme_control: #375ec9;
+    --mol_theme_control: hsl(210deg 100% 20%);
     --mol_theme_focus: #e84e58;
 }
 

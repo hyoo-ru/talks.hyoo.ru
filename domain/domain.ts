@@ -1,6 +1,10 @@
 namespace $ {
 	
-	export class $hyoo_talks_domain extends $mol_store< Record< string, any > > {
+	export class $hyoo_talks_domain extends $mol_store_shared {
+		
+		server() {
+			return 'wss://6dc779c90b1d4a4aa4de6915c36efaef.apig.ru-moscow-1.hc.sbercloud.ru/sync'
+		}
 		
 		@ $mol_mem
 		user() {
@@ -16,9 +20,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		person( id: string ) {
-			const person = this.sub( `person=${id}`, new $hyoo_talks_person({
-				name: '',
-			}) )
+			const person = this.sub( `person=${id}`, new $hyoo_talks_person() )
 			person.id = $mol_const( id )
 			person.domain = $mol_const( this )
 			return person

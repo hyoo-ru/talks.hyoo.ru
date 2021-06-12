@@ -1,12 +1,29 @@
 $hyoo_talks $mol_book2
+	domain $hyoo_talks_domain
 	plugins /
 		<= Theme $mol_theme_auto
 	pages /
 		<= Roster $mol_page
-			title \Talks
+			title @ \Talks
 			tools /
 				<= Lights $mol_lights_toggle
-		<= Chat $hyoo_talks_chat_page
+				<= Chat_new $mol_link
+					arg * chat <= chat_new_id \
+					hint @ \New Chat
+					sub /
+						<= Chat_new_icon $mol_icon_plus
+			body /
+				<= Links $mol_list rows <= links /
+	Chat_page!id $hyoo_talks_chat_page
+		chat <= chat!id $hyoo_talks_chat
+		tools /
+			<= Chat_close $mol_link
+				arg * chat null
+				sub /
+					<= Chat_icon $mol_icon_cross
 	Placeholder $mol_page
 		Title null
 		Tools null
+	Chat_link!id $mol_link
+		arg <= chat_arg!id *
+		title <= chat_title!id \
