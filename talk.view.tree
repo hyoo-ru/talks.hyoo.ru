@@ -1,0 +1,12 @@
+$hyoo_talks $mol_book2
+	plugins /
+		<= Theme $mol_theme_auto
+	pages /
+		<= Roster $mol_page
+			title \Talks
+			tools /
+				<= Lights $mol_lights_toggle
+		<= Chat $hyoo_talks_chat_page
+	Placeholder $mol_page
+		Title null
+		Tools null

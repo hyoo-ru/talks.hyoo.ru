@@ -1,0 +1,31 @@
+$hyoo_talks_chat_page $mol_page
+	title @ \Chat
+	messages?val /string
+	Message!id $hyoo_talks_message
+	Store $mol_store_shared
+		server \ws://45.9.27.15:3000
+	- tools /
+		<= Search $mol_search_jumper
+			query?val <=> search?val \
+			Root <= Body
+	body /
+		<= Bubbles $mol_list rows <= bubbles /
+	foot <= draft_controls /
+		<= Draft_text $mol_textarea
+			hint @ \Add message..
+			value?val <=> draft_text?val \
+		<= Draft_send $mol_button_minor
+			title @ \Send
+			hint @ \Ctrl+Enter to send
+			sub /
+				<= Draft_send_icon $mol_icon_arrow_up_bold
+			click?val <=> draft_send?val null
+	Bubble!id $hyoo_talks_message_bubble
+		minimal_height 40
+		message <= Message!id $hyoo_talks_message
+		- highlight <= search
+	plugins /
+		<= Send_key $mol_hotkey
+			mod_ctrl true
+			key *
+				enter?event <=> draft_send?event null

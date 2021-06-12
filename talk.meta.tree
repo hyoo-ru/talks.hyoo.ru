@@ -1,0 +1,4 @@
+deploy \/hyoo/talks/logo/logo.svg
+deploy \/hyoo/talks/manifest.json
+
+include \/mol/offline/install

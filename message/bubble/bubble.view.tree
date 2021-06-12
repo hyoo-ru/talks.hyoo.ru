@@ -1,0 +1,13 @@
+$hyoo_talks_message_bubble $mol_view
+	message $hyoo_talks_message
+	attr *
+		^
+		hyoo_talks_message_bubble_side <= side \other
+	sub /
+		<= Author $hyoo_talks_person_avatar
+			person <= author $hyoo_talks_person
+		<= Text $mol_text
+			text <= text \
+	Text2 $mol_dimmer
+		haystack <= text \
+		needle <= highlight \
