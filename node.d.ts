@@ -3320,6 +3320,10 @@ declare namespace $ {
         messages(val?: any): any;
         chat(): $hyoo_talks_chat;
         chat_id(): string;
+        transparent(): boolean;
+        attr(): {
+            hyoo_talks_chat_page_transparent: boolean;
+        };
         Title(): $$.$mol_string;
         body(): readonly any[];
         foot(): readonly any[];
@@ -3436,10 +3440,11 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_talks extends $mol_book2 {
         domain(): $hyoo_talks_domain;
+        only_chat(): boolean;
         plugins(): readonly any[];
         pages(): readonly any[];
         Chat_page(id: any): $$.$hyoo_talks_chat_page;
-        Placeholder(): $$.$mol_page;
+        Placeholder(): $hyoo_talks_placeholder;
         Chat_link(id: any): $$.$mol_link;
         Theme(): $$.$mol_theme_auto;
         Lights(): $$.$mol_lights_toggle;
@@ -3455,6 +3460,12 @@ declare namespace $ {
         chat_arg(id: any): {};
         chat_title(id: any): string;
     }
+    class $hyoo_talks_placeholder extends $mol_page {
+        transparent(): boolean;
+        attr(): {
+            hyoo_talks_placeholder_transparent: boolean;
+        };
+    }
 }
 
 declare namespace $.$$ {
@@ -3463,6 +3474,7 @@ declare namespace $.$$ {
 declare namespace $.$$ {
     class $hyoo_talks extends $.$hyoo_talks {
         chat_id_current(): string | null;
+        only_chat(): boolean;
         pages(): ($mol_page | $hyoo_talks_chat_page)[];
         links(): $mol_link[];
         chat(id: string): $hyoo_talks_chat;

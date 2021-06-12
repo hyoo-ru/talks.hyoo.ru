@@ -442,6 +442,10 @@ $hyoo_talks_chat_page $mol_page
 	messages?val /string
 	chat $hyoo_talks_chat
 	chat_id \global
+	transparent false
+	attr *
+		^
+		hyoo_talks_chat_page_transparent <= transparent
 	Title $mol_string
 		value?val <=> title?val \
 		hint @ \Chat title
@@ -489,6 +493,7 @@ $mol_icon_cross $mol_icon path \M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12
 
 $hyoo_talks $mol_book2
 	domain $hyoo_talks_domain
+	only_chat false
 	plugins /
 		<= Theme $mol_theme_auto
 	pages /
@@ -505,17 +510,25 @@ $hyoo_talks $mol_book2
 				<= Links $mol_list rows <= links /
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
+		transparent <= only_chat
 		tools /
 			<= Chat_close $mol_link
 				arg * chat null
 				sub /
 					<= Chat_icon $mol_icon_cross
-	Placeholder $mol_page
+	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null
+		transparent <= only_chat
 	Chat_link!id $mol_link
 		arg <= chat_arg!id *
 		title <= chat_title!id \
+
+$hyoo_talks_placeholder $mol_page
+	transparent false
+	attr *
+		^
+		hyoo_talks_placeholder_transparent <= transparent
 
 $mol_view_tree_test_attributes_super $mol_view
 	some *

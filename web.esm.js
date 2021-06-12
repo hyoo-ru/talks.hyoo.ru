@@ -8647,6 +8647,15 @@ var $;
         chat_id() {
             return "global";
         }
+        transparent() {
+            return false;
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                hyoo_talks_chat_page_transparent: this.transparent()
+            };
+        }
         Title() {
             const obj = new this.$.$mol_string();
             obj.value = (val) => this.title(val);
@@ -8856,6 +8865,13 @@ var $;
     (function ($$) {
         const { rem } = $.$mol_style_unit;
         $.$mol_style_define($$.$hyoo_talks_chat_page, {
+            '@': {
+                hyoo_talks_chat_page_transparent: {
+                    'true': {
+                        backgroundColor: 'transparent',
+                    }
+                }
+            },
             flex: {
                 basis: rem(60),
                 shrink: 0,
@@ -9129,6 +9145,9 @@ var $;
             const obj = new this.$.$hyoo_talks_domain();
             return obj;
         }
+        only_chat() {
+            return false;
+        }
         plugins() {
             return [
                 this.Theme()
@@ -9142,15 +9161,17 @@ var $;
         Chat_page(id) {
             const obj = new this.$.$hyoo_talks_chat_page();
             obj.chat = () => this.chat(id);
+            obj.transparent = () => this.only_chat();
             obj.tools = () => [
                 this.Chat_close()
             ];
             return obj;
         }
         Placeholder() {
-            const obj = new this.$.$mol_page();
+            const obj = new this.$.$hyoo_talks_placeholder();
             obj.Title = () => null;
             obj.Tools = () => null;
+            obj.transparent = () => this.only_chat();
             return obj;
         }
         Chat_link(id) {
@@ -9270,6 +9291,18 @@ var $;
         $.$mol_mem
     ], $hyoo_talks.prototype, "Chat_close", null);
     $.$hyoo_talks = $hyoo_talks;
+    class $hyoo_talks_placeholder extends $.$mol_page {
+        transparent() {
+            return false;
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                hyoo_talks_placeholder_transparent: this.transparent()
+            };
+        }
+    }
+    $.$hyoo_talks_placeholder = $hyoo_talks_placeholder;
 })($ || ($ = {}));
 //talk.view.tree.js.map
 ;
@@ -9297,6 +9330,13 @@ var $;
                 Body: {
                     padding: 0,
                 },
+                '@': {
+                    hyoo_talks_placeholder_transparent: {
+                        'true': {
+                            backgroundColor: 'transparent',
+                        }
+                    }
+                },
             },
         });
     })($$ = $.$$ || ($.$$ = {}));
@@ -9312,10 +9352,15 @@ var $;
             chat_id_current() {
                 return this.$.$mol_state_arg.value('chat');
             }
+            only_chat() {
+                const val = this.$.$mol_state_arg.value('hyoo_talks');
+                return val !== null;
+            }
             pages() {
                 const chat = this.chat_id_current();
+                const only_chat = this.only_chat();
                 return [
-                    this.Roster(),
+                    ...only_chat ? [] : [this.Roster()],
                     ...chat ? [this.Chat_page(chat)] : []
                 ];
             }
@@ -9335,6 +9380,9 @@ var $;
                 return $.$mol_guid();
             }
         }
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks.prototype, "only_chat", null);
         __decorate([
             $.$mol_mem
         ], $hyoo_talks.prototype, "pages", null);
