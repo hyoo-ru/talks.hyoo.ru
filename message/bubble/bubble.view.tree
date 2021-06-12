@@ -1,13 +1,20 @@
-$hyoo_talks_message_bubble $mol_view
+$hyoo_talks_message_bubble $mol_list
 	message $hyoo_talks_message
 	attr *
 		^
 		hyoo_talks_message_bubble_side <= side \other
-	sub /
-		<= Author $hyoo_talks_person_avatar
-			person <= author $hyoo_talks_person
-		<= Text $mol_text
-			text <= text \
-	Text2 $mol_dimmer
-		haystack <= text \
-		needle <= highlight \
+	rows /
+		<= Main $mol_view
+			sub /
+				<= Author $hyoo_talks_person_avatar
+					person <= author $hyoo_talks_person
+				<= Text $mol_textarea
+					value?val <=> text?val \
+					enabled <= editable false
+		<= Previews $mol_view
+			sub <= previews /
+	Preview!index $mol_link
+		uri <= preview_uri!index \
+		sub /
+			<= Preview_embed!index $mol_embed_native
+				uri <= preview_uri!index \

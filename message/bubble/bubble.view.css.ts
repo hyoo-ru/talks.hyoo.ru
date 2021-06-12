@@ -1,19 +1,23 @@
 namespace $.$$ {
 	
-	const { rem } = $mol_style_unit
+	const { rem, vh, vw } = $mol_style_unit
 	
 	$mol_style_define( $hyoo_talks_message_bubble, {
 		
 		'@': {
 			hyoo_talks_message_bubble_side: {
 				self: {
-					flex: {
-						direction: 'row-reverse',
+					Main: {
+						flex: {
+							direction: 'row-reverse',
+						},
 					},
 				},
 				other: {
-					flex: {
-						direction: 'row',
+					Main: {
+						flex: {
+							direction: 'row',
+						},
 					},
 				},
 			},
@@ -40,7 +44,22 @@ namespace $.$$ {
 			border: {
 				radius: $mol_gap.round,
 			},
+			Edit: {
+				background: {
+					color: 'transparent',
+				},
+				boxShadow: 'none',
+			},
 		},
+		
+		Preview: {
+			padding: 0,
+			flex: {
+				grow: 1,
+				shrink: 1,
+				basis: 'auto',
+			},
+		},	
 		
 	} )
 	

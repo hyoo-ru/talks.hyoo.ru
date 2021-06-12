@@ -1,17 +1,35 @@
 namespace $.$$ {
 	export class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
 		
-		text() {
-			return this.message().text()
+		text( next?: string ) {
+			return this.message().text( next )
 		}
 		
 		author() {
 			return this.message().author()!
 		}
 		
+		@ $mol_mem
 		side() {
 			const message = this.message()
 			return message.domain().user() === message.author() ? 'self' : 'other'
+		}
+		
+		editable() {
+			return this.side() === 'self'
+		}
+		
+		@ $mol_mem
+		links() {
+			return this.text().match( /https?:\/\/\S+/g ) ?? []
+		}
+		
+		previews() {
+			return this.links().map( (_,i)=> this.Preview(i) )
+		}
+		
+		preview_uri( index: number ) {
+			return this.links()[ index ]
 		}
 		
 	}
