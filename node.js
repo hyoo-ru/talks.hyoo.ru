@@ -8690,6 +8690,7 @@ var $;
         }
         Store() {
             const obj = new this.$.$mol_store_shared();
+            obj.server = () => "wss://45.9.27.15:3000";
             return obj;
         }
         body() {
