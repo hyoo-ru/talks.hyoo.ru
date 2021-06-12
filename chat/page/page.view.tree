@@ -3,7 +3,7 @@ $hyoo_talks_chat_page $mol_page
 	messages?val /string
 	Message!id $hyoo_talks_message
 	Store $mol_store_shared
-		server \ws://45.9.27.15:3000
+		- server \ws://45.9.27.15:3000
 	- tools /
 		<= Search $mol_search_jumper
 			query?val <=> search?val \
