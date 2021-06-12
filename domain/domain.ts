@@ -3,7 +3,7 @@ namespace $ {
 	export class $hyoo_talks_domain extends $mol_store_shared {
 		
 		server() {
-			return 'wss://6dc779c90b1d4a4aa4de6915c36efaef.apig.ru-moscow-1.hc.sbercloud.ru/sync'
+			return 'wss://552584f568524540a1e2d8de6b8f1394.apig.ru-moscow-1.hc.sbercloud.ru/'
 		}
 		
 		@ $mol_mem

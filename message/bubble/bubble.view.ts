@@ -21,7 +21,9 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		links() {
-			return this.text().match( /https?:\/\/\S+/g ) ?? []
+			return ( this.text().match( /https?:\/\/\S+/g ) ?? [] ).map(
+				uri => uri.replace( 'https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/' )
+			)
 		}
 		
 		previews() {
