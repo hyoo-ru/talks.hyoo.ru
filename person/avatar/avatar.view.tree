@@ -1,2 +1,7 @@
-$hyoo_talks_person_avatar $mol_image
+$hyoo_talks_person_avatar $mol_link
 	person $hyoo_talks_person
+	current false
+	sub /
+		<= Image $mol_image
+			title \
+			uri <= image \
