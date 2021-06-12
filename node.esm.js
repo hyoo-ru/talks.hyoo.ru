@@ -8690,6 +8690,7 @@ var $;
         }
         Store() {
             const obj = new this.$.$mol_store_shared();
+            obj.server = () => "wss://6dc779c90b1d4a4aa4de6915c36efaef.apig.ru-moscow-1.hc.sbercloud.ru/sync";
             return obj;
         }
         body() {
@@ -9061,7 +9062,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n    --mol_theme_back: hsla( 0 , 0% , 90%, .25 );\n    --mol_theme_field: hsla( 0 , 0% , 100%, .5 );\n    --mol_theme_control: #375ec9;\n    --mol_theme_focus: #e84e58;\n}\n");
+    $.$mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n    --mol_theme_back: hsla( 0 , 0% , 90%, .25 );\n    --mol_theme_field: hsla( 0 , 0% , 100%, .5 );\n    --mol_theme_control: #375ec9;\n    --mol_theme_focus: #e84e58;\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_dark\"] {\n    --mol_theme_back: hsla( 0 , 0% , 11%, .9 );\n    --mol_theme_field: hsla( 0 , 0% , 0%, .5 );\n    --mol_theme_line: #343f48;\n    --mol_theme_control: #375ec9;\n    --mol_theme_focus: #F0D559;\n}\n");
 })($ || ($ = {}));
 //talks.view.css.js.map
 ;
