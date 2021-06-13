@@ -7424,11 +7424,6 @@ var $;
         current() {
             return false;
         }
-        Is_online() {
-            const obj = new this.$.$mol_speck();
-            obj.value = () => "";
-            return obj;
-        }
         sub() {
             return [
                 this.Image(),
@@ -7444,14 +7439,22 @@ var $;
             obj.uri = () => this.image();
             return obj;
         }
+        Online() {
+            const obj = new this.$.$mol_speck();
+            return obj;
+        }
         name() {
             return "";
         }
-        Name() {
-            const obj = new this.$.$mol_paragraph();
-            obj.sub = () => [
+        name_content() {
+            return [
+                this.Online(),
                 this.name()
             ];
+        }
+        Name() {
+            const obj = new this.$.$mol_paragraph();
+            obj.sub = () => this.name_content();
             return obj;
         }
     }
@@ -7460,10 +7463,10 @@ var $;
     ], $hyoo_talks_person_avatar.prototype, "person", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_person_avatar.prototype, "Is_online", null);
+    ], $hyoo_talks_person_avatar.prototype, "Image", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_person_avatar.prototype, "Image", null);
+    ], $hyoo_talks_person_avatar.prototype, "Online", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person_avatar.prototype, "Name", null);
@@ -7505,7 +7508,8 @@ var $;
                 return this.person()?.name() ?? '';
             }
             image() {
-                return this.person()?.avatar() || `https://gravatar.com/avatar/${this.person()?.id()}?d=robohash`;
+                return this.person()?.avatar() ||
+                    `https://gravatar.com/avatar/${this.person()?.id()}?d=robohash`;
             }
             uri() {
                 const talkers = [
@@ -7515,11 +7519,11 @@ var $;
                 talkers.sort();
                 return `#chat=${talkers.join('-')}`;
             }
-            sub() {
-                const other = super.sub();
-                return this.person()?.online_near()
-                    ? [this.Is_online(), ...other]
-                    : other;
+            name_content() {
+                return [
+                    ...this.person()?.online_near() ? [this.Online()] : [],
+                    this.name(),
+                ];
             }
         }
         __decorate([
