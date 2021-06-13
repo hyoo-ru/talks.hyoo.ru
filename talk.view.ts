@@ -43,7 +43,7 @@ namespace $.$$ {
 			return $mol_guid()
 		}
 		
-		chat_page_tools() {
+		chat_page_tools() { //
 			if ( this.only_chat() )  {
 				return [ this.Chat_open() ]
 			}
