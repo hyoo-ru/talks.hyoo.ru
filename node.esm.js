@@ -9675,7 +9675,7 @@ var $;
                 return this.links()[index];
             }
             moment() {
-                return this.message().moment()?.toString('hh:mm') ?? '∞';
+                return this.message().moment()?.toString('YYYY-MM-DD hh:mm') ?? '∞';
             }
         }
         __decorate([
