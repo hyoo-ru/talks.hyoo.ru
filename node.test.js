@@ -4523,7 +4523,7 @@ var $;
 (function ($) {
     class $hyoo_talks_domain extends $.$mol_store_shared {
         server() {
-            return 'wss://552584f568524540a1e2d8de6b8f1394.apig.ru-moscow-1.hc.sbercloud.ru/';
+            return 'wss://8b7069d8fb7f42519ef3b7b6694f5747.apig.ru-moscow-1.hc.sbercloud.ru';
         }
         user() {
             let id = this.$.$mol_store_local.value('user');
