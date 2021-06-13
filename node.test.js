@@ -9695,7 +9695,9 @@ var $;
                 hyoo_talks_message_bubble_side: {
                     self: {
                         Meta: {
-                            justifyContent: 'flex-end',
+                            flex: {
+                                direction: 'row-reverse',
+                            },
                         },
                         Text: {
                             alignSelf: 'flex-end',
