@@ -2270,9 +2270,9 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_talks_person extends $mol_store<{
-        name: [string];
-        background: [string];
-        avatar: [string];
+        name: string;
+        background: string;
+        avatar: string;
         online: [string];
         chats: string[];
         drafts: Record<string, string>;

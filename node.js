@@ -5900,13 +5900,13 @@ var $;
             return this.$.$mol_fail(new Error('domain is not defined'));
         }
         name(next) {
-            return (this.value('name', next ? [next] : undefined) ?? [])[0];
+            return this.value('name', next) ?? '';
         }
         background(next) {
-            return (this.value('background', next ? [next] : undefined) ?? [])[0];
+            return this.value('background', next) ?? '';
         }
         avatar(next) {
-            return (this.value('avatar', next ? [next] : undefined) ?? [])[0];
+            return this.value('avatar', next) ?? '';
         }
         online_near() {
             const moment = this.online_time();
