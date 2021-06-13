@@ -9330,9 +9330,7 @@ var $;
                     },
                 },
             },
-            background: {
-                image: [[url('https://wallpaperaccess.com/full/1385511.jpg')]],
-            },
+            background: {},
             Roster: {
                 flex: {
                     basis: rem(20),
@@ -9413,7 +9411,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n    --mol_theme_back: hsla( 0 , 0% , 90%, .25 );\n    --mol_theme_field: hsla( 0 , 0% , 100%, .5 );\n    --mol_theme_control: hsl(210deg 100% 20%);\n    --mol_theme_focus: #e84e58;\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_dark\"] {\n    --mol_theme_back: hsla( 0 , 0% , 11%, .9 );\n    --mol_theme_field: hsla( 0 , 0% , 0%, .5 );\n    --mol_theme_line: #343f48;\n    --mol_theme_control: #375ec9;\n    --mol_theme_focus: #F0D559;\n}\n");
+    $.$mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n    --mol_theme_back: hsla( 0 , 0% , 80%, .25 );\n    --mol_theme_field: hsla( 0 , 0% , 100%, .75 );\n    --mol_theme_control: #07CC85;\n    --mol_theme_focus: #e84e58;\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_dark\"] {\n    --mol_theme_back: hsla( 0 , 0% , 11%, .9 );\n    --mol_theme_field: hsla( 0 , 0% , 0%, .5 );\n    --mol_theme_line: #343f48;\n    --mol_theme_control: #375ec9;\n    --mol_theme_focus: #F0D559;\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_light\"] [mol_page] {\n\tbackground: white;\n}\n\n[hyoo_talks] [mol_page_head] {\n\tbox-shadow: none;\n}\n\n[hyoo_talks] [mol_link_current] {\n\tbackground: transparent;\n}\n");
 })($ || ($ = {}));
 //talks.view.css.js.map
 ;
