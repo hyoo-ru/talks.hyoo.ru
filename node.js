@@ -9697,6 +9697,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        const { vary } = $.$mol_style_func;
         $.$mol_style_define($$.$hyoo_talks_message_bubble, {
             '@': {
                 hyoo_talks_message_bubble_side: {
@@ -9711,6 +9712,9 @@ var $;
                     other: {
                         Text: {
                             alignSelf: 'flex-start',
+                            background: {
+                                color: vary('--hyoo_talks_theme_talker'),
+                            },
                         },
                     },
                 },
@@ -10791,7 +10795,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n    --mol_theme_back: hsla( 0 , 0% , 80%, .25 );\n    --mol_theme_field: hsla( 0 , 0% , 100%, .75 );\n    --mol_theme_control: black;\n    --mol_theme_focus: #e84e58;\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_dark\"] {\n    --mol_theme_back: hsla( 0 , 0% , 11%, .8 );\n    --mol_theme_field: hsla( 0 , 0% , 0%, .5 );\n    --mol_theme_line: #343f48;\n    --mol_theme_control: hsla( 0 , 0% , 100%, .9 );\n    --mol_theme_focus: #F0D559;\n}\n");
+    $.$mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n    --mol_theme_back: hsla( 0 , 0% , 80%, .25 );\n\t--hyoo_talks_theme_talker: hsla( 0 , 0% , 80%, .5 );\n    --mol_theme_field: hsla( 0 , 0% , 100%, .75 );\n    --mol_theme_control: black;\n    --mol_theme_focus: #e84e58;\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_dark\"] {\n    --mol_theme_back: hsla( 0 , 0% , 11%, .8 );\n\t--hyoo_talks_theme_talker: hsla( 0 , 0% , 5%, .5 );\n    --mol_theme_field: hsla( 0 , 0% , 0%, .5 );\n    --mol_theme_line: #343f48;\n    --mol_theme_control: hsla( 0 , 0% , 100%, .9 );\n    --mol_theme_focus: #F0D559;\n}\n");
 })($ || ($ = {}));
 //talks.view.css.js.map
 ;
