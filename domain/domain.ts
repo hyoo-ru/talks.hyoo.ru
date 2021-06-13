@@ -3,7 +3,7 @@ namespace $ {
 	export class $hyoo_talks_domain extends $mol_store_shared {
 		
 		server() {
-			return 'wss://552584f568524540a1e2d8de6b8f1394.apig.ru-moscow-1.hc.sbercloud.ru/'
+			return 'wss://552584f568524540a1e2d8de6b8f1394.apig.ru-moscow-1.hc.sbercloud.ru'
 		}
 		
 		@ $mol_mem
@@ -31,6 +31,7 @@ namespace $ {
 			const chat = this.sub( `chat=${id}`, new $hyoo_talks_chat({
 				title: '',
 				messages: [],
+				meta_subscriptions: [],
 			}) )
 			chat.id = $mol_const( id )
 			chat.domain = $mol_const( this )

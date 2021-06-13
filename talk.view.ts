@@ -43,7 +43,7 @@ namespace $.$$ {
 			return $mol_guid()
 		}
 		
-		chat_page_tools() { //
+		chat_page_tools() {
 			if ( this.only_chat() )  {
 				return [ this.Chat_open() ]
 			}
@@ -51,6 +51,22 @@ namespace $.$$ {
 			return [ this.Chat_close() ]
 		}
 		
+		@ $mol_mem
+		subscribe(next?: any) {
+			if (next === undefined) return false
+			
+			const user = this.domain().user().id()
+			
+			const o = this.domain().user().notification_subscription_object()
+			console.log(o)
+
+			const chat = this.chat( this.chat_id_current()! )
+			
+			const subs = next ? [ ...chat.meta_subscriptions() , user ] : chat.meta_subscriptions().filter(id => id !== user)
+			chat.meta_subscriptions(subs)
+
+			return next
+		}
 	}
 	
 }
