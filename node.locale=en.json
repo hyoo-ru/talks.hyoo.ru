@@ -1,9 +1,13 @@
 {
 	"$hyoo_talks_Chat_new_hint": "New Chat",
 	"$hyoo_talks_Roster_title": "Talks",
+	"$hyoo_talks_Settings_link_hint": "Open Settings",
 	"$hyoo_talks_chat_page_Draft_send_hint": "Ctrl+Enter to send",
 	"$hyoo_talks_chat_page_Draft_send_title": "Send",
 	"$hyoo_talks_chat_page_Draft_text_hint": "Add message..",
 	"$hyoo_talks_chat_page_Title_hint": "Chat title",
+	"$hyoo_talks_person_settings_Background_field_name": "Background",
+	"$hyoo_talks_person_settings_Name_field_name": "Name",
+	"$hyoo_talks_person_settings_title": "Settings",
 	"$mol_lights_toggle_hint": "Toggle lights"
 }
