@@ -39,11 +39,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		message( id: string ) {
-			const message = this.sub( `message=${id}`, new $hyoo_talks_message({
-				text: '',
-				author: null,
-				moment: '',
-			}) )
+			const message = this.sub( `message=${id}`, new $hyoo_talks_message() )
 			message.id = $mol_const( id )
 			message.domain = $mol_const( this )
 			return message
