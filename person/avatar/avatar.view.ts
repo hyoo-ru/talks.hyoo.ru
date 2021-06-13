@@ -7,7 +7,7 @@ namespace $.$$ {
 		}
 		
 		image() {
-			return this.person()?.avatar() ?? 'about:blank'
+			return this.person()?.avatar() || `https://gravatar.com/avatar/${ this.person()?.id() }?d=robohash`
 		}
 		
 		@ $mol_mem

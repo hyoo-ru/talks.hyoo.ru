@@ -10,6 +10,10 @@ namespace $.$$ {
 			return this.person()?.background( next ) ?? ''
 		}
 		
+		avatar( next?: string ) {
+			return this.person()?.avatar( next )
+		}
+		
 	}
 	
 }
