@@ -50,11 +50,14 @@ namespace $.$$ {
 		
 		draft_text( next?: string ) {
 			
-			this.domain().user().online_update()
-			
 			const chat = this.chat()
 			const draft = this.draft()
 			const user = this.domain().user()
+			
+			user.online_update()
+			// user.read_messages( chat , chat.messages_count() )
+			// Если оставить, то не стабильно ведет себя
+			// Doubted while calculation - то появляется то исчезает
 			
 			if( next ) $mol_fiber_defer( ()=> {
 					

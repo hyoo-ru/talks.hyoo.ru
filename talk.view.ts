@@ -62,12 +62,20 @@ namespace $.$$ {
 			return $mol_guid()
 		}
 		
-		chat_page_tools() { //
+		chat_page_tools() {
 			if ( this.only_chat() )  {
 				return [ this.Chat_open() ]
 			}
 			
 			return [ this.Chat_close() ]
+		}
+		
+		chat_unread_count( id: string ) {
+			console.log('start')
+			const last_index = this.user().read_messages( this.chat( id ) )
+			const count = this.chat( id ).messages_count()
+			console.log({ id, last_index, count })
+			return ( count - last_index ).toString()
 		}
 		
 	}
