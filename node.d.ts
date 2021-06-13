@@ -3694,6 +3694,38 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_switch extends $mol_view {
+        Option(id: any): $$.$mol_check;
+        value(val?: any): any;
+        options(): {};
+        keys(): readonly string[];
+        sub(): readonly $mol_check[];
+        option_checked(id: any, val?: any): any;
+        option_title(id: any): string;
+        option_label(id: any): readonly any[];
+        enabled(): boolean;
+        option_enabled(id: any): boolean;
+        items(): readonly $mol_check[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_switch extends $.$mol_switch {
+        value(next?: any): any;
+        options(): {
+            [key: string]: string;
+        };
+        keys(): string[];
+        items(): $mol_check[];
+        option_title(key: string): string;
+        option_checked(key: string, next?: boolean): boolean | undefined;
+    }
+}
+
+declare namespace $ {
     class $mol_icon_cross extends $mol_icon {
         path(): string;
     }
@@ -3735,6 +3767,8 @@ declare namespace $ {
         Settings_link(): $$.$mol_link;
         links(): readonly any[];
         Links(): $$.$mol_list;
+        language(val?: any): any;
+        Language(): $$.$mol_switch;
         user(): $hyoo_talks_person;
         Settings_close_icon(): $mol_icon_cross;
         Settings_close(): $$.$mol_link;
@@ -3771,6 +3805,7 @@ declare namespace $.$$ {
         };
         chat_new_id(): string;
         chat_page_tools(): $mol_link[];
+        language(next?: string): string;
     }
 }
 
