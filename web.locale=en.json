@@ -13,5 +13,6 @@
 	"$hyoo_talks_person_settings_Background_field_name": "Background",
 	"$hyoo_talks_person_settings_Name_field_name": "Name",
 	"$hyoo_talks_person_settings_title": "Settings",
-	"$mol_lights_toggle_hint": "Toggle lights"
+	"$mol_lights_toggle_hint": "Toggle lights",
+	"$mol_link_source_hint": "Source code"
 }

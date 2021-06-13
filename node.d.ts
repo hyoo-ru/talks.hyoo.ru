@@ -2239,8 +2239,8 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_talks_message extends $mol_store<{
         text: string;
-        author: string | null;
-        moment: string;
+        author: [string];
+        moment: [string];
         complete: boolean;
     }> {
         id(): string;
@@ -2270,10 +2270,10 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_talks_person extends $mol_store<{
-        name: string;
-        background: string;
-        avatar: string;
-        online: string;
+        name: [string];
+        background: [string];
+        avatar: [string];
+        online: [string];
         chats: string[];
         drafts: Record<string, string>;
     }> {
@@ -3601,6 +3601,7 @@ declare namespace $.$$ {
         draft(next?: string): $hyoo_talks_message;
         draft_text(next?: string): string;
         draft_send(): void;
+        scroll_end(): void;
     }
 }
 
@@ -3663,6 +3664,20 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_icon_github_circle extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_link_source extends $mol_link {
+        hint(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_github_circle;
+    }
+}
+
+declare namespace $ {
     class $mol_icon_settings extends $mol_icon {
         path(): string;
     }
@@ -3705,6 +3720,7 @@ declare namespace $ {
         Chat_new_icon(): $mol_icon_plus;
         Chat_new(): $$.$mol_link;
         Lights(): $$.$mol_lights_toggle;
+        Source(): $mol_link_source;
         Settings_icon(): $mol_icon_settings;
         Settings_link(): $$.$mol_link;
         links(): readonly any[];
