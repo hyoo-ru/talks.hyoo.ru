@@ -9704,9 +9704,14 @@ var $;
                         Meta: {
                             justifyContent: 'flex-end',
                         },
+                        Text: {
+                            alignSelf: 'flex-end',
+                        },
                     },
                     other: {
-                        Meta: {},
+                        Text: {
+                            alignSelf: 'flex-start',
+                        },
                     },
                 },
             },
