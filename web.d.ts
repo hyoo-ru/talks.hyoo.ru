@@ -3555,6 +3555,20 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_icon_eye extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_check_icon extends $mol_check {
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     class $mol_icon_arrow_up extends $mol_icon {
         path(): string;
     }
@@ -3576,11 +3590,16 @@ declare namespace $ {
             hyoo_talks_chat_page_transparent: boolean;
         };
         Title(): $$.$mol_string;
+        head(): readonly any[];
+        tools(): readonly any[];
         body(): readonly any[];
         foot(): readonly any[];
         Bubble(id: any): $$.$hyoo_talks_message_bubble;
         plugins(): readonly any[];
         title(val?: any): any;
+        Joined_icon(): $mol_icon_eye;
+        joined(val?: any): any;
+        Joined(): $mol_check_icon;
         bubbles(): readonly any[];
         Bubbles(): $$.$mol_list;
         draft_text(val?: any): any;
@@ -3615,6 +3634,7 @@ declare namespace $.$$ {
         bubbles(): $hyoo_talks_message_bubble[];
         draft_controls(): ($mol_button_minor | $mol_textarea)[];
         draft(next?: string): $hyoo_talks_message;
+        joined(next?: boolean): boolean;
         draft_text(next?: string): string;
         draft_send(): void;
         scroll_end(): void;
@@ -3644,14 +3664,6 @@ declare namespace $ {
     class $mol_icon_plus extends $mol_icon {
         path(): string;
     }
-}
-
-declare namespace $ {
-    class $mol_check_icon extends $mol_check {
-    }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {

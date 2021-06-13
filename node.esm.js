@@ -9819,6 +9819,34 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_eye extends $.$mol_icon {
+        path() {
+            return "M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z";
+        }
+    }
+    $.$mol_icon_eye = $mol_icon_eye;
+})($ || ($ = {}));
+//eye.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_check_icon extends $.$mol_check {
+    }
+    $.$mol_check_icon = $mol_check_icon;
+})($ || ($ = {}));
+//icon.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon][mol_check_checked] {\n\tcolor: var(--mol_theme_focus);\n}\n");
+})($ || ($ = {}));
+//icon.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_arrow_up extends $.$mol_icon {
         path() {
             return "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z";
@@ -9871,6 +9899,16 @@ var $;
             obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Title_hint');
             return obj;
         }
+        head() {
+            return [
+                this.Title(),
+                this.Joined(),
+                this.Tools()
+            ];
+        }
+        tools() {
+            return [];
+        }
         body() {
             return [
                 this.Bubbles()
@@ -9894,6 +9932,22 @@ var $;
             if (val !== undefined)
                 return val;
             return "";
+        }
+        Joined_icon() {
+            const obj = new this.$.$mol_icon_eye();
+            return obj;
+        }
+        joined(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        Joined() {
+            const obj = new this.$.$mol_check_icon();
+            obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Joined_hint');
+            obj.Icon = () => this.Joined_icon();
+            obj.checked = (val) => this.joined(val);
+            return obj;
         }
         bubbles() {
             return [];
@@ -9967,6 +10021,15 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "title", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Joined_icon", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "joined", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Joined", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Bubbles", null);
@@ -10144,6 +10207,20 @@ var $;
             draft(next) {
                 return this.domain().user().draft(this.chat(), next);
             }
+            joined(next) {
+                const chat = this.chat();
+                const user = this.domain().user();
+                const joined = user.chats().indexOf(chat) !== -1;
+                if (next === undefined)
+                    return joined;
+                if (next) {
+                    user.chats([chat, ...user.chats()]);
+                }
+                else {
+                    user.chats(user.chats().filter(c => c !== chat));
+                }
+                return next;
+            }
             draft_text(next) {
                 this.domain().user().online_update();
                 const chat = this.chat();
@@ -10189,6 +10266,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks_chat_page.prototype, "draft", null);
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks_chat_page.prototype, "joined", null);
         $$.$hyoo_talks_chat_page = $hyoo_talks_chat_page;
         $.$mol_view_component($hyoo_talks_chat_page);
     })($$ = $.$$ || ($.$$ = {}));
@@ -10257,22 +10337,6 @@ var $;
     $.$mol_icon_plus = $mol_icon_plus;
 })($ || ($ = {}));
 //plus.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_check_icon extends $.$mol_check {
-    }
-    $.$mol_check_icon = $mol_check_icon;
-})($ || ($ = {}));
-//icon.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/check/icon/icon.view.css", "[mol_check_icon][mol_check_checked] {\n\tcolor: var(--mol_theme_focus);\n}\n");
-})($ || ($ = {}));
-//icon.view.css.js.map
 ;
 "use strict";
 var $;
