@@ -3,6 +3,7 @@ namespace $ {
 	export class $hyoo_talks_person extends $mol_store<{
 		name: string,
 		background: string,
+		avatar: string,
 		online: string,
 		chats: string[],
 		drafts: Record< string, string >,
@@ -24,8 +25,8 @@ namespace $ {
 			return this.value( 'background' , next ) ?? ''
 		}
 		
-		avatar() {
-			return  `https://gravatar.com/avatar/${ this.id() }?d=robohash`
+		avatar( next?: string ) {
+			return this.value( 'avatar' , next ) ?? ''
 		}
 		
 		@ $mol_mem

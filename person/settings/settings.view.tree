@@ -8,6 +8,10 @@ $hyoo_talks_person_settings $mol_page
 					name @ \Name
 					control <= Name $mol_string
 						value?val <=> name?val \
+				<= Avatar_field $mol_form_field
+					name @ \Avatar
+					control <= Avatar $mol_string
+						value?val <=> avatar?val \
 				<= Background_field $mol_form_field
 					name @ \Background
 					control <= Background $mol_string
