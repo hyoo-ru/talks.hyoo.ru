@@ -1,7 +1,7 @@
 [hyoo_talks][mol_theme="$mol_theme_light"] {
-    --mol_theme_back: hsla( 0 , 0% , 90%, .25 );
-    --mol_theme_field: hsla( 0 , 0% , 100%, .5 );
-    --mol_theme_control: hsl(210deg 100% 20%);
+    --mol_theme_back: hsla( 0 , 0% , 80%, .25 );
+    --mol_theme_field: hsla( 0 , 0% , 100%, .75 );
+    --mol_theme_control: #07CC85;
     --mol_theme_focus: #e84e58;
 }
 
@@ -11,4 +11,16 @@
     --mol_theme_line: #343f48;
     --mol_theme_control: #375ec9;
     --mol_theme_focus: #F0D559;
+}
+
+[hyoo_talks][mol_theme="$mol_theme_light"] [mol_page] {
+	background: white;
+}
+
+[hyoo_talks] [mol_page_head] {
+	box-shadow: none;
+}
+
+[hyoo_talks] [mol_link_current] {
+	background: transparent;
 }
