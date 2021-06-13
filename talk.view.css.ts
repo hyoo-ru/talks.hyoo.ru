@@ -8,8 +8,10 @@ namespace $.$$ {
 		'@': {
 			hyoo_talks_only_chat: {
 				'true': {
-					backgroundColor: 'transparent',
-					backgroundImage: 'none',
+					background: {
+						color: 'transparent',
+						image: 'none',
+					},
 				},
 			},
 		},
