@@ -1,6 +1,19 @@
 namespace $.$$ {
 	export class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
 		
+		@ $mol_mem
+		rows() {
+			
+			if( !this.message().complete() && !this.peek() ) {
+				return [
+					this.Meta(),
+					this.Peek(),
+				]
+			}
+			
+			return super.rows()
+		}
+		
 		text( next?: string ) {
 			return this.message().text( next )
 		}

@@ -26,7 +26,7 @@ $hyoo_talks_chat_page $mol_page
 				<= Draft_send_icon $mol_icon_arrow_up_bold
 			click?val <=> draft_send?val null
 	Bubble!id $hyoo_talks_message_bubble
-		minimal_height 40
+		minimal_height 80
 		message <= message!id $hyoo_talks_message
 		- highlight <= search
 	plugins /

@@ -38,28 +38,33 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		draft( reset?: null ) {
-			return this.domain().message( $mol_guid() )
+		draft( next?: string ) {
+			return this.domain().user().draft( this.chat(), next )
 		}
 		
 		draft_text( next?: string ) {
-			this.domain().user().online_update()			
-			return this.draft().text( next )
+			
+			this.domain().user().online_update()
+			
+			const draft = this.draft()
+			const user = this.domain().user()
+			
+			if( next ) {
+				
+				this.messages([ ... new Set([ ... this.messages(), draft ]) ])
+				user.chats([ ... new Set([ ... user.chats(), this.chat() ]) ])
+				
+				draft.moment( new this.$.$mol_time_moment() )
+				draft.author( user )
+			}
+			
+			return draft.text( next )
 		}
 
 		draft_send() {
 			
-			const draft = this.draft()
-			if( !draft.text() ) return
-			
-			const user = this.domain().user()
-			
-			draft.moment( new this.$.$mol_time_moment() )
-			draft.author( user )
-			user.chats([ ... new Set([ ... user.chats(), this.chat() ]) ])
-			
-			this.messages([ ... this.messages(), draft ])
-			this.draft( null )
+			this.draft().complete( true )
+			this.draft( '' )
 			
 			this.$.$mol_wait_rest()
 			this.Body().scroll_top( Number.MAX_SAFE_INTEGER )

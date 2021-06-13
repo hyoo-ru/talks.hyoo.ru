@@ -5,6 +5,7 @@ namespace $ {
 		background: string,
 		online: string,
 		chats: string[],
+		drafts: Record< string, string >,
 	}> {
 		
 		id(): string {
@@ -54,6 +55,20 @@ namespace $ {
 			const ids = this.value( 'chats' , next && next.map( m => m.id() ) )
 			if( !ids ) return []
 			return ids.map( id => this.domain().chat( id ) )
+		}
+		
+		@ $mol_mem_key
+		draft( chat: $hyoo_talks_chat, next?: string ) {
+			
+			const drafts = this.sub( 'drafts' )
+			let id = next ?? drafts.value( chat.id() )
+			
+			if( !id ) {
+				id = $mol_guid()
+				drafts.value( chat.id(), id )
+			}
+			
+			return this.domain().message( id )
 		}
 		
 	}
