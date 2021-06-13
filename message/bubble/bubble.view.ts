@@ -34,5 +34,9 @@ namespace $.$$ {
 			return this.links()[ index ]
 		}
 		
+		moment() {
+			return this.message().moment()?.toString( 'hh:mm' ) ?? '∞'
+		}
+		
 	}
 }

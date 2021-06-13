@@ -9,7 +9,7 @@ $hyoo_talks_message_bubble $mol_list
 				<= Author $hyoo_talks_person_avatar
 					person <= author $hyoo_talks_person
 				<= When $mol_paragraph
-					sub / \13:00
+					sub / <= moment \
 		<= Text $mol_textarea
 			value?val <=> text?val \
 			enabled <= editable false

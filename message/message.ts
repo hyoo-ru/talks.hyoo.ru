@@ -24,6 +24,11 @@ namespace $ {
 			return null
 		}
 		
+		moment( next?: $mol_time_moment ) {
+			const str = this.value( 'moment', next && next.toString() )
+			return str ? new $mol_time_moment( str ) : null
+		}
+		
 	}
 	
 }

@@ -54,6 +54,7 @@ namespace $.$$ {
 			
 			const user = this.domain().user()
 			
+			draft.moment( new this.$.$mol_time_moment() )
 			draft.author( user )
 			user.chats([ ... new Set([ ... user.chats(), this.chat() ]) ])
 			
