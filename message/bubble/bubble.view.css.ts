@@ -1,5 +1,7 @@
 namespace $.$$ {
 	
+	const { vary } = $mol_style_func
+	
 	$mol_style_define( $hyoo_talks_message_bubble, {
 		
 		'@': {
@@ -15,6 +17,9 @@ namespace $.$$ {
 				other: {
 					Text: {
 						alignSelf: 'flex-start',
+						background: {
+							color: vary('--hyoo_talks_theme_talker'),
+						},
 					},
 				},
 			},
