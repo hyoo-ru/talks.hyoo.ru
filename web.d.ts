@@ -2940,11 +2940,8 @@ declare namespace $ {
     class $hyoo_talks_person_avatar extends $mol_link {
         person(): $hyoo_talks_person;
         current(): boolean;
-        label_online(): string;
-        label_offline(): string;
+        Is_online(): $mol_speck;
         sub(): readonly any[];
-        status(): string;
-        Status(): $mol_speck;
         image(): string;
         Image(): $mol_image;
         name(): string;
@@ -2960,7 +2957,7 @@ declare namespace $.$$ {
         name(): string;
         image(): string;
         uri(): string;
-        status(): string;
+        sub(): readonly any[];
     }
 }
 

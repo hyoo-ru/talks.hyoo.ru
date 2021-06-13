@@ -7588,26 +7588,16 @@ var $;
         current() {
             return false;
         }
-        label_online() {
-            return this.$.$mol_locale.text('$hyoo_talks_person_avatar_label_online');
-        }
-        label_offline() {
-            return this.$.$mol_locale.text('$hyoo_talks_person_avatar_label_offline');
+        Is_online() {
+            const obj = new this.$.$mol_speck();
+            obj.value = () => "";
+            return obj;
         }
         sub() {
             return [
-                this.Status(),
                 this.Image(),
                 this.Name()
             ];
-        }
-        status() {
-            return "";
-        }
-        Status() {
-            const obj = new this.$.$mol_speck();
-            obj.value = () => this.status();
-            return obj;
         }
         image() {
             return "";
@@ -7634,7 +7624,7 @@ var $;
     ], $hyoo_talks_person_avatar.prototype, "person", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_person_avatar.prototype, "Status", null);
+    ], $hyoo_talks_person_avatar.prototype, "Is_online", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person_avatar.prototype, "Image", null);
@@ -7689,8 +7679,11 @@ var $;
                 talkers.sort();
                 return `#chat=${talkers.join('-')}`;
             }
-            status() {
-                return this.person()?.online_near() ? this.label_online() : this.label_offline();
+            sub() {
+                const other = super.sub();
+                return this.person()?.online_near()
+                    ? [this.Is_online(), ...other]
+                    : other;
             }
         }
         __decorate([
