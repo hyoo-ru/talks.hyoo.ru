@@ -70,6 +70,10 @@ namespace $.$$ {
 			return [ this.Chat_close() ]
 		}
 		
+		language( next?: string ) {
+			return this.$.$mol_locale.lang( next )
+		}
+		
 	}
 	
 }

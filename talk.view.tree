@@ -27,6 +27,12 @@ $hyoo_talks $mol_book2
 					<= Settings_icon $mol_icon_settings
 		body /
 			<= Links $mol_list rows <= links /
+		foot /
+			<= Language $mol_switch
+				value?val <=> language?val \en
+				options *
+					en \English
+					ru \Русский
 	Settings $hyoo_talks_person_settings
 		person <= user $hyoo_talks_person
 		tools /
