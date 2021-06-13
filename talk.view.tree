@@ -4,20 +4,34 @@ $hyoo_talks $mol_book2
 	attr *
 		^
 		hyoo_talks_only_chat <= only_chat
+	style *
+		^
+		background-image <= background \
 	plugins /
 		<= Theme $mol_theme_auto
-	pages /
-		<= Roster $mol_page
-			title @ \Talks
-			tools /
-				<= Lights $mol_lights_toggle
-				<= Chat_new $mol_link
-					arg * chat <= chat_new_id \
-					hint @ \New Chat
-					sub /
-						<= Chat_new_icon $mol_icon_plus
-			body /
-				<= Links $mol_list rows <= links /
+	Roster $mol_page
+		title @ \Talks
+		tools /
+			<= Chat_new $mol_link
+				arg * chat <= chat_new_id \
+				hint @ \New Chat
+				sub /
+					<= Chat_new_icon $mol_icon_plus
+			<= Lights $mol_lights_toggle
+			<= Settings_link $mol_link
+				arg * settings \
+				hint @ \Open Settings
+				sub /
+					<= Settings_icon $mol_icon_settings
+		body /
+			<= Links $mol_list rows <= links /
+	Settings $hyoo_talks_person_settings
+		person <= user $hyoo_talks_person
+		tools /
+			<= Settings_close $mol_link
+				arg * settings null
+				sub /
+					<= Settings_close_icon $mol_icon_cross
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
 		bg_transparent <= only_chat
@@ -25,7 +39,7 @@ $hyoo_talks $mol_book2
 			<= Chat_close $mol_link
 				arg * chat null
 				sub /
-					<= Chat_icon $mol_icon_cross
+					<= Chat_close_icon $mol_icon_cross
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null

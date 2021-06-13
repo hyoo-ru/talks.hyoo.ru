@@ -1,35 +1,23 @@
 namespace $.$$ {
 	
-	const { rem, vh, vw } = $mol_style_unit
-	
 	$mol_style_define( $hyoo_talks_message_bubble, {
 		
 		'@': {
 			hyoo_talks_message_bubble_side: {
 				self: {
-					Main: {
-						flex: {
-							direction: 'row-reverse',
-						},
+					Meta: {
+						justifyContent: 'flex-end',
 					},
 				},
 				other: {
-					Main: {
-						flex: {
-							direction: 'row',
-						},
+					Meta: {
 					},
 				},
 			},
 		},
 		
-		Author: {
-			width: rem(2.5),
-			height: rem(2.5),
-			flex: 'none',
-			border: {
-				radius: $mol_gap.round,
-			},
+		When: {
+			padding: $mol_gap.text,	
 		},
 		
 		Text: {

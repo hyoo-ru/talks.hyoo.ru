@@ -6,6 +6,10 @@ namespace $.$$ {
 			return this.$.$mol_state_arg.value( 'chat' )
 		}
 		
+		settings_opened() {
+			return this.$.$mol_state_arg.value( 'settings' ) !== null
+		}
+		
 		@ $mol_mem
 		only_chat() : boolean {
 			const val = this.$.$mol_state_arg.value( 'hyoo_talks' )
@@ -18,13 +22,23 @@ namespace $.$$ {
 			const only_chat = this.only_chat()
 			return [
 				... only_chat ? [] : [ this.Roster() ],
-				... chat ? [ this.Chat_page( chat ) ] : []
+				... chat ? [ this.Chat_page( chat ) ] : [],
+				... this.settings_opened() ? [ this.Settings() ] : [],
 			]
+		}
+		
+		user() {
+			return this.domain().user()
+		}
+		
+		background() {
+			const uri = this.user().background()
+			return uri ? `url(${ JSON.stringify( uri ) })` : 'none'
 		}
 		
 		@ $mol_mem
 		links() {
-			return this.domain().user().chats().map( chat => this.Chat_link( chat.id() ) )
+			return this.user().chats().map( chat => this.Chat_link( chat.id() ) )
 		}
 		
 		chat( id: string ) {

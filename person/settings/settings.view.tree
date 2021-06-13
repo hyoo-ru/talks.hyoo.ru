@@ -1,0 +1,14 @@
+$hyoo_talks_person_settings $mol_page
+	person $hyoo_talks_person
+	title @ \Settings
+	body /
+		<= Form $mol_form
+			form_fields /
+				<= Name_field $mol_form_field
+					name @ \Name
+					control <= Name $mol_string
+						value?val <=> name?val \
+				<= Background_field $mol_form_field
+					name @ \Background
+					control <= Background $mol_string
+						value?val <=> background?val \

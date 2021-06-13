@@ -2,6 +2,7 @@ namespace $ {
 	
 	export class $hyoo_talks_person extends $mol_store<{
 		name: string,
+		background: string,
 		chats: string[],
 	}> {
 		
@@ -15,6 +16,10 @@ namespace $ {
 		
 		name( next?: string ) {
 			return this.value( 'name' , next ) ?? ''
+		}
+		
+		background( next?: string ) {
+			return this.value( 'background' , next ) ?? ''
 		}
 		
 		avatar() {

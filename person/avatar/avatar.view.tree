@@ -5,3 +5,6 @@ $hyoo_talks_person_avatar $mol_link
 		<= Image $mol_image
 			title \
 			uri <= image \
+		<= Name $mol_paragraph
+			sub /
+				<= name \

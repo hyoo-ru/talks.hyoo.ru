@@ -4,13 +4,15 @@ $hyoo_talks_message_bubble $mol_list
 		^
 		hyoo_talks_message_bubble_side <= side \other
 	rows /
-		<= Main $mol_view
+		<= Meta $mol_view
 			sub /
 				<= Author $hyoo_talks_person_avatar
 					person <= author $hyoo_talks_person
-				<= Text $mol_textarea
-					value?val <=> text?val \
-					enabled <= editable false
+				<= When $mol_paragraph
+					sub / \13:00
+		<= Text $mol_textarea
+			value?val <=> text?val \
+			enabled <= editable false
 		<= Previews $mol_view
 			sub <= previews /
 	Preview!index $mol_link

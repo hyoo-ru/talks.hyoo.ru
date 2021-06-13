@@ -17,7 +17,7 @@ namespace $.$$ {
 		},
 		
 		background: {
-			// image: [[ url( 'https://wallpaperaccess.com/full/1385511.jpg' ) ]],
+			size: [ 'cover' ],
 		},
 		
 		Roster: {
