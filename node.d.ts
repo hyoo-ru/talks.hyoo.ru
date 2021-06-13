@@ -1986,6 +1986,69 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_link extends $mol_view {
+        dom_name(): string;
+        attr(): {
+            href: string;
+            title: string;
+            target: string;
+            download: string;
+            mol_link_current: boolean;
+        };
+        sub(): readonly $mol_view_content[];
+        arg(): {};
+        event(): {
+            click: (event?: any) => any;
+        };
+        uri(): string;
+        hint(): string;
+        target(): string;
+        file_name(): string;
+        current(): boolean;
+        event_click(event?: any): any;
+        click(event?: any): any;
+    }
+}
+
+declare namespace $ {
+    class $mol_state_arg extends $mol_object {
+        prefix: string;
+        static href(next?: string): string;
+        static dict(next?: {
+            [key: string]: string | null;
+        }): {
+            [key: string]: string;
+        };
+        static value(key: string, next?: string | null): string | null;
+        static link(next: any): string;
+        static make_link(next: {
+            [key: string]: any;
+        }): string;
+        constructor(prefix?: string);
+        value(key: string, next?: string): string | null;
+        sub(postfix: string): $mol_state_arg;
+        link(next: {
+            [key: string]: string;
+        }): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_link extends $.$mol_link {
+        uri(): string;
+        uri_native(): URL;
+        current(): boolean;
+        event_click(event?: Event): void;
+        file_name(): string;
+        minimal_height(): number;
+        target(): "_self" | "_blank";
+    }
+}
+
+declare namespace $ {
     class $hyoo_talks_person extends $mol_store<{
         name: string;
         chats: string[];
@@ -2478,69 +2541,6 @@ declare namespace $.$$ {
         sub_visible(): $mol_view[];
         minimal_height(): number;
         force_render(path: Set<$mol_view>): void;
-    }
-}
-
-declare namespace $ {
-    class $mol_link extends $mol_view {
-        dom_name(): string;
-        attr(): {
-            href: string;
-            title: string;
-            target: string;
-            download: string;
-            mol_link_current: boolean;
-        };
-        sub(): readonly $mol_view_content[];
-        arg(): {};
-        event(): {
-            click: (event?: any) => any;
-        };
-        uri(): string;
-        hint(): string;
-        target(): string;
-        file_name(): string;
-        current(): boolean;
-        event_click(event?: any): any;
-        click(event?: any): any;
-    }
-}
-
-declare namespace $ {
-    class $mol_state_arg extends $mol_object {
-        prefix: string;
-        static href(next?: string): string;
-        static dict(next?: {
-            [key: string]: string | null;
-        }): {
-            [key: string]: string;
-        };
-        static value(key: string, next?: string | null): string | null;
-        static link(next: any): string;
-        static make_link(next: {
-            [key: string]: any;
-        }): string;
-        constructor(prefix?: string);
-        value(key: string, next?: string): string | null;
-        sub(postfix: string): $mol_state_arg;
-        link(next: {
-            [key: string]: string;
-        }): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_link extends $.$mol_link {
-        uri(): string;
-        uri_native(): URL;
-        current(): boolean;
-        event_click(event?: Event): void;
-        file_name(): string;
-        minimal_height(): number;
-        target(): "_self" | "_blank";
     }
 }
 
@@ -3432,6 +3432,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_icon_open_in_new extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
     class $mol_icon_cross extends $mol_icon {
         path(): string;
     }
@@ -3446,6 +3452,9 @@ declare namespace $ {
         };
         plugins(): readonly any[];
         pages(): readonly any[];
+        Chat_open(): $$.$mol_link;
+        Chat_close(): $$.$mol_link;
+        chat_page_tools(): readonly any[];
         Chat_page(id: any): $$.$hyoo_talks_chat_page;
         Placeholder(): $hyoo_talks_placeholder;
         Chat_link(id: any): $$.$mol_link;
@@ -3457,9 +3466,9 @@ declare namespace $ {
         links(): readonly any[];
         Links(): $$.$mol_list;
         Roster(): $$.$mol_page;
-        chat(id: any): $hyoo_talks_chat;
+        Chat_open_icon(): $mol_icon_open_in_new;
         Chat_icon(): $mol_icon_cross;
-        Chat_close(): $$.$mol_link;
+        chat(id: any): $hyoo_talks_chat;
         chat_arg(id: any): {};
         chat_title(id: any): string;
     }
@@ -3486,6 +3495,7 @@ declare namespace $.$$ {
             chat: string;
         };
         chat_new_id(): string;
+        chat_page_tools(): $mol_link[];
     }
 }
 
