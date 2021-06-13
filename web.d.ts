@@ -2117,6 +2117,22 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_after_work extends $mol_object2 {
+        delay: number;
+        task: () => void;
+        id: any;
+        constructor(delay: number, task: () => void);
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_state_time extends $mol_object {
+        static now(precision?: number, next?: number): number;
+    }
+}
+
+declare namespace $ {
     class $mol_time_base {
         static patterns: Record<string, (arg: any) => string>;
         static formatter(pattern: string): (arg: any) => string;
@@ -2262,6 +2278,7 @@ declare namespace $ {
     class $hyoo_talks_person extends $mol_store<{
         name: string;
         background: string;
+        online: string;
         chats: string[];
     }> {
         id(): string;
@@ -2269,6 +2286,9 @@ declare namespace $ {
         name(next?: string): string;
         background(next?: string): string;
         avatar(): string;
+        online_near(): boolean;
+        online_time(): $mol_time_moment | null;
+        online_update(): void;
         chats(next?: $hyoo_talks_chat[]): $hyoo_talks_chat[];
     }
 }
@@ -2943,22 +2963,6 @@ declare namespace $ {
         dom_name_space(): string;
         font_size(): number;
         font_family(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_after_work extends $mol_object2 {
-        delay: number;
-        task: () => void;
-        id: any;
-        constructor(delay: number, task: () => void);
-        destructor(): void;
-    }
-}
-
-declare namespace $ {
-    class $mol_state_time extends $mol_object {
-        static now(precision?: number, next?: number): number;
     }
 }
 

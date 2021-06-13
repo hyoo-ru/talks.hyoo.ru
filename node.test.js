@@ -5240,6 +5240,36 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_after_work extends $.$mol_after_timeout {
+    }
+    $.$mol_after_work = $mol_after_work;
+})($ || ($ = {}));
+//work.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_state_time extends $.$mol_object {
+        static now(precision = 0, next) {
+            if (precision > 0) {
+                new $.$mol_after_timeout(precision, $.$mol_atom2.current.fresh);
+            }
+            else {
+                new $.$mol_after_work(16, $.$mol_atom2.current.fresh);
+            }
+            return Date.now();
+        }
+    }
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_state_time, "now", null);
+    $.$mol_state_time = $mol_state_time;
+})($ || ($ = {}));
+//time.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_time_base {
         static formatter(pattern) {
             if (this.patterns[pattern])
@@ -5847,6 +5877,20 @@ var $;
         avatar() {
             return `https://gravatar.com/avatar/${this.id()}?d=robohash`;
         }
+        online_near() {
+            const moment = this.online_time();
+            if (!moment)
+                return false;
+            const now = this.$.$mol_state_time.now(60000);
+            return (now - moment.valueOf() < 60000);
+        }
+        online_time() {
+            const str = this.value('online');
+            return str ? new $.$mol_time_moment(str) : null;
+        }
+        online_update() {
+            $.$mol_fiber_defer(() => this.value('online', new $.$mol_time_moment().toString()));
+        }
         chats(next) {
             const ids = this.value('chats', next && next.map(m => m.id()));
             if (!ids)
@@ -5854,6 +5898,12 @@ var $;
             return ids.map(id => this.domain().chat(id));
         }
     }
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person.prototype, "online_near", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person.prototype, "online_time", null);
     $.$hyoo_talks_person = $hyoo_talks_person;
 })($ || ($ = {}));
 //person.js.map
@@ -7599,36 +7649,6 @@ var $;
     $.$mol_svg = $mol_svg;
 })($ || ($ = {}));
 //svg.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_after_work extends $.$mol_after_timeout {
-    }
-    $.$mol_after_work = $mol_after_work;
-})($ || ($ = {}));
-//work.node.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_state_time extends $.$mol_object {
-        static now(precision = 0, next) {
-            if (precision > 0) {
-                new $.$mol_after_timeout(precision, $.$mol_atom2.current.fresh);
-            }
-            else {
-                new $.$mol_after_work(16, $.$mol_atom2.current.fresh);
-            }
-            return Date.now();
-        }
-    }
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_state_time, "now", null);
-    $.$mol_state_time = $mol_state_time;
-})($ || ($ = {}));
-//time.js.map
 ;
 "use strict";
 var $;
@@ -10000,6 +10020,7 @@ var $;
                 return this.domain().message($.$mol_guid());
             }
             draft_text(next) {
+                this.domain().user().online_update();
                 return this.draft().text(next);
             }
             draft_send() {
@@ -10541,6 +10562,7 @@ var $;
                 return val !== null;
             }
             pages() {
+                this.user().online_update();
                 const chat = this.chat_id_current();
                 const only_chat = this.only_chat();
                 return [
@@ -14582,6 +14604,15 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $_1.$mol_test_mocks.push($ => {
+        $.$mol_after_work = $_1.$mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
+//work.test.js.map
+;
+"use strict";
+var $;
 (function ($) {
     $.$mol_test({
         'parse and serial'() {
@@ -14707,15 +14738,6 @@ var $;
     });
 })($ || ($ = {}));
 //maybe.test.js.map
-;
-"use strict";
-var $;
-(function ($_1) {
-    $_1.$mol_test_mocks.push($ => {
-        $.$mol_after_work = $_1.$mol_after_mock_timeout;
-    });
-})($ || ($ = {}));
-//work.test.js.map
 ;
 "use strict";
 var $;
