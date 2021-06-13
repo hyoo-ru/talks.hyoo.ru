@@ -2253,10 +2253,12 @@ declare namespace $ {
         text: string;
         author: string | null;
         moment: string;
+        complete: boolean;
     }> {
         id(): string;
         domain(): $hyoo_talks_domain;
         text(next?: string): string;
+        complete(next?: boolean): boolean;
         author(next?: $hyoo_talks_person): $hyoo_talks_person | null;
         moment(next?: $mol_time_moment): $mol_time_moment | null;
     }
@@ -2275,21 +2277,28 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
+}
+
+declare namespace $ {
     class $hyoo_talks_person extends $mol_store<{
         name: string;
         background: string;
+        avatar: string;
         online: string;
         chats: string[];
+        drafts: Record<string, string>;
     }> {
         id(): string;
         domain(): $hyoo_talks_domain;
         name(next?: string): string;
         background(next?: string): string;
-        avatar(): string;
+        avatar(next?: string): string;
         online_near(): boolean;
         online_time(): $mol_time_moment | null;
         online_update(): void;
         chats(next?: $hyoo_talks_chat[]): $hyoo_talks_chat[];
+        draft(chat: $hyoo_talks_chat, next?: string): $hyoo_talks_message;
     }
 }
 
@@ -2696,6 +2705,9 @@ declare namespace $ {
         name(val?: any): any;
         Name(): $$.$mol_string;
         Name_field(): $mol_form_field;
+        avatar(val?: any): any;
+        Avatar(): $$.$mol_string;
+        Avatar_field(): $mol_form_field;
         background(val?: any): any;
         Background(): $$.$mol_string;
         Background_field(): $mol_form_field;
@@ -2710,6 +2722,7 @@ declare namespace $.$$ {
     class $hyoo_talks_person_settings extends $.$hyoo_talks_person_settings {
         name(next?: string): string;
         background(next?: string): string;
+        avatar(next?: string): string;
     }
 }
 
@@ -2780,72 +2793,6 @@ declare namespace $.$$ {
         minimal_height(): number;
         target(): "_self" | "_blank";
     }
-}
-
-declare namespace $ {
-    class $mol_image extends $mol_view {
-        dom_name(): string;
-        field(): {
-            src: string;
-            alt: string;
-        };
-        uri(): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-    class $mol_paragraph extends $mol_view {
-        line_height(): number;
-        letter_width(): number;
-        width_limit(): number;
-        sub(): readonly any[];
-    }
-}
-
-declare namespace $.$$ {
-    class $mol_paragraph extends $.$mol_paragraph {
-        maximal_width(): number;
-        width_limit(): number;
-        minimal_width(): number;
-        minimal_height(): number;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_talks_person_avatar extends $mol_link {
-        person(): $hyoo_talks_person;
-        current(): boolean;
-        sub(): readonly any[];
-        image(): string;
-        Image(): $mol_image;
-        name(): string;
-        Name(): $$.$mol_paragraph;
-    }
-}
-
-declare namespace $.$$ {
-}
-
-declare namespace $.$$ {
-    class $hyoo_talks_person_avatar extends $.$hyoo_talks_person_avatar {
-        name(): string;
-        image(): string;
-        uri(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_float extends $mol_view {
-        style(): {
-            minHeight: string;
-        };
-    }
-}
-
-declare namespace $ {
 }
 
 declare namespace $ {
@@ -2955,6 +2902,72 @@ declare namespace $.$$ {
         sub(): readonly $mol_view_content[];
         label(): readonly any[];
     }
+}
+
+declare namespace $ {
+    class $mol_image extends $mol_view {
+        dom_name(): string;
+        field(): {
+            src: string;
+            alt: string;
+        };
+        uri(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    class $mol_paragraph extends $mol_view {
+        line_height(): number;
+        letter_width(): number;
+        width_limit(): number;
+        sub(): readonly any[];
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_paragraph extends $.$mol_paragraph {
+        maximal_width(): number;
+        width_limit(): number;
+        minimal_width(): number;
+        minimal_height(): number;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_talks_person_avatar extends $mol_link {
+        person(): $hyoo_talks_person;
+        current(): boolean;
+        sub(): readonly any[];
+        image(): string;
+        Image(): $mol_image;
+        name(): string;
+        Name(): $$.$mol_paragraph;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
+    class $hyoo_talks_person_avatar extends $.$hyoo_talks_person_avatar {
+        name(): string;
+        image(): string;
+        uri(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_float extends $mol_view {
+        style(): {
+            minHeight: string;
+        };
+    }
+}
+
+declare namespace $ {
 }
 
 declare namespace $ {
@@ -3502,6 +3515,7 @@ declare namespace $ {
             hyoo_talks_message_bubble_side: string;
         };
         rows(): readonly any[];
+        Peek(): $$.$mol_check;
         Preview(index: any): $$.$mol_link;
         side(): string;
         author(): $hyoo_talks_person;
@@ -3514,6 +3528,7 @@ declare namespace $ {
         Text(): $$.$mol_textarea;
         previews(): readonly any[];
         Previews(): $mol_view;
+        peek(val?: any): any;
         preview_uri(index: any): string;
         Preview_embed(index: any): $mol_embed_native;
     }
@@ -3524,6 +3539,7 @@ declare namespace $.$$ {
 
 declare namespace $.$$ {
     class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
+        rows(): readonly any[];
         text(next?: string): string;
         author(): $hyoo_talks_person;
         side(): "other" | "self";
@@ -3576,10 +3592,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_guid(length?: number, exists?: (id: string) => boolean): string;
-}
-
-declare namespace $ {
     const $mol_wait_rest: () => unknown;
 }
 
@@ -3599,7 +3611,7 @@ declare namespace $.$$ {
         message(id: string): $hyoo_talks_message;
         bubbles(): $hyoo_talks_message_bubble[];
         draft_controls(): ($mol_button_minor | $mol_textarea)[];
-        draft(reset?: null): $hyoo_talks_message;
+        draft(next?: string): $hyoo_talks_message;
         draft_text(next?: string): string;
         draft_send(): void;
     }

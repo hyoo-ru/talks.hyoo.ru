@@ -4546,11 +4546,7 @@ var $;
             return chat;
         }
         message(id) {
-            const message = this.sub(`message=${id}`, new $.$hyoo_talks_message({
-                text: '',
-                author: null,
-                moment: '',
-            }));
+            const message = this.sub(`message=${id}`, new $.$hyoo_talks_message());
             message.id = $.$mol_const(id);
             message.domain = $.$mol_const(this);
             return message;
@@ -5819,6 +5815,9 @@ var $;
         text(next) {
             return this.value('text', next) ?? '';
         }
+        complete(next) {
+            return this.value('complete', next) ?? false;
+        }
         author(next) {
             const id = this.value('author', next && next.id());
             if (id)
@@ -5861,6 +5860,21 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_guid(length = 8, exists = () => false) {
+        for (;;) {
+            let id = Math.random().toString(36).substring(2, length + 2).toUpperCase();
+            if (exists(id))
+                continue;
+            return id;
+        }
+    }
+    $.$mol_guid = $mol_guid;
+})($ || ($ = {}));
+//guid.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_talks_person extends $.$mol_store {
         id() {
             return this.$.$mol_fail(new Error('id is not defined'));
@@ -5874,8 +5888,8 @@ var $;
         background(next) {
             return this.value('background', next) ?? '';
         }
-        avatar() {
-            return `https://gravatar.com/avatar/${this.id()}?d=robohash`;
+        avatar(next) {
+            return this.value('avatar', next) ?? '';
         }
         online_near() {
             const moment = this.online_time();
@@ -5897,6 +5911,15 @@ var $;
                 return [];
             return ids.map(id => this.domain().chat(id));
         }
+        draft(chat, next) {
+            const drafts = this.sub('drafts');
+            let id = next ?? drafts.value(chat.id());
+            if (!id) {
+                id = $.$mol_guid();
+                drafts.value(chat.id(), id);
+            }
+            return this.domain().message(id);
+        }
     }
     __decorate([
         $.$mol_mem
@@ -5904,6 +5927,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person.prototype, "online_time", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $hyoo_talks_person.prototype, "draft", null);
     $.$hyoo_talks_person = $hyoo_talks_person;
 })($ || ($ = {}));
 //person.js.map
@@ -6748,6 +6774,22 @@ var $;
             obj.control = () => this.Name();
             return obj;
         }
+        avatar(val) {
+            if (val !== undefined)
+                return val;
+            return "";
+        }
+        Avatar() {
+            const obj = new this.$.$mol_string();
+            obj.value = (val) => this.avatar(val);
+            return obj;
+        }
+        Avatar_field() {
+            const obj = new this.$.$mol_form_field();
+            obj.name = () => this.$.$mol_locale.text('$hyoo_talks_person_settings_Avatar_field_name');
+            obj.control = () => this.Avatar();
+            return obj;
+        }
         background(val) {
             if (val !== undefined)
                 return val;
@@ -6768,6 +6810,7 @@ var $;
             const obj = new this.$.$mol_form();
             obj.form_fields = () => [
                 this.Name_field(),
+                this.Avatar_field(),
                 this.Background_field()
             ];
             return obj;
@@ -6785,6 +6828,15 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person_settings.prototype, "Name_field", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_settings.prototype, "avatar", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_settings.prototype, "Avatar", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_settings.prototype, "Avatar_field", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person_settings.prototype, "background", null);
@@ -6828,6 +6880,9 @@ var $;
             }
             background(next) {
                 return this.person()?.background(next) ?? '';
+            }
+            avatar(next) {
+                return this.person()?.avatar(next);
             }
         }
         $$.$hyoo_talks_person_settings = $hyoo_talks_person_settings;
@@ -7087,228 +7142,6 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //link.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_image extends $.$mol_view {
-        dom_name() {
-            return "img";
-        }
-        field() {
-            return {
-                ...super.field(),
-                src: this.uri(),
-                alt: this.title()
-            };
-        }
-        uri() {
-            return "";
-        }
-    }
-    $.$mol_image = $mol_image;
-})($ || ($ = {}));
-//image.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/image/image.view.css", "[mol_image] {\n\tborder-radius: var(--mol_gap_round);\n\toverflow: hidden;\n\tflex: 0 1 auto;\n\tmax-width: 100%;\n}\n");
-})($ || ($ = {}));
-//image.view.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_paragraph extends $.$mol_view {
-        line_height() {
-            return 24;
-        }
-        letter_width() {
-            return 8;
-        }
-        width_limit() {
-            return Infinity;
-        }
-        sub() {
-            return [
-                this.title()
-            ];
-        }
-    }
-    $.$mol_paragraph = $mol_paragraph;
-})($ || ($ = {}));
-//paragraph.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_paragraph extends $.$mol_paragraph {
-            maximal_width() {
-                let width = 0;
-                const letter = this.letter_width();
-                for (const kid of this.sub()) {
-                    if (!kid)
-                        continue;
-                    if (kid instanceof $.$mol_view) {
-                        width += kid.maximal_width();
-                    }
-                    else if (typeof kid !== 'object') {
-                        width += String(kid).length * letter;
-                    }
-                }
-                return width;
-            }
-            width_limit() {
-                return this.$.$mol_window.size().width;
-            }
-            minimal_width() {
-                return Math.max(Math.min(this.width_limit(), this.maximal_width()), this.letter_width());
-            }
-            minimal_height() {
-                return Math.max(1, Math.ceil(this.maximal_width() / this.minimal_width())) * this.line_height();
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_paragraph.prototype, "maximal_width", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_paragraph.prototype, "minimal_width", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_paragraph.prototype, "minimal_height", null);
-        $$.$mol_paragraph = $mol_paragraph;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//paragraph.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_talks_person_avatar extends $.$mol_link {
-        person() {
-            const obj = new this.$.$hyoo_talks_person();
-            return obj;
-        }
-        current() {
-            return false;
-        }
-        sub() {
-            return [
-                this.Image(),
-                this.Name()
-            ];
-        }
-        image() {
-            return "";
-        }
-        Image() {
-            const obj = new this.$.$mol_image();
-            obj.title = () => "";
-            obj.uri = () => this.image();
-            return obj;
-        }
-        name() {
-            return "";
-        }
-        Name() {
-            const obj = new this.$.$mol_paragraph();
-            obj.sub = () => [
-                this.name()
-            ];
-            return obj;
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks_person_avatar.prototype, "person", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks_person_avatar.prototype, "Image", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks_person_avatar.prototype, "Name", null);
-    $.$hyoo_talks_person_avatar = $hyoo_talks_person_avatar;
-})($ || ($ = {}));
-//avatar.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        const { rem } = $.$mol_style_unit;
-        $.$mol_style_define($$.$hyoo_talks_person_avatar, {
-            padding: 0,
-            Image: {
-                width: rem(2.5),
-                height: rem(2.5),
-                flex: 'none',
-                border: {
-                    radius: $.$mol_gap.round,
-                },
-            },
-            Name: {
-                padding: $.$mol_gap.text,
-            },
-        });
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//avatar.view.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $hyoo_talks_person_avatar extends $.$hyoo_talks_person_avatar {
-            name() {
-                return this.person()?.name() ?? '';
-            }
-            image() {
-                return this.person()?.avatar() ?? 'about:blank';
-            }
-            uri() {
-                const talkers = [
-                    this.person()?.id() ?? '',
-                    this.person()?.domain().user().id() ?? '',
-                ];
-                talkers.sort();
-                return `#chat=${talkers.join('-')}`;
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $hyoo_talks_person_avatar.prototype, "uri", null);
-        $$.$hyoo_talks_person_avatar = $hyoo_talks_person_avatar;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//avatar.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_float extends $.$mol_view {
-        style() {
-            return {
-                ...super.style(),
-                minHeight: "auto"
-            };
-        }
-    }
-    $.$mol_float = $mol_float;
-})($ || ($ = {}));
-//float.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/float/float.view.css", "[mol_float] {\n\tposition: sticky;\n\ttop: 0;\n\tleft: 0;\n\tz-index: 1;\n\topacity: 1;\n\ttransition: opacity .25s ease-in;\n\tdisplay: block;\n\tbackground: var(--mol_theme_back);\n\tbox-shadow: 0 0 .5rem hsla(0,0%,0%,.25);\n}\n\n");
-})($ || ($ = {}));
-//float.view.css.js.map
 ;
 "use strict";
 var $;
@@ -7628,6 +7461,228 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //check.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_image extends $.$mol_view {
+        dom_name() {
+            return "img";
+        }
+        field() {
+            return {
+                ...super.field(),
+                src: this.uri(),
+                alt: this.title()
+            };
+        }
+        uri() {
+            return "";
+        }
+    }
+    $.$mol_image = $mol_image;
+})($ || ($ = {}));
+//image.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/image/image.view.css", "[mol_image] {\n\tborder-radius: var(--mol_gap_round);\n\toverflow: hidden;\n\tflex: 0 1 auto;\n\tmax-width: 100%;\n}\n");
+})($ || ($ = {}));
+//image.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_paragraph extends $.$mol_view {
+        line_height() {
+            return 24;
+        }
+        letter_width() {
+            return 8;
+        }
+        width_limit() {
+            return Infinity;
+        }
+        sub() {
+            return [
+                this.title()
+            ];
+        }
+    }
+    $.$mol_paragraph = $mol_paragraph;
+})($ || ($ = {}));
+//paragraph.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_paragraph extends $.$mol_paragraph {
+            maximal_width() {
+                let width = 0;
+                const letter = this.letter_width();
+                for (const kid of this.sub()) {
+                    if (!kid)
+                        continue;
+                    if (kid instanceof $.$mol_view) {
+                        width += kid.maximal_width();
+                    }
+                    else if (typeof kid !== 'object') {
+                        width += String(kid).length * letter;
+                    }
+                }
+                return width;
+            }
+            width_limit() {
+                return this.$.$mol_window.size().width;
+            }
+            minimal_width() {
+                return Math.max(Math.min(this.width_limit(), this.maximal_width()), this.letter_width());
+            }
+            minimal_height() {
+                return Math.max(1, Math.ceil(this.maximal_width() / this.minimal_width())) * this.line_height();
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_paragraph.prototype, "maximal_width", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_paragraph.prototype, "minimal_width", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_paragraph.prototype, "minimal_height", null);
+        $$.$mol_paragraph = $mol_paragraph;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//paragraph.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_talks_person_avatar extends $.$mol_link {
+        person() {
+            const obj = new this.$.$hyoo_talks_person();
+            return obj;
+        }
+        current() {
+            return false;
+        }
+        sub() {
+            return [
+                this.Image(),
+                this.Name()
+            ];
+        }
+        image() {
+            return "";
+        }
+        Image() {
+            const obj = new this.$.$mol_image();
+            obj.title = () => "";
+            obj.uri = () => this.image();
+            return obj;
+        }
+        name() {
+            return "";
+        }
+        Name() {
+            const obj = new this.$.$mol_paragraph();
+            obj.sub = () => [
+                this.name()
+            ];
+            return obj;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_avatar.prototype, "person", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_avatar.prototype, "Image", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_avatar.prototype, "Name", null);
+    $.$hyoo_talks_person_avatar = $hyoo_talks_person_avatar;
+})($ || ($ = {}));
+//avatar.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { rem } = $.$mol_style_unit;
+        $.$mol_style_define($$.$hyoo_talks_person_avatar, {
+            padding: 0,
+            Image: {
+                width: rem(2.5),
+                height: rem(2.5),
+                flex: 'none',
+                border: {
+                    radius: $.$mol_gap.round,
+                },
+            },
+            Name: {
+                padding: $.$mol_gap.text,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//avatar.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $hyoo_talks_person_avatar extends $.$hyoo_talks_person_avatar {
+            name() {
+                return this.person()?.name() ?? '';
+            }
+            image() {
+                return this.person()?.avatar() || `https://gravatar.com/avatar/${this.person()?.id()}?d=robohash`;
+            }
+            uri() {
+                const talkers = [
+                    this.person()?.id() ?? '',
+                    this.person()?.domain().user().id() ?? '',
+                ];
+                talkers.sort();
+                return `#chat=${talkers.join('-')}`;
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks_person_avatar.prototype, "uri", null);
+        $$.$hyoo_talks_person_avatar = $hyoo_talks_person_avatar;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//avatar.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_float extends $.$mol_view {
+        style() {
+            return {
+                ...super.style(),
+                minHeight: "auto"
+            };
+        }
+    }
+    $.$mol_float = $mol_float;
+})($ || ($ = {}));
+//float.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/float/float.view.css", "[mol_float] {\n\tposition: sticky;\n\ttop: 0;\n\tleft: 0;\n\tz-index: 1;\n\topacity: 1;\n\ttransition: opacity .25s ease-in;\n\tdisplay: block;\n\tbackground: var(--mol_theme_back);\n\tbox-shadow: 0 0 .5rem hsla(0,0%,0%,.25);\n}\n\n");
+})($ || ($ = {}));
+//float.view.css.js.map
 ;
 "use strict";
 var $;
@@ -9482,6 +9537,12 @@ var $;
                 this.Previews()
             ];
         }
+        Peek() {
+            const obj = new this.$.$mol_check();
+            obj.title = () => this.$.$mol_locale.text('$hyoo_talks_message_bubble_Peek_title');
+            obj.checked = (val) => this.peek(val);
+            return obj;
+        }
         Preview(index) {
             const obj = new this.$.$mol_link();
             obj.uri = () => this.preview_uri(index);
@@ -9542,6 +9603,11 @@ var $;
             obj.sub = () => this.previews();
             return obj;
         }
+        peek(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
         preview_uri(index) {
             return "";
         }
@@ -9554,6 +9620,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_message_bubble.prototype, "message", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_message_bubble.prototype, "Peek", null);
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks_message_bubble.prototype, "Preview", null);
@@ -9578,6 +9647,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_message_bubble.prototype, "Previews", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_message_bubble.prototype, "peek", null);
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks_message_bubble.prototype, "Preview_embed", null);
@@ -9644,6 +9716,15 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
+            rows() {
+                if (!this.message().complete() && !this.peek()) {
+                    return [
+                        this.Meta(),
+                        this.Peek(),
+                    ];
+                }
+                return super.rows();
+            }
             text(next) {
                 return this.message().text(next);
             }
@@ -9670,6 +9751,9 @@ var $;
                 return this.message().moment()?.toString('YYYY-MM-DD hh:mm') ?? '∞';
             }
         }
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks_message_bubble.prototype, "rows", null);
         __decorate([
             $.$mol_mem
         ], $hyoo_talks_message_bubble.prototype, "side", null);
@@ -9746,7 +9830,7 @@ var $;
         }
         Bubble(id) {
             const obj = new this.$.$hyoo_talks_message_bubble();
-            obj.minimal_height = () => 40;
+            obj.minimal_height = () => 80;
             obj.message = () => this.message(id);
             return obj;
         }
@@ -9859,21 +9943,6 @@ var $;
     $.$hyoo_talks_chat_page = $hyoo_talks_chat_page;
 })($ || ($ = {}));
 //page.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_guid(length = 8, exists = () => false) {
-        for (;;) {
-            let id = Math.random().toString(36).substring(2, length + 2).toUpperCase();
-            if (exists(id))
-                continue;
-            return id;
-        }
-    }
-    $.$mol_guid = $mol_guid;
-})($ || ($ = {}));
-//guid.js.map
 ;
 "use strict";
 var $;
@@ -10016,23 +10085,24 @@ var $;
                     ...this.draft().text().trim() ? [this.Draft_send()] : []
                 ];
             }
-            draft(reset) {
-                return this.domain().message($.$mol_guid());
+            draft(next) {
+                return this.domain().user().draft(this.chat(), next);
             }
             draft_text(next) {
                 this.domain().user().online_update();
-                return this.draft().text(next);
+                const draft = this.draft();
+                const user = this.domain().user();
+                if (next) {
+                    this.messages([...new Set([...this.messages(), draft])]);
+                    user.chats([...new Set([...user.chats(), this.chat()])]);
+                    draft.moment(new this.$.$mol_time_moment());
+                    draft.author(user);
+                }
+                return draft.text(next);
             }
             draft_send() {
-                const draft = this.draft();
-                if (!draft.text())
-                    return;
-                const user = this.domain().user();
-                draft.moment(new this.$.$mol_time_moment());
-                draft.author(user);
-                user.chats([...new Set([...user.chats(), this.chat()])]);
-                this.messages([...this.messages(), draft]);
-                this.draft(null);
+                this.draft().complete(true);
+                this.draft('');
                 this.$.$mol_wait_rest();
                 this.Body().scroll_top(Number.MAX_SAFE_INTEGER);
             }

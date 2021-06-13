@@ -122,6 +122,10 @@ $hyoo_talks_person_settings $mol_page
 					name @ \Name
 					control <= Name $mol_string
 						value?val <=> name?val \
+				<= Avatar_field $mol_form_field
+					name @ \Avatar
+					control <= Avatar $mol_string
+						value?val <=> avatar?val \
 				<= Background_field $mol_form_field
 					name @ \Background
 					control <= Background $mol_string
@@ -142,35 +146,6 @@ $mol_link $mol_view
 	event *
 		^
 		click?event <=> click?event <=> event_click?event null
-
-$mol_image $mol_view
-	dom_name \img
-	field *
-		^
-		src <= uri \
-		alt <= title
-
-$mol_paragraph $mol_view
-	line_height 24
-	letter_width 8
-	width_limit Infinity
-	sub / <= title
-
-$hyoo_talks_person_avatar $mol_link
-	person $hyoo_talks_person
-	current false
-	sub /
-		<= Image $mol_image
-			title \
-			uri <= image \
-		<= Name $mol_paragraph
-			sub /
-				<= name \
-
-$mol_float $mol_view
-	style *
-		^
-		minHeight \auto
 
 $mol_speck $mol_view
 	attr *
@@ -217,6 +192,35 @@ $mol_check $mol_button_minor
 			<= Title $mol_view
 				sub /
 					<= title \
+
+$mol_image $mol_view
+	dom_name \img
+	field *
+		^
+		src <= uri \
+		alt <= title
+
+$mol_paragraph $mol_view
+	line_height 24
+	letter_width 8
+	width_limit Infinity
+	sub / <= title
+
+$hyoo_talks_person_avatar $mol_link
+	person $hyoo_talks_person
+	current false
+	sub /
+		<= Image $mol_image
+			title \
+			uri <= image \
+		<= Name $mol_paragraph
+			sub /
+				<= name \
+
+$mol_float $mol_view
+	style *
+		^
+		minHeight \auto
 
 $mol_svg $mol_view
 	dom_name \svg
@@ -479,6 +483,9 @@ $hyoo_talks_message_bubble $mol_list
 			enabled <= editable false
 		<= Previews $mol_view
 			sub <= previews /
+	Peek $mol_check
+		title @ \... incomplete message ...
+		checked?val <=> peek?val false
 	Preview!index $mol_link
 		uri <= preview_uri!index \
 		sub /
@@ -517,7 +524,7 @@ $hyoo_talks_chat_page $mol_page
 				<= Draft_send_icon $mol_icon_arrow_up_bold
 			click?val <=> draft_send?val null
 	Bubble!id $hyoo_talks_message_bubble
-		minimal_height 40
+		minimal_height 80
 		message <= message!id $hyoo_talks_message
 		- highlight <= search
 	plugins /
