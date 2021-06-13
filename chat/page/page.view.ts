@@ -47,6 +47,24 @@ namespace $.$$ {
 		draft( next?: string ) {
 			return this.domain().user().draft( this.chat(), next )
 		}
+	
+		@ $mol_mem
+		joined( next?: boolean ) {
+			
+			const chat = this.chat()
+			const user = this.domain().user()
+			
+			const joined = user.chats().indexOf( chat ) !== -1
+			if( next === undefined ) return joined
+			
+			if( next ) {
+				user.chats([ chat, ... user.chats() ])
+			} else {
+				user.chats( user.chats().filter( c => c !== chat ) )
+			}
+			
+			return next
+		}
 		
 		draft_text( next?: string ) {
 			
