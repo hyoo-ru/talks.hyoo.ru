@@ -209,7 +209,11 @@ $mol_paragraph $mol_view
 $hyoo_talks_person_avatar $mol_link
 	person $hyoo_talks_person
 	current false
+	label_online @ \Online
+	label_offline @ \Offline
 	sub /
+		<= Status $mol_speck
+			value <= status \
 		<= Image $mol_image
 			title \
 			uri <= image \

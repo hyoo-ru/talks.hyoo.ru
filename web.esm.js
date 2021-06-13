@@ -4463,7 +4463,7 @@ var $;
                 flex: {
                     grow: 1000,
                     shrink: 1,
-                    basis: per(50),
+                    basis: 'auto',
                 },
             },
             Tools: {
@@ -7411,11 +7411,26 @@ var $;
         current() {
             return false;
         }
+        label_online() {
+            return this.$.$mol_locale.text('$hyoo_talks_person_avatar_label_online');
+        }
+        label_offline() {
+            return this.$.$mol_locale.text('$hyoo_talks_person_avatar_label_offline');
+        }
         sub() {
             return [
+                this.Status(),
                 this.Image(),
                 this.Name()
             ];
+        }
+        status() {
+            return "";
+        }
+        Status() {
+            const obj = new this.$.$mol_speck();
+            obj.value = () => this.status();
+            return obj;
         }
         image() {
             return "";
@@ -7440,6 +7455,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person_avatar.prototype, "person", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_person_avatar.prototype, "Status", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_person_avatar.prototype, "Image", null);
@@ -7493,6 +7511,9 @@ var $;
                 ];
                 talkers.sort();
                 return `#chat=${talkers.join('-')}`;
+            }
+            status() {
+                return this.person()?.online_near() ? this.label_online() : this.label_offline();
             }
         }
         __decorate([

@@ -7,6 +7,8 @@
 	"$hyoo_talks_chat_page_Draft_text_hint": "Add message..",
 	"$hyoo_talks_chat_page_Title_hint": "Chat title",
 	"$hyoo_talks_message_bubble_Peek_title": "... incomplete message ...",
+	"$hyoo_talks_person_avatar_label_offline": "Offline",
+	"$hyoo_talks_person_avatar_label_online": "Online",
 	"$hyoo_talks_person_settings_Avatar_field_name": "Avatar",
 	"$hyoo_talks_person_settings_Background_field_name": "Background",
 	"$hyoo_talks_person_settings_Name_field_name": "Name",
