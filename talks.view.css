@@ -17,10 +17,6 @@
 	background: white;
 }
 
-[hyoo_talks] [mol_page_head] {
-	box-shadow: none;
-}
-
 [hyoo_talks] [mol_link_current] {
 	background: transparent;
 }
