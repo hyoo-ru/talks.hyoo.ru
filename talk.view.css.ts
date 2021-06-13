@@ -5,6 +5,15 @@ namespace $.$$ {
 	
 	$mol_style_define( $hyoo_talks, {
 		
+		'@': {
+			hyoo_talks_only_chat: {
+				'true': {
+					backgroundColor: 'transparent',
+					backgroundImage: 'none',
+				},
+			},
+		},
+		
 		background: {
 			image: [[ url( 'https://wallpaperaccess.com/full/1385511.jpg' ) ]],
 		},

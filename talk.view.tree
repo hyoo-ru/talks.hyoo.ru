@@ -1,6 +1,9 @@
 $hyoo_talks $mol_book2
 	domain $hyoo_talks_domain
 	only_chat false
+	attr *
+		^
+		hyoo_talks_only_chat <= only_chat
 	plugins /
 		<= Theme $mol_theme_auto
 	pages /
@@ -17,7 +20,7 @@ $hyoo_talks $mol_book2
 				<= Links $mol_list rows <= links /
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
-		transparent <= only_chat
+		bg_transparent <= only_chat
 		tools /
 			<= Chat_close $mol_link
 				arg * chat null
@@ -26,13 +29,13 @@ $hyoo_talks $mol_book2
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null
-		transparent <= only_chat
+		bg_transparent <= only_chat
 	Chat_link!id $mol_link
 		arg <= chat_arg!id *
 		title <= chat_title!id \
 
 $hyoo_talks_placeholder $mol_page
-	transparent false
+	bg_transparent false
 	attr *
 		^
-		hyoo_talks_placeholder_transparent <= transparent
+		hyoo_talks_placeholder_transparent <= bg_transparent
