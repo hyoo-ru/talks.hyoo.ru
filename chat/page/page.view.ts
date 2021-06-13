@@ -55,9 +55,6 @@ namespace $.$$ {
 			const user = this.domain().user()
 			
 			user.online_update()
-			// user.read_messages( chat , chat.messages_count() )
-			// Если оставить, то не стабильно ведет себя
-			// Doubted while calculation - то появляется то исчезает
 			
 			if( next ) $mol_fiber_defer( ()=> {
 					
@@ -88,6 +85,22 @@ namespace $.$$ {
 		scroll_end() {
 			const body = this.Body()
 			body.scroll_top( body.dom_node().scrollHeight )
+		}
+		
+		@ $mol_fiber.method
+		mark_read() {
+			const [ , end ] = this.Bubbles().view_window()
+
+			const user = this.domain().user()
+			const last = user.read_messages( this.chat() )
+
+			if (end > last) {
+				this.$.$mol_fiber_defer( () => user.read_messages( this.chat() , end ) )
+			}
+		}
+		
+		auto() {
+			this.mark_read()
 		}
 		
 	}

@@ -7,7 +7,7 @@ namespace $ {
 		online: [ string ],
 		chats: string[],
 		drafts: Record< string, string >,
-		read_messages: Record< string , number >,
+		read_messages: Record< string , [ number ]>,
 	}> {
 		
 		id(): string {
@@ -78,14 +78,16 @@ namespace $ {
 		
 		@ $mol_mem_key
 		read_messages( chat: $hyoo_talks_chat , next?: number ) {
-			const read_messages = this.sub( 'read_messages' )
+			const sub = this.sub( 'read_messages' )
 			
 			if ( next === undefined ) {
-				return read_messages.value( chat.id() )
+				debugger
+				const [ result ] = sub.value( chat.id() ) ?? []
+				return result
 			}
-			
-			return read_messages.value( chat.id() , next )
 
+			const [ result ] = sub.value( chat.id() , [ next ] ) ?? []
+			return result
 		}
 		
 	}

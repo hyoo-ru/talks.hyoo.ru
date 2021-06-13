@@ -71,10 +71,13 @@ namespace $.$$ {
 		}
 		
 		chat_unread_count( id: string ) {
-			console.log('start')
-			const last_index = this.user().read_messages( this.chat( id ) )
+			const chat = this.chat( id )
+			const last_index = this.user().read_messages( chat )
+			console.log( { last_index })
+			
 			const count = this.chat( id ).messages_count()
-			console.log({ id, last_index, count })
+			console.log( { count })
+
 			return ( count - last_index ).toString()
 		}
 		
