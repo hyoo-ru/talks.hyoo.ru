@@ -10079,6 +10079,11 @@ var $;
                 return this.chat().title(next);
             }
             messages(next) {
+                $.$mol_fiber_defer(() => {
+                    if (this.Bubbles().gap_after() === 0) {
+                        this.Body().scroll_top(Number.MAX_SAFE_INTEGER);
+                    }
+                });
                 return this.chat().messages(next);
             }
             message(id) {
