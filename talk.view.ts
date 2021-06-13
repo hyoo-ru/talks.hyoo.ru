@@ -8,7 +8,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		only_chat() : boolean {
-			const val = this.$.$mol_state_arg.value( 'hyoo_talks' )
+			const val = this.$.$mol_state_arg.value( 'embed' )
 			return val !== null
 		}
 		
@@ -41,6 +41,14 @@ namespace $.$$ {
 		
 		chat_new_id() {
 			return $mol_guid()
+		}
+		
+		chat_page_tools() {
+			if ( this.only_chat() )  {
+				return [ this.Chat_open() ]
+			}
+			
+			return [ this.Chat_close() ]
 		}
 		
 	}

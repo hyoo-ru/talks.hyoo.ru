@@ -18,14 +18,19 @@ $hyoo_talks $mol_book2
 						<= Chat_new_icon $mol_icon_plus
 			body /
 				<= Links $mol_list rows <= links /
+	Chat_open $mol_link
+		arg * embed null
+		target \_blank
+		sub /
+			<= Chat_open_icon $mol_icon_open_in_new
+	Chat_close $mol_link
+		arg * chat null
+		sub /
+			<= Chat_icon $mol_icon_cross
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
 		bg_transparent <= only_chat
-		tools /
-			<= Chat_close $mol_link
-				arg * chat null
-				sub /
-					<= Chat_icon $mol_icon_cross
+		tools <= chat_page_tools 
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null
