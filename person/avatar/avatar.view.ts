@@ -20,6 +20,10 @@ namespace $.$$ {
 			return `#chat=${ talkers.join('-') }`
 		}
 		
+		status() {
+			return this.person()?.online_near() ? this.label_online() : this.label_offline()
+		}
+		
 	}
 	
 }
