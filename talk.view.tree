@@ -27,7 +27,7 @@ $hyoo_talks $mol_book2
 		arg * chat null
 		sub /
 			<= Chat_icon $mol_icon_cross
-	chat_page_tools \
+	chat_page_tools /
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
 		bg_transparent <= only_chat
