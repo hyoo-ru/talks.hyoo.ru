@@ -2,8 +2,8 @@ namespace $ {
 	
 	export class $hyoo_talks_message extends $mol_store<{
 		text: string,
-		author: string | null,
-		moment: string,
+		author: [ string ],
+		moment: [ string ],
 		complete: boolean,
 	}> {
 		
@@ -23,14 +23,16 @@ namespace $ {
 			return this.value( 'complete' , next ) ?? false
 		}
 		
+		@ $mol_mem
 		author( next?: $hyoo_talks_person ) {
-			const id = this.value( 'author' , next && next.id() )
+			const id = ( this.value( 'author' , next && [ next.id() ] ) ?? [] )[0]
 			if( id ) return this.domain().person( id )
 			return null
 		}
 		
+		@ $mol_mem
 		moment( next?: $mol_time_moment ) {
-			const str = this.value( 'moment', next && next.toString() )
+			const str = ( this.value( 'moment', next && [ next.toString() ] ) ?? [] )[0]
 			return str ? new $mol_time_moment( str ) : null
 		}
 		

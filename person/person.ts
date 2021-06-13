@@ -1,10 +1,10 @@
 namespace $ {
 	
 	export class $hyoo_talks_person extends $mol_store<{
-		name: string,
-		background: string,
-		avatar: string,
-		online: string,
+		name: [ string ],
+		background: [ string ],
+		avatar: [ string ],
+		online: [ string ],
 		chats: string[],
 		drafts: Record< string, string >,
 	}> {
@@ -18,15 +18,15 @@ namespace $ {
 		}
 		
 		name( next?: string ) {
-			return this.value( 'name' , next ) ?? ''
+			return ( this.value( 'name' , next ? [ next ] : undefined ) ?? [] )[0]
 		}
 		
 		background( next?: string ) {
-			return this.value( 'background' , next ) ?? ''
+			return ( this.value( 'background' , next ? [ next ] : undefined ) ?? [] )[0]
 		}
 		
 		avatar( next?: string ) {
-			return this.value( 'avatar' , next ) ?? ''
+			return ( this.value( 'avatar' , next ? [ next ] : undefined ) ?? [] )[0]
 		}
 		
 		@ $mol_mem
@@ -42,14 +42,15 @@ namespace $ {
 		
 		@ $mol_mem
 		online_time() {
-			const str = this.value( 'online' )
+			const str = ( this.value( 'online' ) ?? [] )[0]
 			return str ? new $mol_time_moment( str ) : null
 		}
 		
 		online_update() {
-			$mol_fiber_defer(
-				()=> this.value( 'online', new $mol_time_moment().toString() )
-			)
+			$mol_fiber_defer( ()=> {
+				if( this.online_near() ) return
+				this.value( 'online', [ new $mol_time_moment().toString() ] )
+			} )
 		}
 		
 		chats( next?: $hyoo_talks_chat[] ) {
@@ -66,7 +67,9 @@ namespace $ {
 			
 			if( !id ) {
 				id = $mol_guid()
-				drafts.value( chat.id(), id )
+				$mol_fiber_defer( ()=>
+					drafts.value( chat.id(), id )
+				)
 			}
 			
 			return this.domain().message( id )

@@ -18,6 +18,8 @@ $hyoo_talks $mol_book2
 				sub /
 					<= Chat_new_icon $mol_icon_plus
 			<= Lights $mol_lights_toggle
+			<= Source $mol_link_source
+				uri \https://github.com/hyoo-ru/talks.hyoo.ru
 			<= Settings_link $mol_link
 				arg * settings \
 				hint @ \Open Settings
