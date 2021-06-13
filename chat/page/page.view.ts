@@ -17,10 +17,11 @@ namespace $.$$ {
 			return this.chat().title( next )
 		}
 		
+		@ $mol_mem
 		messages( next?: $hyoo_talks_message[] ) {
 			$mol_fiber_defer( ()=> {
 				if( this.Bubbles().gap_after() === 0 ){
-					this.Body().scroll_top( Number.MAX_SAFE_INTEGER )
+					this.scroll_end()
 				}
 			} )
 			return this.chat().messages( next )
@@ -51,29 +52,39 @@ namespace $.$$ {
 			
 			this.domain().user().online_update()
 			
+			const chat = this.chat()
 			const draft = this.draft()
 			const user = this.domain().user()
 			
-			if( next ) {
+			if( next ) $mol_fiber_defer( ()=> {
+					
+				if( draft.author() !== user ) draft.author( user )
 				
-				this.messages([ ... new Set([ ... this.messages(), draft ]) ])
-				user.chats([ ... new Set([ ... user.chats(), this.chat() ]) ])
+				const chats = new Set( user.chats() )
+				if( !chats.has( chat ) ) user.chats([ ... chats, chat ])
 				
-				draft.moment( new this.$.$mol_time_moment() )
-				draft.author( user )
-			}
+				const messages = new Set( chat.messages() )
+				if( !messages.has( draft ) ) chat.messages([ ... messages, draft ])
+				
+			} )
 			
 			return draft.text( next )
 		}
 
 		draft_send() {
 			
+			this.draft().moment( new this.$.$mol_time_moment() )
 			this.draft().complete( true )
 			this.draft( '' )
 			
 			this.$.$mol_wait_rest()
-			this.Body().scroll_top( Number.MAX_SAFE_INTEGER )
+			this.scroll_end()
 			
+		}
+		
+		scroll_end() {
+			const body = this.Body()
+			body.scroll_top( body.dom_node().scrollHeight )
 		}
 		
 	}
