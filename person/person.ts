@@ -3,6 +3,7 @@ namespace $ {
 	export class $hyoo_talks_person extends $mol_store<{
 		name: string,
 		background: string,
+		online: string,
 		chats: string[],
 	}> {
 		
@@ -24,6 +25,29 @@ namespace $ {
 		
 		avatar() {
 			return  `https://gravatar.com/avatar/${ this.id() }?d=robohash`
+		}
+		
+		@ $mol_mem
+		online_near() {
+			
+			const moment = this.online_time()
+			if( !moment ) return false
+			
+			const now = this.$.$mol_state_time.now( 60_000 )
+			return ( now - moment.valueOf() < 60_000 )
+			
+		}
+		
+		@ $mol_mem
+		online_time() {
+			const str = this.value( 'online' )
+			return str ? new $mol_time_moment( str ) : null
+		}
+		
+		online_update() {
+			$mol_fiber_defer(
+				()=> this.value( 'online', new $mol_time_moment().toString() )
+			)
 		}
 		
 		chats( next?: $hyoo_talks_chat[] ) {

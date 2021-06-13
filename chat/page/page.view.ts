@@ -43,6 +43,7 @@ namespace $.$$ {
 		}
 		
 		draft_text( next?: string ) {
+			this.domain().user().online_update()			
 			return this.draft().text( next )
 		}
 

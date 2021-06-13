@@ -18,13 +18,18 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		pages() {
+			
+			this.user().online_update()
+			
 			const chat = this.chat_id_current()
 			const only_chat = this.only_chat()
+			
 			return [
 				... only_chat ? [] : [ this.Roster() ],
 				... chat ? [ this.Chat_page( chat ) ] : [],
 				... this.settings_opened() ? [ this.Settings() ] : [],
 			]
+			
 		}
 		
 		user() {
