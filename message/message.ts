@@ -4,6 +4,7 @@ namespace $ {
 		text: string,
 		author: string | null,
 		moment: string,
+		complete: boolean,
 	}> {
 		
 		id(): string {
@@ -16,6 +17,10 @@ namespace $ {
 		
 		text( next?: string ) {
 			return this.value( 'text' , next ) ?? ''
+		}
+		
+		complete( next?: boolean ) {
+			return this.value( 'complete' , next ) ?? false
 		}
 		
 		author( next?: $hyoo_talks_person ) {

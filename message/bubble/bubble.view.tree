@@ -15,6 +15,9 @@ $hyoo_talks_message_bubble $mol_list
 			enabled <= editable false
 		<= Previews $mol_view
 			sub <= previews /
+	Peek $mol_check
+		title @ \... incomplete message ...
+		checked?val <=> peek?val false
 	Preview!index $mol_link
 		uri <= preview_uri!index \
 		sub /
