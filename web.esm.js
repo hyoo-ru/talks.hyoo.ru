@@ -8647,13 +8647,13 @@ var $;
         chat_id() {
             return "global";
         }
-        transparent() {
+        bg_transparent() {
             return false;
         }
         attr() {
             return {
                 ...super.attr(),
-                hyoo_talks_chat_page_transparent: this.transparent()
+                hyoo_talks_chat_page_transparent: this.bg_transparent()
             };
         }
         Title() {
@@ -9148,6 +9148,12 @@ var $;
         only_chat() {
             return false;
         }
+        attr() {
+            return {
+                ...super.attr(),
+                hyoo_talks_only_chat: this.only_chat()
+            };
+        }
         plugins() {
             return [
                 this.Theme()
@@ -9161,7 +9167,7 @@ var $;
         Chat_page(id) {
             const obj = new this.$.$hyoo_talks_chat_page();
             obj.chat = () => this.chat(id);
-            obj.transparent = () => this.only_chat();
+            obj.bg_transparent = () => this.only_chat();
             obj.tools = () => [
                 this.Chat_close()
             ];
@@ -9171,7 +9177,7 @@ var $;
             const obj = new this.$.$hyoo_talks_placeholder();
             obj.Title = () => null;
             obj.Tools = () => null;
-            obj.transparent = () => this.only_chat();
+            obj.bg_transparent = () => this.only_chat();
             return obj;
         }
         Chat_link(id) {
@@ -9292,13 +9298,13 @@ var $;
     ], $hyoo_talks.prototype, "Chat_close", null);
     $.$hyoo_talks = $hyoo_talks;
     class $hyoo_talks_placeholder extends $.$mol_page {
-        transparent() {
+        bg_transparent() {
             return false;
         }
         attr() {
             return {
                 ...super.attr(),
-                hyoo_talks_placeholder_transparent: this.transparent()
+                hyoo_talks_placeholder_transparent: this.bg_transparent()
             };
         }
     }
@@ -9314,6 +9320,16 @@ var $;
         const { rem } = $.$mol_style_unit;
         const { url } = $.$mol_style_func;
         $.$mol_style_define($$.$hyoo_talks, {
+            '@': {
+                hyoo_talks_only_chat: {
+                    'true': {
+                        background: {
+                            color: 'transparent',
+                            image: 'none',
+                        },
+                    },
+                },
+            },
             background: {
                 image: [[url('https://wallpaperaccess.com/full/1385511.jpg')]],
             },

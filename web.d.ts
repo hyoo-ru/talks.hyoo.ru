@@ -816,7 +816,7 @@ declare namespace $ {
         justifyContent?: 'start' | 'end' | 'flex-start' | 'flex-end' | 'left' | 'right' | 'space-between' | 'space-around' | 'space-evenly' | 'normal' | 'stretch' | 'center' | Common;
         background?: 'none' | {
             color?: Color | Common;
-            image?: readonly (readonly [$mol_style_func<'url'>])[];
+            image?: readonly (readonly [$mol_style_func<'url'>])[] | 'none' | Common;
             repeat?: Repeat | [Repeat, Repeat] | Common;
             position?: 'left' | 'right' | 'top' | 'bottom' | 'center';
             size?: (BG_size | [BG_size, BG_size])[];
@@ -3338,7 +3338,7 @@ declare namespace $ {
         messages(val?: any): any;
         chat(): $hyoo_talks_chat;
         chat_id(): string;
-        transparent(): boolean;
+        bg_transparent(): boolean;
         attr(): {
             hyoo_talks_chat_page_transparent: boolean;
         };
@@ -3459,6 +3459,9 @@ declare namespace $ {
     class $hyoo_talks extends $mol_book2 {
         domain(): $hyoo_talks_domain;
         only_chat(): boolean;
+        attr(): {
+            hyoo_talks_only_chat: boolean;
+        };
         plugins(): readonly any[];
         pages(): readonly any[];
         Chat_page(id: any): $$.$hyoo_talks_chat_page;
@@ -3479,7 +3482,7 @@ declare namespace $ {
         chat_title(id: any): string;
     }
     class $hyoo_talks_placeholder extends $mol_page {
-        transparent(): boolean;
+        bg_transparent(): boolean;
         attr(): {
             hyoo_talks_placeholder_transparent: boolean;
         };
