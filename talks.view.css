@@ -3,7 +3,7 @@
 	--hyoo_talks_theme_talker: hsla( 0 , 0% , 80%, .5 );
     --mol_theme_field: hsla( 0 , 0% , 100%, .75 );
     --mol_theme_control: black;
-    --mol_theme_focus: #e84e58;
+    --mol_theme_focus: #12BBA6;
 }
 
 [hyoo_talks][mol_theme="$mol_theme_dark"] {
@@ -12,5 +12,5 @@
     --mol_theme_field: hsla( 0 , 0% , 0%, .5 );
     --mol_theme_line: #343f48;
     --mol_theme_control: hsla( 0 , 0% , 100%, .9 );
-    --mol_theme_focus: #F0D559;
+    --mol_theme_focus: #12BBA6;
 }

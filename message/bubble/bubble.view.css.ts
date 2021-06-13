@@ -26,7 +26,8 @@ namespace $.$$ {
 		},
 		
 		When: {
-			padding: $mol_gap.text,	
+			padding: $mol_gap.text,
+			color: $mol_theme.shade,
 		},
 		
 		Text: {
