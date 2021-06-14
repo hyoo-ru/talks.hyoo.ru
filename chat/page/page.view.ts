@@ -162,7 +162,9 @@ namespace $.$$ {
 			const [ , end ] = this.Bubbles().view_window()
 
 			const user = this.domain().user()
-			const last = user.read_messages( this.chat() )
+			let last = user.read_messages( this.chat() )
+			
+			if (last > end) last = end // Deleted draft
 			
 			const next = Math.max( end , last )
 			
