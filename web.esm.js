@@ -9620,6 +9620,9 @@ var $;
             Peek: {
                 wordBreak: 'break-all',
             },
+            Previews: {
+                alignSelf: 'stretch',
+            },
             Preview: {
                 padding: 0,
                 flex: {
