@@ -1954,7 +1954,6 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_talks_domain extends $mol_store_shared {
-        server(): string;
         user(): $hyoo_talks_person;
         person(id: string): $hyoo_talks_person;
         chat(id: string): $hyoo_talks_chat;

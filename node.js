@@ -4530,9 +4530,6 @@ var $;
 var $;
 (function ($) {
     class $hyoo_talks_domain extends $.$mol_store_shared {
-        server() {
-            return 'wss://1c7b0d030e7c4dec95bd69db88e56c85.apig.ru-moscow-1.hc.sbercloud.ru';
-        }
         user() {
             let id = this.$.$mol_store_local.value('user');
             if (!id) {
