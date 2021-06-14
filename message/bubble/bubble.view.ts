@@ -17,6 +17,9 @@ namespace $.$$ {
 		text( next?: string ) {
 			return this.message().text( next )
 		}
+		text_selection( next?: number[] ) {
+			return this.message().text_selection( next )
+		}
 		
 		author() {
 			return this.message().author()!
@@ -28,8 +31,14 @@ namespace $.$$ {
 			return message.domain().user() === message.author() ? 'self' : 'other'
 		}
 		
-		editable() {
+		@ $mol_mem
+		editable( next?: boolean ) {
+			if( next !== undefined ) return next
 			return this.side() === 'self'
+		}
+		
+		editable_faorce() {
+			this.editable( true )
 		}
 		
 		@ $mol_mem

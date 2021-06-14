@@ -72,11 +72,15 @@ namespace $.$$ {
 		}
 		
 		chat_page_tools() {
-			if ( this.only_chat() )  {
-				return [ this.Chat_open() ]
-			}
 			
-			return [ this.Chat_close() ]
+			const context = this.$.$mol_dom_context
+			const embed = context.self !== context.parent
+			
+			return [
+				... embed ? [ this.Chat_open() ] : [],
+				... this.only_chat() ? [] : [ this.Chat_close() ],
+			]
+			
 		}
 		
 		chat_unread_count( id: string ) {
