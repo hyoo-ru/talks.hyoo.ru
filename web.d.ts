@@ -2273,6 +2273,7 @@ declare namespace $ {
         domain(): $hyoo_talks_domain;
         title(next?: string): string;
         messages(next?: $hyoo_talks_message[]): $hyoo_talks_message[];
+        messages_count(): number;
     }
 }
 
@@ -2288,6 +2289,7 @@ declare namespace $ {
         online: [string];
         chats: string[];
         drafts: Record<string, string>;
+        read_messages: Record<string, number>;
     }> {
         id(): string;
         domain(): $hyoo_talks_domain;
@@ -2299,6 +2301,7 @@ declare namespace $ {
         online_update(): void;
         chats(next?: $hyoo_talks_chat[]): $hyoo_talks_chat[];
         draft(chat: $hyoo_talks_chat, next?: string): $hyoo_talks_message;
+        read_messages(chat: $hyoo_talks_chat, next?: number): number;
     }
 }
 
@@ -3638,6 +3641,8 @@ declare namespace $.$$ {
         draft_text(next?: string): string;
         draft_send(): void;
         scroll_end(): void;
+        mark_read(): number;
+        auto(): void;
     }
 }
 
@@ -3894,6 +3899,8 @@ declare namespace $ {
         chat_page_tools(): readonly any[];
         Chat_page(id: any): $$.$hyoo_talks_chat_page;
         Placeholder(): $hyoo_talks_placeholder;
+        Chat_unread_count(id: any): $mol_speck;
+        Chat_link_title(id: any): $$.$mol_dimmer;
         Chat_link(id: any): $$.$mol_link;
         background(): string;
         Theme(): $$.$mol_theme_auto;
@@ -3917,9 +3924,10 @@ declare namespace $ {
         Chat_open_icon(): $mol_icon_open_in_new;
         Chat_icon(): $mol_icon_cross;
         chat(id: any): $hyoo_talks_chat;
-        chat_arg(id: any): {};
+        chat_unread_count(id: any): string;
         chat_title(id: any): string;
-        Chat_link_title(id: any): $$.$mol_dimmer;
+        chat_arg(id: any): {};
+        chat_link_sub(id: any): readonly any[];
     }
     class $hyoo_talks_placeholder extends $mol_page {
         bg_transparent(): boolean;
@@ -3953,6 +3961,8 @@ declare namespace $.$$ {
         };
         chat_new_id(): string;
         chat_page_tools(): $mol_link[];
+        chat_unread_count(id: string): string;
+        chat_link_sub(id: string): ($mol_speck | $mol_dimmer)[];
         language(next?: string): string;
     }
 }

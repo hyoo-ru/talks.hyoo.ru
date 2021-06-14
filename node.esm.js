@@ -5869,6 +5869,9 @@ var $;
                 return [];
             return ids.map(id => this.domain().message(id));
         }
+        messages_count() {
+            return this.value('messages').length;
+        }
     }
     $.$hyoo_talks_chat = $hyoo_talks_chat;
 })($ || ($ = {}));
@@ -5941,6 +5944,10 @@ var $;
             }
             return this.domain().message(id);
         }
+        read_messages(chat, next) {
+            const sub = this.sub('read_messages');
+            return sub.value(chat.id(), next) ?? chat.messages_count();
+        }
     }
     __decorate([
         $.$mol_mem
@@ -5951,6 +5958,9 @@ var $;
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks_person.prototype, "draft", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $hyoo_talks_person.prototype, "read_messages", null);
     $.$hyoo_talks_person = $hyoo_talks_person;
 })($ || ($ = {}));
 //person.js.map
@@ -10231,10 +10241,10 @@ var $;
                 return next;
             }
             draft_text(next) {
-                this.domain().user().online_update();
                 const chat = this.chat();
                 const draft = this.draft();
                 const user = this.domain().user();
+                user.online_update();
                 if (next)
                     $.$mol_fiber_defer(() => {
                         if (draft.author() !== user)
@@ -10259,6 +10269,17 @@ var $;
                 const body = this.Body();
                 body.scroll_top(body.dom_node().scrollHeight);
             }
+            mark_read() {
+                const [, end] = this.Bubbles().view_window();
+                const user = this.domain().user();
+                const last = user.read_messages(this.chat());
+                const next = Math.max(end, last);
+                this.$.$mol_fiber_defer(() => user.read_messages(this.chat(), next));
+                return next;
+            }
+            auto() {
+                this.mark_read();
+            }
         }
         __decorate([
             $.$mol_mem
@@ -10278,6 +10299,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks_chat_page.prototype, "joined", null);
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks_chat_page.prototype, "mark_read", null);
         $$.$hyoo_talks_chat_page = $hyoo_talks_chat_page;
         $.$mol_view_component($hyoo_talks_chat_page);
     })($$ = $.$$ || ($.$$ = {}));
@@ -11281,12 +11305,21 @@ var $;
             obj.bg_transparent = () => this.only_chat();
             return obj;
         }
+        Chat_unread_count(id) {
+            const obj = new this.$.$mol_speck();
+            obj.value = () => this.chat_unread_count(id);
+            return obj;
+        }
+        Chat_link_title(id) {
+            const obj = new this.$.$mol_dimmer();
+            obj.haystack = () => this.chat_title(id);
+            obj.needle = () => this.links_query();
+            return obj;
+        }
         Chat_link(id) {
             const obj = new this.$.$mol_link();
             obj.arg = () => this.chat_arg(id);
-            obj.sub = () => [
-                this.Chat_link_title(id)
-            ];
+            obj.sub = () => this.chat_link_sub(id);
             return obj;
         }
         background() {
@@ -11406,17 +11439,17 @@ var $;
             const obj = new this.$.$hyoo_talks_chat();
             return obj;
         }
-        chat_arg(id) {
-            return {};
+        chat_unread_count(id) {
+            return "";
         }
         chat_title(id) {
             return "";
         }
-        Chat_link_title(id) {
-            const obj = new this.$.$mol_dimmer();
-            obj.haystack = () => this.chat_title(id);
-            obj.needle = () => this.links_query();
-            return obj;
+        chat_arg(id) {
+            return {};
+        }
+        chat_link_sub(id) {
+            return [];
         }
     }
     __decorate([
@@ -11440,6 +11473,12 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks.prototype, "Placeholder", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $hyoo_talks.prototype, "Chat_unread_count", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $hyoo_talks.prototype, "Chat_link_title", null);
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks.prototype, "Chat_link", null);
@@ -11497,9 +11536,6 @@ var $;
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks.prototype, "chat", null);
-    __decorate([
-        $.$mol_mem_key
-    ], $hyoo_talks.prototype, "Chat_link_title", null);
     $.$hyoo_talks = $hyoo_talks;
     class $hyoo_talks_placeholder extends $.$mol_page {
         bg_transparent() {
@@ -11583,6 +11619,9 @@ var $;
                     }
                 },
             },
+            Chat_unread_count: {
+                left: 0,
+            }
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -11649,6 +11688,18 @@ var $;
                     return [this.Chat_open()];
                 }
                 return [this.Chat_close()];
+            }
+            chat_unread_count(id) {
+                const chat = this.chat(id);
+                const last_index = this.user().read_messages(chat);
+                const count = this.chat(id).messages_count();
+                return (count - last_index).toString();
+            }
+            chat_link_sub(id) {
+                const title = this.Chat_link_title(id);
+                return Number(this.chat_unread_count(id)) === 0
+                    ? [title]
+                    : [this.Chat_unread_count(id), title];
             }
             language(next) {
                 return this.$.$mol_locale.lang(next);
