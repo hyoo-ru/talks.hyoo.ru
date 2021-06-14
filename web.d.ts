@@ -2258,6 +2258,7 @@ declare namespace $ {
         id(): string;
         domain(): $hyoo_talks_domain;
         text(next?: string): string;
+        text_selection(next?: number[]): number[];
         complete(next?: boolean): boolean;
         author(next?: $hyoo_talks_person): $hyoo_talks_person | null;
         moment(next?: $mol_time_moment): $mol_time_moment | null;
@@ -3534,6 +3535,7 @@ declare namespace $ {
         When(): $$.$mol_paragraph;
         Meta(): $mol_view;
         text(val?: any): any;
+        text_selection(val?: any): any;
         editable(): boolean;
         Text(): $$.$mol_textarea;
         previews(): readonly any[];
@@ -3551,6 +3553,7 @@ declare namespace $.$$ {
     class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
         rows(): readonly any[];
         text(next?: string): string;
+        text_selection(next?: number[]): number[];
         author(): $hyoo_talks_person;
         side(): "other" | "self";
         editable(next?: boolean): boolean;

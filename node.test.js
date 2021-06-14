@@ -5818,6 +5818,9 @@ var $;
         text(next) {
             return this.value('text', next) ?? '';
         }
+        text_selection(next) {
+            return this.selection('text', next);
+        }
         complete(next) {
             return this.value('complete', next) ?? false;
         }
@@ -9637,12 +9640,18 @@ var $;
                 return val;
             return "";
         }
+        text_selection(val) {
+            if (val !== undefined)
+                return val;
+            return [];
+        }
         editable() {
             return false;
         }
         Text() {
             const obj = new this.$.$mol_textarea();
             obj.value = (val) => this.text(val);
+            obj.selection = (val) => this.text_selection(val);
             obj.enabled = () => this.editable();
             return obj;
         }
@@ -9695,6 +9704,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_message_bubble.prototype, "text", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_message_bubble.prototype, "text_selection", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_message_bubble.prototype, "Text", null);
@@ -9793,6 +9805,9 @@ var $;
             }
             text(next) {
                 return this.message().text(next);
+            }
+            text_selection(next) {
+                return this.message().text_selection(next);
             }
             author() {
                 return this.message().author();
