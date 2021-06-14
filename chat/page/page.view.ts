@@ -68,11 +68,11 @@ namespace $.$$ {
 		
 		draft_text( next?: string ) {
 			
-			this.domain().user().online_update()
-			
 			const chat = this.chat()
 			const draft = this.draft()
 			const user = this.domain().user()
+			
+			user.online_update()
 			
 			if( next ) $mol_fiber_defer( ()=> {
 					
@@ -103,6 +103,24 @@ namespace $.$$ {
 		scroll_end() {
 			const body = this.Body()
 			body.scroll_top( body.dom_node().scrollHeight )
+		}
+		
+		@ $mol_mem
+		mark_read() {
+			const [ , end ] = this.Bubbles().view_window()
+
+			const user = this.domain().user()
+			const last = user.read_messages( this.chat() )
+			
+			const next = Math.max( end , last )
+			
+			this.$.$mol_fiber_defer( () => user.read_messages( this.chat() , next ) )
+			
+			return next
+		}
+		
+		auto() {
+			this.mark_read()
 		}
 		
 	}

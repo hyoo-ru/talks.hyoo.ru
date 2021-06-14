@@ -72,7 +72,6 @@ namespace $.$$ {
 		}
 		
 		chat_page_tools() {
-			
 			if ( this.only_chat() )  {
 				return [ this.Chat_open() ]
 			}
@@ -80,6 +79,22 @@ namespace $.$$ {
 			return [ this.Chat_close() ]
 		}
 		
+		chat_unread_count( id: string ) {
+			const chat = this.chat( id )
+			const last_index = this.user().read_messages( chat )
+			
+			const count = this.chat( id ).messages_count()
+
+			return ( count - last_index ).toString()
+		}
+		
+		chat_link_sub( id : string ) {
+			const title = this.Chat_link_title(  id )
+			return Number( this.chat_unread_count( id ) ) === 0
+				? [ title ]
+				: [ this.Chat_unread_count( id ) , title ]
+		}
+
 		language( next?: string ) {
 			return this.$.$mol_locale.lang( next )
 		}

@@ -7,6 +7,7 @@ namespace $ {
 		online: [ string ],
 		chats: string[],
 		drafts: Record< string, string >,
+		read_messages: Record< string , number >,
 	}> {
 		
 		id(): string {
@@ -73,6 +74,12 @@ namespace $ {
 			}
 			
 			return this.domain().message( id )
+		}
+		
+		@ $mol_mem_key
+		read_messages( chat: $hyoo_talks_chat , next?: number ) {
+			const sub = this.sub( 'read_messages' )
+			return sub.value( chat.id() , next ) ?? chat.messages_count()
 		}
 		
 	}

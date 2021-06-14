@@ -61,6 +61,12 @@ namespace $.$$ {
 		
 		},
 		
+		Chat_unread_count: {
+			
+			left: 0,
+			
+		}
+		
 	} )
 	
 }
