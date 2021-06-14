@@ -87,16 +87,18 @@ namespace $.$$ {
 			body.scroll_top( body.dom_node().scrollHeight )
 		}
 		
-		@ $mol_fiber.method
+		@ $mol_mem
 		mark_read() {
 			const [ , end ] = this.Bubbles().view_window()
 
 			const user = this.domain().user()
 			const last = user.read_messages( this.chat() )
-
-			if (end > last) {
-				this.$.$mol_fiber_defer( () => user.read_messages( this.chat() , end ) )
-			}
+			
+			const next = Math.max( end , last )
+			
+			this.$.$mol_fiber_defer( () => user.read_messages( this.chat() , next ) )
+			
+			return next
 		}
 		
 		auto() {

@@ -52,12 +52,11 @@ $hyoo_talks $mol_book2
 		Title null
 		Tools null
 		bg_transparent <= only_chat
+	Chat_unread_count!id $mol_speck
+		value <= chat_unread_count!id \
 	Chat_link!id $mol_link
 		arg <= chat_arg!id *
-		sub /
-			<= chat_title!id \
-			<= Chat_unread_count!id $mol_speck
-				value <= chat_unread_count!id \
+		sub <= chat_link_sub!id /
 
 $hyoo_talks_placeholder $mol_page
 	bg_transparent false

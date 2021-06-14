@@ -73,14 +73,17 @@ namespace $.$$ {
 		chat_unread_count( id: string ) {
 			const chat = this.chat( id )
 			const last_index = this.user().read_messages( chat )
-			console.log( { last_index })
 			
 			const count = this.chat( id ).messages_count()
-			console.log( { count })
 
 			return ( count - last_index ).toString()
 		}
 		
+		chat_link_sub( id : string ) {
+			return Number( this.chat_unread_count( id ) ) === 0
+				? [ this.chat_title( id ) ]
+				: [ this.Chat_unread_count( id ) , this.chat_title( id ) ]
+		}
 	}
 	
 }
