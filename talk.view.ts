@@ -89,9 +89,10 @@ namespace $.$$ {
 		}
 		
 		chat_link_sub( id : string ) {
+			const title = this.Chat_link_title(  id )
 			return Number( this.chat_unread_count( id ) ) === 0
-				? [ this.chat_title( id ) ]
-				: [ this.Chat_unread_count( id ) , this.chat_title( id ) ]
+				? [ title ]
+				: [ this.Chat_unread_count( id ) , title ]
 		}
 
 		language( next?: string ) {
