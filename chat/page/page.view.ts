@@ -74,16 +74,23 @@ namespace $.$$ {
 			
 			user.online_update()
 			
-			if( next ) $mol_fiber_defer( ()=> {
-					
-				if( draft.author() !== user ) draft.author( user )
+			if( next !== undefined ) $mol_fiber_defer( ()=> {
 				
 				const chats = new Set( user.chats() )
 				if( !chats.has( chat ) ) user.chats([ ... chats, chat ])
 				
-				const messages = new Set( chat.messages() )
-				if( !messages.has( draft ) ) chat.messages([ ... messages, draft ])
+				if( draft.author() !== user ) draft.author( user )
 				
+				const messages = new Set( chat.messages() )
+				if( messages.has( draft ) ) {
+					if( !next ) {
+						messages.delete( draft )
+						chat.messages([ ... messages ])
+					}
+				} else {
+					if( next ) chat.messages([ ... messages, draft ])
+				}
+					
 			} )
 			
 			return draft.text( next )
