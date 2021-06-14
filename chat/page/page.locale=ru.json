@@ -3,5 +3,6 @@
 	"$hyoo_talks_chat_page_Draft_send_title": "Отправить",
 	"$hyoo_talks_chat_page_Draft_text_hint": "Добавить сообщение..",
 	"$hyoo_talks_chat_page_Title_hint": "Название чата",
-	"$hyoo_talks_chat_page_Joined_hint": "Следить за беседой"
+	"$hyoo_talks_chat_page_Joined_hint": "Следить за беседой",
+	"$hyoo_talks_chat_page_Search_toggle_hint": "Панель поиска"
 }
