@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	const { rem } = $mol_style_unit
+	const { rem, px } = $mol_style_unit
 	
 	$mol_style_define( $hyoo_talks_chat_page, {
 		
@@ -23,7 +23,16 @@ namespace $.$$ {
 				color: 'transparent',
 			},
 			':placeholder-shown': {
-				boxShadow: 'inset 0 0 0 1px var(--mol_theme_line)',
+				box: {
+					shadow: [{
+						inset: true,
+						x: 0,
+						y: 0,
+						blur: 0,
+						spread: px(1),
+						color: $mol_theme.line,
+					}],
+				},
 				background: {
 					color: $mol_theme.field,
 				},

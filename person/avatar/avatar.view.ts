@@ -7,7 +7,8 @@ namespace $.$$ {
 		}
 		
 		image() {
-			return this.person()?.avatar() || `https://gravatar.com/avatar/${ this.person()?.id() }?d=robohash`
+			return this.person()?.avatar() ||
+				`https://gravatar.com/avatar/${ this.person()?.id() }?d=robohash`
 		}
 		
 		@ $mol_mem
@@ -20,11 +21,11 @@ namespace $.$$ {
 			return `#chat=${ talkers.join('-') }`
 		}
 		
-		sub() {
-			const other = super.sub()
-			return this.person()?.online_near()
-				? [ this.Is_online() , ... other ]
-				: other
+		name_content() {
+			return [
+				... this.person()?.online_near() ? [ this.Online() ] : [],
+				this.name(),
+			]
 		}
 	}
 	

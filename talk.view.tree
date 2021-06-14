@@ -25,8 +25,16 @@ $hyoo_talks $mol_book2
 				hint @ \Open Settings
 				sub /
 					<= Settings_icon $mol_icon_settings
-		body /
+		body <= roster_body /
+			<= Links_query $mol_search
+				query?val <=> links_query?val \
 			<= Links $mol_list rows <= links /
+		foot /
+			<= Language $mol_switch
+				value?val <=> language?val \en
+				options *
+					en \English
+					ru \Русский
 	Settings $hyoo_talks_person_settings
 		person <= user $hyoo_talks_person
 		tools /
@@ -54,6 +62,9 @@ $hyoo_talks $mol_book2
 		bg_transparent <= only_chat
 	Chat_unread_count!id $mol_speck
 		value <= chat_unread_count!id \
+	Chat_link_title!id $mol_dimmer
+		haystack <= chat_title!id \
+		needle <= links_query
 	Chat_link!id $mol_link
 		arg <= chat_arg!id *
 		sub <= chat_link_sub!id /

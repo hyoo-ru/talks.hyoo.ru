@@ -41,9 +41,18 @@ namespace $.$$ {
 			return uri ? `url(${ JSON.stringify( uri ) })` : 'none'
 		}
 		
+		roster_body() {
+			return [
+				... this.user().chats().length > 1 ? [ this.Links_query() ] : [],
+				this.Links(),
+			]
+		}
+		
 		@ $mol_mem
 		links() {
-			return this.user().chats().map( chat => this.Chat_link( chat.id() ) )
+			return this.user().chats()
+				.filter( $mol_match_text( this.links_query(), chat => [ chat.title() ] ) )
+				.map( chat => this.Chat_link( chat.id() ) )
 		}
 		
 		chat( id: string ) {
@@ -84,6 +93,11 @@ namespace $.$$ {
 				? [ this.chat_title( id ) ]
 				: [ this.Chat_unread_count( id ) , this.chat_title( id ) ]
 		}
+
+		language( next?: string ) {
+			return this.$.$mol_locale.lang( next )
+		}
+		
 	}
 	
 }

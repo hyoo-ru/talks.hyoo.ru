@@ -27,6 +27,17 @@ namespace $.$$ {
 				shrink: 0,
 			},
 			
+			Foot: {
+				padding: $mol_gap.block,
+			},
+			
+		},
+		
+		Links_query: {
+			alignSelf: 'auto',
+			flex: {
+				grow: 0,
+			},
 		},
 		
 		Placeholder: {

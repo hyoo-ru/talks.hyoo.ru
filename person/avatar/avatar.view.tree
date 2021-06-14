@@ -1,12 +1,11 @@
 $hyoo_talks_person_avatar $mol_link
 	person $hyoo_talks_person
 	current false
-	Is_online $mol_speck
-		value \
 	sub /
 		<= Image $mol_image
 			title \
 			uri <= image \
 		<= Name $mol_paragraph
-			sub /
+			sub <= name_content /
+				<= Online $mol_speck
 				<= name \

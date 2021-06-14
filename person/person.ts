@@ -1,9 +1,9 @@
 namespace $ {
 	
 	export class $hyoo_talks_person extends $mol_store<{
-		name: [ string ],
-		background: [ string ],
-		avatar: [ string ],
+		name: string,
+		background: string,
+		avatar: string,
 		online: [ string ],
 		chats: string[],
 		drafts: Record< string, string >,
@@ -19,15 +19,15 @@ namespace $ {
 		}
 		
 		name( next?: string ) {
-			return ( this.value( 'name' , next ? [ next ] : undefined ) ?? [] )[0]
+			return this.value( 'name' , next ) ?? ''
 		}
 		
 		background( next?: string ) {
-			return ( this.value( 'background' , next ? [ next ] : undefined ) ?? [] )[0]
+			return this.value( 'background' , next ) ?? ''
 		}
 		
 		avatar( next?: string ) {
-			return ( this.value( 'avatar' , next ? [ next ] : undefined ) ?? [] )[0]
+			return this.value( 'avatar' , next ) ?? ''
 		}
 		
 		@ $mol_mem

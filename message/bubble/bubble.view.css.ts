@@ -1,23 +1,35 @@
 namespace $.$$ {
 	
+	const { vary } = $mol_style_func
+	
 	$mol_style_define( $hyoo_talks_message_bubble, {
 		
 		'@': {
 			hyoo_talks_message_bubble_side: {
 				self: {
 					Meta: {
-						justifyContent: 'flex-end',
+						flex: {
+							direction: 'row-reverse',
+						},
+					},
+					Text: {
+						alignSelf: 'flex-end',
 					},
 				},
 				other: {
-					Meta: {
+					Text: {
+						alignSelf: 'flex-start',
+						background: {
+							color: vary('--hyoo_talks_theme_talker'),
+						},
 					},
 				},
 			},
 		},
 		
 		When: {
-			padding: $mol_gap.text,	
+			padding: $mol_gap.text,
+			color: $mol_theme.shade,
 		},
 		
 		Text: {
