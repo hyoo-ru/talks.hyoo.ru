@@ -33,6 +33,13 @@ namespace $.$$ {
 			
 		},
 		
+		Links_query: {
+			alignSelf: 'auto',
+			flex: {
+				grow: 0,
+			},
+		},
+		
 		Placeholder: {
 			
 			Head: {
