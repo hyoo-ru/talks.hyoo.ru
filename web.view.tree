@@ -697,7 +697,7 @@ $hyoo_talks $mol_book2
 					<= Settings_close_icon $mol_icon_cross
 	Chat_open $mol_link
 		arg * embed null
-		target \_blank
+		target \_top
 		sub /
 			<= Chat_open_icon $mol_icon_open_in_new
 	Chat_close $mol_link
