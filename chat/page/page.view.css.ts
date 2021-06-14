@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	const { rem, px } = $mol_style_unit
+	const { rem, px, per } = $mol_style_unit
 	
 	$mol_style_define( $hyoo_talks_chat_page, {
 		
@@ -36,6 +36,14 @@ namespace $.$$ {
 				background: {
 					color: $mol_theme.field,
 				},
+			},
+		},
+		
+		Search: {
+			alignSelf: 'stretch',
+			flex: {
+				shrink: 0,
+				basis: per(100),
 			},
 		},
 		

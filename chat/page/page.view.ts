@@ -2,6 +2,43 @@ namespace $.$$ {
 	
 	export class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
 		
+		head() {
+			return [
+				this.Title(),
+				this.Joined(),
+				this.Search_toggle(),
+				this.Tools(),
+				... this.search_enabled() ? [ this.Search() ] : [],
+			]
+		}
+		
+		@ $mol_mem
+		search_enabled( next?: boolean ) {
+			
+			if( next === undefined ) return false
+			
+			if( next ) {
+				$mol_fiber_defer( ()=>
+					this.Search().Query().focused( true )
+				)
+			} else {
+				this.search( '' )
+			}
+			
+			return next
+		}
+		
+		search_start( event: Event ) {
+			this.search_enabled( true )
+			event.preventDefault()
+		}
+		
+		search_end( event: Event ) {
+			this.search_enabled( false )
+			this.Search_toggle().focused( true )
+			event.preventDefault()
+		}
+		
 		@ $mol_mem
 		chat() {
 			const domain = new this.$.$hyoo_talks_domain
@@ -44,7 +81,7 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		draft( next?: string ) {
+		draft( next?: null ) {
 			return this.domain().user().draft( this.chat(), next )
 		}
 	
@@ -74,16 +111,23 @@ namespace $.$$ {
 			
 			user.online_update()
 			
-			if( next ) $mol_fiber_defer( ()=> {
-					
-				if( draft.author() !== user ) draft.author( user )
+			if( next !== undefined ) $mol_fiber_defer( ()=> {
 				
 				const chats = new Set( user.chats() )
 				if( !chats.has( chat ) ) user.chats([ ... chats, chat ])
 				
-				const messages = new Set( chat.messages() )
-				if( !messages.has( draft ) ) chat.messages([ ... messages, draft ])
+				if( draft.author() !== user ) draft.author( user )
 				
+				const messages = new Set( chat.messages() )
+				if( messages.has( draft ) ) {
+					if( !next ) {
+						messages.delete( draft )
+						chat.messages([ ... messages ])
+					}
+				} else {
+					if( next ) chat.messages([ ... messages, draft ])
+				}
+					
 			} )
 			
 			return draft.text( next )
@@ -91,10 +135,18 @@ namespace $.$$ {
 
 		draft_send() {
 			
-			this.draft().moment( new this.$.$mol_time_moment() )
-			this.draft().complete( true )
-			this.draft( '' )
+			const draft = this.draft()
+			const chat = this.chat()
 			
+			draft.moment( new this.$.$mol_time_moment() )
+			draft.complete( true )
+			
+			const messages = new Set( chat.messages() )
+			messages.delete( draft )
+			chat.messages([ ... messages, draft ])
+			
+			this.draft( null )
+		
 			this.$.$mol_wait_rest()
 			this.scroll_end()
 			
