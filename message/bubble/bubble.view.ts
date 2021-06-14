@@ -28,8 +28,14 @@ namespace $.$$ {
 			return message.domain().user() === message.author() ? 'self' : 'other'
 		}
 		
-		editable() {
+		@ $mol_mem
+		editable( next?: boolean ) {
+			if( next !== undefined ) return next
 			return this.side() === 'self'
+		}
+		
+		editable_faorce() {
+			this.editable( true )
 		}
 		
 		@ $mol_mem
