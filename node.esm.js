@@ -12025,6 +12025,26 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_notify {
+        static allowed(next) {
+            return false;
+        }
+        static show(info) {
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_notify, "allowed", null);
+    __decorate([
+        $.$mol_fiber.method
+    ], $mol_notify, "show", null);
+    $.$mol_notify = $mol_notify;
+})($ || ($ = {}));
+//notify.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
     var $$;
     (function ($$) {
         const { rem } = $.$mol_style_unit;
@@ -12148,10 +12168,35 @@ var $;
             chat_unread_count(id) {
                 const chat = this.chat(id);
                 const last_index = this.user().read_messages(chat);
+                if (last_index === -1) {
+                    return '0';
+                }
                 const count = this.chat(id).messages_count();
                 return (count - last_index).toString();
             }
+            message_notify(chat) {
+                const message_last = chat.messages().slice(-1)[0];
+                if (!message_last)
+                    return;
+                const key = `notify=${chat.id()}_${message_last.id()}`;
+                const displayed = this.$.$mol_state_local.value(key);
+                const is_me = message_last.author()?.id() === this.domain().user().id();
+                if (!displayed && !is_me) {
+                    this.$.$mol_notify.allowed(true);
+                    return new $.$mol_after_timeout(3000, () => {
+                        if (Number(this.chat_unread_count(chat.id())) === 0)
+                            return;
+                        this.$.$mol_notify.show({
+                            context: `${chat.title()} ${message_last.author().name()}`,
+                            message: `Новое сообщение`,
+                            uri: this.$.$mol_state_arg.link({ chat: chat.id() })
+                        });
+                        this.$.$mol_state_local.value(key, true);
+                    });
+                }
+            }
             chat_link_sub(id) {
+                this.message_notify(this.chat(id));
                 const title = this.Chat_link_title(id);
                 return Number(this.chat_unread_count(id)) === 0
                     ? [title]
@@ -12170,6 +12215,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks.prototype, "links", null);
+        __decorate([
+            $.$mol_fiber.method
+        ], $hyoo_talks.prototype, "message_notify", null);
         $$.$hyoo_talks = $hyoo_talks;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

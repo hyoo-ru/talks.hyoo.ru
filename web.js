@@ -11858,6 +11858,81 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_service() {
+        return (typeof window === 'undefined')
+            ? self['registration']
+            : $.$mol_fiber_sync(() => navigator.serviceWorker.ready)();
+    }
+    $.$mol_service = $mol_service;
+    function $mol_service_handler(handle) {
+        return (event) => {
+            event['waitUntil'](handle(event));
+        };
+    }
+    $.$mol_service_handler = $mol_service_handler;
+})($ || ($ = {}));
+//service.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_notify {
+        static allowed(next) {
+            let perm = Notification.permission;
+            if (next === undefined)
+                return perm === 'granted';
+            if (perm === 'granted')
+                return true;
+            perm = $.$mol_fiber_sync(() => new Promise(done => Notification.requestPermission(perm => {
+                done(perm);
+            })))();
+            return perm === 'granted';
+        }
+        static show(info) {
+            navigator.serviceWorker.controller.postMessage(info);
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_notify, "allowed", null);
+    __decorate([
+        $.$mol_fiber.method
+    ], $mol_notify, "show", null);
+    $.$mol_notify = $mol_notify;
+    if (typeof window === 'undefined') {
+        self.addEventListener('message', async (event) => {
+            let { context: title, message: body, uri: data } = event.data;
+            const tag = title;
+            const existen = await $.$mol_service().getNotifications({ tag });
+            for (const not of existen) {
+                if (not.body.indexOf(body) !== -1)
+                    body = not.body;
+                else if (body.indexOf(not.body) === -1)
+                    body = not.body + '\n' + body;
+                not.close();
+            }
+            const vibrate = [100, 200, 300, 400, 500];
+            await $.$mol_service().showNotification(title, { body, data, vibrate, tag });
+        });
+        self.addEventListener('notificationclick', $.$mol_service_handler(async (event) => {
+            const clients = await self['clients'].matchAll({ includeUncontrolled: true });
+            event.notification.close();
+            if (clients.length) {
+                const last = clients[0];
+                last.focus();
+                last.navigate(event.notification.data);
+            }
+            else {
+                await self['clients'].openWindow(event.notification.data);
+            }
+        }));
+    }
+})($ || ($ = {}));
+//notify.web.js.map
+;
+"use strict";
+var $;
+(function ($) {
     var $$;
     (function ($$) {
         const { rem } = $.$mol_style_unit;
@@ -11981,10 +12056,35 @@ var $;
             chat_unread_count(id) {
                 const chat = this.chat(id);
                 const last_index = this.user().read_messages(chat);
+                if (last_index === -1) {
+                    return '0';
+                }
                 const count = this.chat(id).messages_count();
                 return (count - last_index).toString();
             }
+            message_notify(chat) {
+                const message_last = chat.messages().slice(-1)[0];
+                if (!message_last)
+                    return;
+                const key = `notify=${chat.id()}_${message_last.id()}`;
+                const displayed = this.$.$mol_state_local.value(key);
+                const is_me = message_last.author()?.id() === this.domain().user().id();
+                if (!displayed && !is_me) {
+                    this.$.$mol_notify.allowed(true);
+                    return new $.$mol_after_timeout(3000, () => {
+                        if (Number(this.chat_unread_count(chat.id())) === 0)
+                            return;
+                        this.$.$mol_notify.show({
+                            context: `${chat.title()} ${message_last.author().name()}`,
+                            message: `Новое сообщение`,
+                            uri: this.$.$mol_state_arg.link({ chat: chat.id() })
+                        });
+                        this.$.$mol_state_local.value(key, true);
+                    });
+                }
+            }
             chat_link_sub(id) {
+                this.message_notify(this.chat(id));
                 const title = this.Chat_link_title(id);
                 return Number(this.chat_unread_count(id)) === 0
                     ? [title]
@@ -12003,6 +12103,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks.prototype, "links", null);
+        __decorate([
+            $.$mol_fiber.method
+        ], $hyoo_talks.prototype, "message_notify", null);
         $$.$hyoo_talks = $hyoo_talks;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

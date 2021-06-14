@@ -4011,6 +4011,17 @@ declare namespace $ {
     function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
 }
 
+declare namespace $ {
+    class $mol_notify {
+        static allowed(next?: boolean): boolean;
+        static show(info: {
+            context: string;
+            message: string;
+            uri: string;
+        }): void;
+    }
+}
+
 declare namespace $.$$ {
 }
 
@@ -4032,6 +4043,7 @@ declare namespace $.$$ {
         chat_new_id(): string;
         chat_page_tools(): $mol_link[];
         chat_unread_count(id: string): string;
+        message_notify(chat: $hyoo_talks_chat): $mol_after_timeout | undefined;
         chat_link_sub(id: string): ($mol_speck | $mol_dimmer)[];
         language(next?: string): string;
     }
