@@ -2,6 +2,43 @@ namespace $.$$ {
 	
 	export class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
 		
+		head() {
+			return [
+				this.Title(),
+				this.Joined(),
+				this.Search_toggle(),
+				this.Tools(),
+				... this.search_enabled() ? [ this.Search() ] : [],
+			]
+		}
+		
+		@ $mol_mem
+		search_enabled( next?: boolean ) {
+			
+			if( next === undefined ) return false
+			
+			if( next ) {
+				$mol_fiber_defer( ()=>
+					this.Search().Query().focused( true )
+				)
+			} else {
+				this.search( '' )
+			}
+			
+			return next
+		}
+		
+		search_start( event: Event ) {
+			this.search_enabled( true )
+			event.preventDefault()
+		}
+		
+		search_end( event: Event ) {
+			this.search_enabled( false )
+			this.Search_toggle().focused( true )
+			event.preventDefault()
+		}
+		
 		@ $mol_mem
 		chat() {
 			const domain = new this.$.$hyoo_talks_domain

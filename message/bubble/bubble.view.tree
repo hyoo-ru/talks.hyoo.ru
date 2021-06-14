@@ -16,6 +16,7 @@ $hyoo_talks_message_bubble $mol_list
 			value?val <=> text?val \
 			selection?val <=> text_selection?val /number
 			enabled <= editable false
+			highlight <= highlight \
 		<= Previews $mol_view
 			sub <= previews /
 	Peek $mol_check

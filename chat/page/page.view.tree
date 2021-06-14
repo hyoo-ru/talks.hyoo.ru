@@ -11,15 +11,19 @@ $hyoo_talks_chat_page $mol_page
 		hint @ \Chat title
 	head /
 		<= Title
+		<= Search_toggle $mol_check_icon
+			hint @ \Toggle search
+			Icon <= Search_toggle_icon $mol_icon_magnify
+			checked?val <=> search_enabled?val false
 		<= Joined $mol_check_icon
 			hint @ \Joined
 			Icon <= Joined_icon $mol_icon_eye
 			checked?val <=> joined?val false
 		<= Tools
-		- <= Search $mol_search_jumper
+		<= Search $mol_search_jumper
 			query?val <=> search?val \
 			Root <= Body
-	tools /
+			escape?val <=> search_end?val null
 	body /
 		<= Bubbles $mol_list rows <= bubbles /
 	foot <= draft_controls /
@@ -35,9 +39,10 @@ $hyoo_talks_chat_page $mol_page
 	Bubble!id $hyoo_talks_message_bubble
 		minimal_height 80
 		message <= message!id $hyoo_talks_message
-		- highlight <= search
+		highlight <= search
 	plugins /
 		<= Send_key $mol_hotkey
 			mod_ctrl true
 			key *
 				enter?event <=> draft_send?event null
+				F?event <=> search_start?event null
