@@ -6,6 +6,7 @@
 	"$hyoo_talks_chat_page_Draft_send_title": "Send",
 	"$hyoo_talks_chat_page_Draft_text_hint": "Add message..",
 	"$hyoo_talks_chat_page_Joined_hint": "Joined",
+	"$hyoo_talks_chat_page_Search_toggle_hint": "Toggle search",
 	"$hyoo_talks_chat_page_Title_hint": "Chat title",
 	"$hyoo_talks_person_settings_Avatar_field_name": "Avatar",
 	"$hyoo_talks_person_settings_Background_field_name": "Background",
@@ -13,5 +14,7 @@
 	"$hyoo_talks_person_settings_title": "Settings",
 	"$mol_lights_toggle_hint": "Toggle lights",
 	"$mol_link_source_hint": "Source code",
+	"$mol_paginator_backward_hint": "Назад",
+	"$mol_paginator_forward_hint": "Вперёд",
 	"$mol_search_hint": "Search..."
 }

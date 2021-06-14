@@ -457,6 +457,7 @@ $mol_textarea $mol_view
 			render_visible_only false
 			row_numb!index <= row_numb!index 0
 			sidebar_showed <= sidebar_showed
+			highlight <= highlight \
 
 $mol_embed_native $mol_view
 	dom_name \object
@@ -485,6 +486,7 @@ $hyoo_talks_message_bubble $mol_list
 			value?val <=> text?val \
 			selection?val <=> text_selection?val /number
 			enabled <= editable false
+			highlight <= highlight \
 		<= Previews $mol_view
 			sub <= previews /
 	Peek $mol_check
@@ -496,78 +498,11 @@ $hyoo_talks_message_bubble $mol_list
 			<= Preview_embed!index $mol_embed_native
 				uri <= preview_uri!index \
 
-$mol_icon_eye $mol_icon path \M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z
+$mol_icon_magnify $mol_icon path \M9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z
 
 $mol_check_icon $mol_check
 
-$mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z
-
-$mol_icon_arrow_up_bold $mol_icon path \M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z
-
-$hyoo_talks_chat_page $mol_page
-	messages?val /string
-	chat $hyoo_talks_chat
-	chat_id \global
-	bg_transparent false
-	attr *
-		^
-		hyoo_talks_chat_page_transparent <= bg_transparent
-	Title $mol_string
-		value?val <=> title?val \
-		hint @ \Chat title
-	head /
-		<= Title
-		<= Joined $mol_check_icon
-			hint @ \Joined
-			Icon <= Joined_icon $mol_icon_eye
-			checked?val <=> joined?val false
-		<= Tools
-		- <= Search $mol_search_jumper
-			query?val <=> search?val \
-			Root <= Body
-	tools /
-	body /
-		<= Bubbles $mol_list rows <= bubbles /
-	foot <= draft_controls /
-		<= Draft_text $mol_textarea
-			hint @ \Add message..
-			value?val <=> draft_text?val \
-		<= Draft_send $mol_button_minor
-			title @ \Send
-			hint @ \Ctrl+Enter to send
-			sub /
-				<= Draft_send_icon $mol_icon_arrow_up_bold
-			click?val <=> draft_send?val null
-	Bubble!id $hyoo_talks_message_bubble
-		minimal_height 80
-		message <= message!id $hyoo_talks_message
-		- highlight <= search
-	plugins /
-		<= Send_key $mol_hotkey
-			mod_ctrl true
-			key *
-				enter?event <=> draft_send?event null
-
-$mol_theme_auto $mol_plugin
-	attr * mol_theme <= theme \
-
-$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
-
-$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
-
-$mol_lights_toggle $mol_check_icon
-	Icon <= Lights_icon $mol_icon_brightness_6
-	hint @ \Toggle lights
-	checked?val <=> lights?val false
-
-$mol_icon_github_circle $mol_icon path \M12,2C6.48,2 2,6.48 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12C22,6.48 17.52,2 12,2Z
-
-$mol_link_source $mol_link
-	hint @ \Source code
-	sub /
-		<= Icon $mol_icon_github_circle
-
-$mol_icon_settings $mol_icon path \M12,15.5C10.07,15.5 8.5,13.93 8.5,12C8.5,10.07 10.07,8.5 12,8.5C13.93,8.5 15.5,10.07 15.5,12C15.5,13.93 13.93,15.5 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z
+$mol_icon_eye $mol_icon path \M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z
 
 $mol_pop $mol_view
 	event * keydown?event <=> keydown?event null
@@ -635,6 +570,112 @@ $mol_search $mol_pop
 			<= Suggest_label!id $mol_dimmer
 				haystack <= suggest_label!id \
 				needle <= query?val \
+
+$mol_icon_chevron_left $mol_icon path \M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z
+
+$mol_icon_chevron_right $mol_icon path \M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
+
+$mol_paginator $mol_view
+	sub /
+		<= Backward $mol_button_minor
+			hint <= backward_hint @ \Назад
+			click?event <=> backward?event null
+			sub / <= Backward_icon $mol_icon_chevron_left
+		<= Value $mol_view sub / <= value?val 0
+		<= Forward $mol_button_minor
+			hint <= forward_hint @ \Вперёд
+			click?event <=> forward?event null
+			sub / <= Forward_icon $mol_icon_chevron_right
+
+$mol_search_jumper $mol_search
+	Root $mol_view
+	Index $mol_paginator
+		value?val <=> index?val 0
+		forward?event => forward?event
+		backward?event => backward?event
+	plugins /
+		^
+		<= Backward $mol_hotkey
+			mod_shift true
+			key * enter?event <=> backward?event
+		<= Forward $mol_hotkey
+			key *
+				enter?event <=> forward?event
+				escape?val <=> escape?val null
+
+$mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z
+
+$mol_icon_arrow_up_bold $mol_icon path \M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z
+
+$hyoo_talks_chat_page $mol_page
+	messages?val /string
+	chat $hyoo_talks_chat
+	chat_id \global
+	bg_transparent false
+	attr *
+		^
+		hyoo_talks_chat_page_transparent <= bg_transparent
+	Title $mol_string
+		value?val <=> title?val \
+		hint @ \Chat title
+	head /
+		<= Title
+		<= Search_toggle $mol_check_icon
+			hint @ \Toggle search
+			Icon <= Search_toggle_icon $mol_icon_magnify
+			checked?val <=> search_enabled?val false
+		<= Joined $mol_check_icon
+			hint @ \Joined
+			Icon <= Joined_icon $mol_icon_eye
+			checked?val <=> joined?val false
+		<= Tools
+		<= Search $mol_search_jumper
+			query?val <=> search?val \
+			Root <= Body
+			escape?val <=> search_end?val null
+	body /
+		<= Bubbles $mol_list rows <= bubbles /
+	foot <= draft_controls /
+		<= Draft_text $mol_textarea
+			hint @ \Add message..
+			value?val <=> draft_text?val \
+		<= Draft_send $mol_button_minor
+			title @ \Send
+			hint @ \Ctrl+Enter to send
+			sub /
+				<= Draft_send_icon $mol_icon_arrow_up_bold
+			click?val <=> draft_send?val null
+	Bubble!id $hyoo_talks_message_bubble
+		minimal_height 80
+		message <= message!id $hyoo_talks_message
+		highlight <= search
+	plugins /
+		<= Send_key $mol_hotkey
+			mod_ctrl true
+			key *
+				enter?event <=> draft_send?event null
+				F?event <=> search_start?event null
+
+$mol_theme_auto $mol_plugin
+	attr * mol_theme <= theme \
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$mol_icon_brightness_6 $mol_icon path \M12,18V6C15.31,6 18,8.69 18,12C18,15.31 15.31,18 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z
+
+$mol_lights_toggle $mol_check_icon
+	Icon <= Lights_icon $mol_icon_brightness_6
+	hint @ \Toggle lights
+	checked?val <=> lights?val false
+
+$mol_icon_github_circle $mol_icon path \M12,2C6.48,2 2,6.48 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12C22,6.48 17.52,2 12,2Z
+
+$mol_link_source $mol_link
+	hint @ \Source code
+	sub /
+		<= Icon $mol_icon_github_circle
+
+$mol_icon_settings $mol_icon path \M12,15.5C10.07,15.5 8.5,13.93 8.5,12C8.5,10.07 10.07,8.5 12,8.5C13.93,8.5 15.5,10.07 15.5,12C15.5,13.93 13.93,15.5 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z
 
 $mol_switch $mol_view
 	Option!id $mol_check

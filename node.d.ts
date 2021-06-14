@@ -3464,6 +3464,7 @@ declare namespace $ {
         selection(val?: any): any;
         Edit(): $$.$mol_string;
         row_numb(index: any): number;
+        highlight(): string;
         View(): $$.$mol_text_code;
     }
 }
@@ -3519,6 +3520,7 @@ declare namespace $ {
         text(val?: any): any;
         text_selection(val?: any): any;
         editable(): boolean;
+        highlight(): string;
         Text(): $$.$mol_textarea;
         previews(): readonly any[];
         Previews(): $mol_view;
@@ -3550,7 +3552,7 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $mol_icon_eye extends $mol_icon {
+    class $mol_icon_magnify extends $mol_icon {
         path(): string;
     }
 }
@@ -3564,146 +3566,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_icon_arrow_up extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_arrow_up_bold extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_talks_chat_page extends $mol_page {
-        messages(val?: any): any;
-        chat(): $hyoo_talks_chat;
-        chat_id(): string;
-        bg_transparent(): boolean;
-        attr(): {
-            hyoo_talks_chat_page_transparent: boolean;
-        };
-        Title(): $$.$mol_string;
-        head(): readonly any[];
-        tools(): readonly any[];
-        body(): readonly any[];
-        foot(): readonly any[];
-        Bubble(id: any): $$.$hyoo_talks_message_bubble;
-        plugins(): readonly any[];
-        title(val?: any): any;
-        Joined_icon(): $mol_icon_eye;
-        joined(val?: any): any;
-        Joined(): $mol_check_icon;
-        bubbles(): readonly any[];
-        Bubbles(): $$.$mol_list;
-        draft_text(val?: any): any;
-        Draft_text(): $$.$mol_textarea;
-        Draft_send_icon(): $mol_icon_arrow_up_bold;
-        draft_send(val?: any): any;
-        Draft_send(): $mol_button_minor;
-        draft_controls(): readonly any[];
-        message(id: any): $hyoo_talks_message;
-        Send_key(): $$.$mol_hotkey;
-    }
-}
-
-declare namespace $ {
-    const $mol_wait_rest: () => unknown;
-}
-
-declare namespace $ {
-    function $mol_view_component(View: typeof $mol_view): void;
-}
-
-declare namespace $.$$ {
-}
-
-declare namespace $.$$ {
-    class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
-        chat(): $hyoo_talks_chat;
-        domain(): $hyoo_talks_domain;
-        title(next?: string): string;
-        messages(next?: $hyoo_talks_message[]): $hyoo_talks_message[];
-        message(id: string): $hyoo_talks_message;
-        bubbles(): $hyoo_talks_message_bubble[];
-        draft_controls(): ($mol_button_minor | $mol_textarea)[];
-        draft(next?: null): $hyoo_talks_message;
-        joined(next?: boolean): boolean;
-        draft_text(next?: string): string;
-        draft_send(): void;
-        scroll_end(): void;
-        mark_read(): number;
-        auto(): void;
-    }
-}
-
-declare namespace $ {
-    class $mol_theme_auto extends $mol_plugin {
-        attr(): {
-            mol_theme: string;
-        };
-        theme(): string;
-    }
-}
-
-declare namespace $ {
-    function $mol_lights(this: $, next?: boolean): boolean;
-}
-
-declare namespace $.$$ {
-    class $mol_theme_auto extends $.$mol_theme_auto {
-        theme(): "$mol_theme_light" | "$mol_theme_dark";
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_plus extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_brightness_6 extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_lights_toggle extends $mol_check_icon {
-        Icon(): $mol_icon_brightness_6;
-        hint(): string;
-        checked(val?: any): any;
-        Lights_icon(): $mol_icon_brightness_6;
-        lights(val?: any): any;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $.$$ {
-    class $mol_lights_toggle extends $.$mol_lights_toggle {
-        lights(next?: boolean): boolean;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_github_circle extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_link_source extends $mol_link {
-        hint(): string;
-        sub(): readonly any[];
-        Icon(): $mol_icon_github_circle;
-    }
-}
-
-declare namespace $ {
-    class $mol_icon_settings extends $mol_icon {
+    class $mol_icon_eye extends $mol_icon {
         path(): string;
     }
 }
@@ -3826,6 +3689,221 @@ declare namespace $.$$ {
         menu_items(): $mol_button_minor[];
         suggest_select(id: string, event?: MouseEvent): void;
         clear(event?: Event): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_left extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_chevron_right extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_paginator extends $mol_view {
+        sub(): readonly any[];
+        backward_hint(): string;
+        backward(event?: any): any;
+        Backward_icon(): $mol_icon_chevron_left;
+        Backward(): $mol_button_minor;
+        value(val?: any): any;
+        Value(): $mol_view;
+        forward_hint(): string;
+        forward(event?: any): any;
+        Forward_icon(): $mol_icon_chevron_right;
+        Forward(): $mol_button_minor;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_paginator extends $.$mol_paginator {
+        backward(event: Event): void;
+        forward(event: Event): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_search_jumper extends $mol_search {
+        Root(): $mol_view;
+        forward(event?: any): void;
+        backward(event?: any): void;
+        Index(): $$.$mol_paginator;
+        plugins(): readonly any[];
+        index(val?: any): any;
+        Backward(): $$.$mol_hotkey;
+        escape(val?: any): any;
+        Forward(): $$.$mol_hotkey;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_search_jumper extends $.$mol_search_jumper {
+        results(): $mol_view[][];
+        index(next?: number): number;
+        sub(): ($mol_string | $mol_paginator)[];
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_arrow_up extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_arrow_up_bold extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_talks_chat_page extends $mol_page {
+        messages(val?: any): any;
+        chat(): $hyoo_talks_chat;
+        chat_id(): string;
+        bg_transparent(): boolean;
+        attr(): {
+            hyoo_talks_chat_page_transparent: boolean;
+        };
+        Title(): $$.$mol_string;
+        head(): readonly any[];
+        body(): readonly any[];
+        foot(): readonly any[];
+        Bubble(id: any): $$.$hyoo_talks_message_bubble;
+        plugins(): readonly any[];
+        title(val?: any): any;
+        Search_toggle_icon(): $mol_icon_magnify;
+        search_enabled(val?: any): any;
+        Search_toggle(): $mol_check_icon;
+        Joined_icon(): $mol_icon_eye;
+        joined(val?: any): any;
+        Joined(): $mol_check_icon;
+        search(val?: any): any;
+        search_end(val?: any): any;
+        Search(): $$.$mol_search_jumper;
+        bubbles(): readonly any[];
+        Bubbles(): $$.$mol_list;
+        draft_text(val?: any): any;
+        Draft_text(): $$.$mol_textarea;
+        Draft_send_icon(): $mol_icon_arrow_up_bold;
+        draft_send(val?: any): any;
+        Draft_send(): $mol_button_minor;
+        draft_controls(): readonly any[];
+        message(id: any): $hyoo_talks_message;
+        search_start(event?: any): any;
+        Send_key(): $$.$mol_hotkey;
+    }
+}
+
+declare namespace $ {
+    const $mol_wait_rest: () => unknown;
+}
+
+declare namespace $ {
+    function $mol_view_component(View: typeof $mol_view): void;
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
+    class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
+        head(): ($mol_view | $mol_string | $mol_search_jumper)[];
+        search_enabled(next?: boolean): boolean;
+        search_start(event: Event): void;
+        search_end(event: Event): void;
+        chat(): $hyoo_talks_chat;
+        domain(): $hyoo_talks_domain;
+        title(next?: string): string;
+        messages(next?: $hyoo_talks_message[]): $hyoo_talks_message[];
+        message(id: string): $hyoo_talks_message;
+        bubbles(): $hyoo_talks_message_bubble[];
+        draft_controls(): ($mol_button_minor | $mol_textarea)[];
+        draft(next?: null): $hyoo_talks_message;
+        joined(next?: boolean): boolean;
+        draft_text(next?: string): string;
+        draft_send(): void;
+        scroll_end(): void;
+        mark_read(): number;
+        auto(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_theme_auto extends $mol_plugin {
+        attr(): {
+            mol_theme: string;
+        };
+        theme(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_lights(this: $, next?: boolean): boolean;
+}
+
+declare namespace $.$$ {
+    class $mol_theme_auto extends $.$mol_theme_auto {
+        theme(): "$mol_theme_light" | "$mol_theme_dark";
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_plus extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_brightness_6 extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_lights_toggle extends $mol_check_icon {
+        Icon(): $mol_icon_brightness_6;
+        hint(): string;
+        checked(val?: any): any;
+        Lights_icon(): $mol_icon_brightness_6;
+        lights(val?: any): any;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_lights_toggle extends $.$mol_lights_toggle {
+        lights(next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_github_circle extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    class $mol_link_source extends $mol_link {
+        hint(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_github_circle;
+    }
+}
+
+declare namespace $ {
+    class $mol_icon_settings extends $mol_icon {
+        path(): string;
     }
 }
 
