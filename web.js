@@ -10745,6 +10745,9 @@ var $;
                     basis: rem(20),
                     shrink: 0,
                 },
+                Foot: {
+                    padding: $.$mol_gap.block,
+                },
             },
             Placeholder: {
                 Head: {
