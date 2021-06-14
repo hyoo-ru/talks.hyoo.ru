@@ -3694,6 +3694,127 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_pop extends $mol_view {
+        event(): {
+            keydown: (event?: any) => any;
+        };
+        showed(val?: any): any;
+        sub(): readonly any[];
+        keydown(event?: any): any;
+        Anchor(): any;
+        align(): string;
+        bubble_content(): readonly $mol_view_content[];
+        height_max(): number;
+        Bubble(): $mol_pop_bubble;
+    }
+    class $mol_pop_bubble extends $mol_scroll {
+        sub(): readonly $mol_view_content[];
+        style(): {
+            maxHeight: number;
+        };
+        attr(): {
+            mol_pop_align: string;
+            tabindex: number;
+        };
+        content(): readonly $mol_view_content[];
+        height_max(): number;
+        align(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_pop extends $.$mol_pop {
+        showed(next?: boolean): boolean;
+        sub(): any[];
+        height_max(): number;
+        align(): string;
+        align_vert(): "suspense" | "top" | "bottom";
+        align_hor(): "suspense" | "left" | "right";
+        keydown(event: KeyboardEvent): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_nav extends $mol_plugin {
+        cycle(val?: any): any;
+        mod_ctrl(): boolean;
+        mod_shift(): boolean;
+        mod_alt(): boolean;
+        keys_x(val?: any): any;
+        keys_y(val?: any): any;
+        current_x(val?: any): any;
+        current_y(val?: any): any;
+        event_up(event?: any): any;
+        event_down(event?: any): any;
+        event_left(event?: any): any;
+        event_right(event?: any): any;
+        event(): {
+            keydown: (event?: any) => any;
+        };
+        event_key(event?: any): any;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_nav extends $.$mol_nav {
+        event_key(event?: KeyboardEvent): undefined;
+        event_up(event?: KeyboardEvent): undefined;
+        event_down(event?: KeyboardEvent): undefined;
+        event_left(event?: KeyboardEvent): undefined;
+        event_right(event?: KeyboardEvent): undefined;
+        index_y(): any;
+        index_x(): any;
+    }
+}
+
+declare namespace $ {
+    class $mol_search extends $mol_pop {
+        query(val?: any): any;
+        suggests(): readonly string[];
+        plugins(): readonly $mol_plugin[];
+        showed(val?: any): any;
+        Anchor(): $$.$mol_string;
+        bubble_content(): readonly $mol_view_content[];
+        Suggest(id: any): $mol_button_minor;
+        clear(val?: any): any;
+        Hotkey(): $$.$mol_hotkey;
+        nav_components(): readonly $mol_view[];
+        nav_focused(component?: any): any;
+        Nav(): $$.$mol_nav;
+        suggests_showed(val?: any): any;
+        hint(): string;
+        submit(event?: any): any;
+        enabled(): boolean;
+        Query(): $$.$mol_string;
+        menu_items(): readonly $mol_view[];
+        Menu(): $$.$mol_list;
+        suggest_select(id: any, event?: any): any;
+        suggest_label(id: any): string;
+        Suggest_label(id: any): $$.$mol_dimmer;
+        suggest_content(id: any): readonly $mol_view_content[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_search extends $.$mol_search {
+        suggests_showed(next?: boolean): boolean;
+        suggest_selected(next?: string): void;
+        nav_components(): ($mol_string | $mol_button_minor)[];
+        nav_focused(component?: $mol_view): $mol_view | $mol_string | null;
+        suggest_label(key: string): string;
+        menu_items(): $mol_button_minor[];
+        suggest_select(id: string, event?: MouseEvent): void;
+        clear(event?: Event): void;
+    }
+}
+
+declare namespace $ {
     class $mol_switch extends $mol_view {
         Option(id: any): $$.$mol_check;
         value(val?: any): any;
@@ -3765,8 +3886,11 @@ declare namespace $ {
         Source(): $mol_link_source;
         Settings_icon(): $mol_icon_settings;
         Settings_link(): $$.$mol_link;
+        links_query(val?: any): any;
+        Links_query(): $$.$mol_search;
         links(): readonly any[];
         Links(): $$.$mol_list;
+        roster_body(): readonly any[];
         language(val?: any): any;
         Language(): $$.$mol_switch;
         user(): $hyoo_talks_person;
@@ -3777,6 +3901,7 @@ declare namespace $ {
         chat(id: any): $hyoo_talks_chat;
         chat_arg(id: any): {};
         chat_title(id: any): string;
+        Chat_link_title(id: any): $$.$mol_dimmer;
     }
     class $hyoo_talks_placeholder extends $mol_page {
         bg_transparent(): boolean;
@@ -3784,6 +3909,10 @@ declare namespace $ {
             hyoo_talks_placeholder_transparent: boolean;
         };
     }
+}
+
+declare namespace $ {
+    function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
 }
 
 declare namespace $.$$ {
@@ -3797,6 +3926,7 @@ declare namespace $.$$ {
         pages(): ($mol_page | $hyoo_talks_person_settings | $hyoo_talks_chat_page)[];
         user(): $hyoo_talks_person;
         background(): string;
+        roster_body(): ($mol_list | $mol_search)[];
         links(): $mol_link[];
         chat(id: string): $hyoo_talks_chat;
         chat_title(id: string): string;

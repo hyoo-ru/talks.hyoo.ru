@@ -10298,6 +10298,605 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_pop extends $.$mol_view {
+        event() {
+            return {
+                keydown: (event) => this.keydown(event)
+            };
+        }
+        showed(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        sub() {
+            return [
+                this.Anchor(),
+                this.Bubble()
+            ];
+        }
+        keydown(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        Anchor() {
+            return null;
+        }
+        align() {
+            return "bottom_center";
+        }
+        bubble_content() {
+            return [];
+        }
+        height_max() {
+            return 9999;
+        }
+        Bubble() {
+            const obj = new this.$.$mol_pop_bubble();
+            obj.align = () => this.align();
+            obj.content = () => this.bubble_content();
+            obj.height_max = () => this.height_max();
+            return obj;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_pop.prototype, "showed", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_pop.prototype, "keydown", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_pop.prototype, "Bubble", null);
+    $.$mol_pop = $mol_pop;
+    class $mol_pop_bubble extends $.$mol_scroll {
+        sub() {
+            return this.content();
+        }
+        style() {
+            return {
+                ...super.style(),
+                maxHeight: this.height_max()
+            };
+        }
+        attr() {
+            return {
+                ...super.attr(),
+                mol_pop_align: this.align(),
+                tabindex: 0
+            };
+        }
+        content() {
+            return [];
+        }
+        height_max() {
+            return 9999;
+        }
+        align() {
+            return "";
+        }
+    }
+    $.$mol_pop_bubble = $mol_pop_bubble;
+})($ || ($ = {}));
+//pop.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/pop/pop.view.css", "[mol_pop] {\n\tposition: relative;\n\tdisplay: inline-flex;\n}\n\n[mol_pop]:hover {\n\tz-index: 4;\n}\n\n[mol_pop_bubble] {\n\tbox-shadow: 0 0 1rem hsla(0,0%,0%,.5);\n\tborder-radius: var(--mol_gap_round);\n\tposition: absolute;\n\tz-index: 3;\n\tbackground: var(--mol_theme_back);\n\tmax-width: none;\n\tmax-height: none;\n\toverflow: hidden;\n\toverflow-y: overlay;\n\tword-break: normal;\n}\n\n[mol_pop_bubble][mol_scroll] {\n\tbackground: var(--mol_theme_back);\n}\n\n[mol_pop_bubble]:focus {\n\toutline: none;\n}\n\n[mol_pop_align=\"suspense\"] {\n\tdisplay: none;\n}\n\n[mol_pop_align=\"left_top\"] {\n\ttransform: translate(-100%);\n\tleft: 0;\n\tbottom: 0;\n}\n\n[mol_pop_align=\"left_center\"] {\n\ttransform: translate(-100%, -50%);\n\tleft: 0;\n\ttop: 50%;\n}\n\n[mol_pop_align=\"left_bottom\"] {\n\ttransform: translate(-100%);\n\tleft: 0;\n\ttop: 0;\n}\n\n[mol_pop_align=\"right_top\"] {\n\ttransform: translate(100%);\n\tright: 0;\n\tbottom: 0;\n}\n\n[mol_pop_align=\"right_center\"] {\n\ttransform: translate(100%, -50%);\n\tright: 0;\n\ttop: 50%;\n}\n\n[mol_pop_align=\"right_bottom\"] {\n\ttransform: translate(100%);\n\tright: 0;\n\ttop: 0;\n}\n\n[mol_pop_align=\"center\"] {\n\tleft: 50%;\n\ttop: 50%;\n\ttransform: translate(-50%, -50%);\n}\n\n[mol_pop_align=\"top_left\"] {\n\tright: 0;\n\tbottom: 100%;\n}\n\n[mol_pop_align=\"top_center\"] {\n\ttransform: translate(-50%);\n\tleft: 50%;\n\tbottom: 100%;\n}\n\n[mol_pop_align=\"top_right\"] {\n\tleft: 0;\n\tbottom: 100%;\n}\n\n[mol_pop_align=\"bottom_left\"] {\n\tright: 0;\n\ttop: 100%;\n}\n\n[mol_pop_align=\"bottom_center\"] {\n\ttransform: translate(-50%);\n\tleft: 50%;\n\ttop: 100%;\n}\n\n[mol_pop_align=\"bottom_right\"] {\n\tleft: 0;\n\ttop: 100%;\n}\n");
+})($ || ($ = {}));
+//pop.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_pop extends $.$mol_pop {
+            showed(next = false) {
+                this.focused();
+                return next;
+            }
+            sub() {
+                return [
+                    this.Anchor(),
+                    ...this.showed() ? [this.Bubble()] : [],
+                ];
+            }
+            height_max() {
+                const viewport = this.$.$mol_window.size();
+                const rect_bubble = this.view_rect();
+                const align = this.align_vert();
+                if (align === 'bottom')
+                    return (viewport.height - rect_bubble.bottom) * .66;
+                if (align === 'top')
+                    return rect_bubble.top * .66;
+                return 0;
+            }
+            align() {
+                return `${this.align_vert()}_${this.align_hor()}`;
+            }
+            align_vert() {
+                const viewport = this.$.$mol_window.size();
+                const rect_bubble = this.view_rect();
+                if (!rect_bubble)
+                    return 'suspense';
+                return rect_bubble.top > (viewport.height - rect_bubble.bottom) ? 'top' : 'bottom';
+            }
+            align_hor() {
+                const viewport = this.$.$mol_window.size();
+                const rect_bubble = this.view_rect();
+                if (!rect_bubble)
+                    return 'suspense';
+                return rect_bubble.left > (viewport.width - rect_bubble.right) ? 'left' : 'right';
+            }
+            keydown(event) {
+                if (event.defaultPrevented)
+                    return;
+                if (event.keyCode === $.$mol_keyboard_code.escape) {
+                    if (!this.showed())
+                        return;
+                    event.preventDefault();
+                    this.showed(false);
+                }
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_pop.prototype, "showed", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_pop.prototype, "height_max", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_pop.prototype, "align", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_pop.prototype, "align_vert", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_pop.prototype, "align_hor", null);
+        $$.$mol_pop = $mol_pop;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//pop.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_nav extends $.$mol_plugin {
+        cycle(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        mod_ctrl() {
+            return false;
+        }
+        mod_shift() {
+            return false;
+        }
+        mod_alt() {
+            return false;
+        }
+        keys_x(val) {
+            if (val !== undefined)
+                return val;
+            return [];
+        }
+        keys_y(val) {
+            if (val !== undefined)
+                return val;
+            return [];
+        }
+        current_x(val) {
+            if (val !== undefined)
+                return val;
+            return "";
+        }
+        current_y(val) {
+            if (val !== undefined)
+                return val;
+            return "";
+        }
+        event_up(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        event_down(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        event_left(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        event_right(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        event() {
+            return {
+                ...super.event(),
+                keydown: (event) => this.event_key(event)
+            };
+        }
+        event_key(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "cycle", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "keys_x", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "keys_y", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "current_x", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "current_y", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "event_up", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "event_down", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "event_left", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "event_right", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_nav.prototype, "event_key", null);
+    $.$mol_nav = $mol_nav;
+})($ || ($ = {}));
+//nav.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_nav extends $.$mol_nav {
+            event_key(event) {
+                if (!event)
+                    return event;
+                if (event.defaultPrevented)
+                    return;
+                if (this.mod_ctrl() && !event.ctrlKey)
+                    return;
+                if (this.mod_shift() && !event.shiftKey)
+                    return;
+                if (this.mod_alt() && !event.altKey)
+                    return;
+                switch (event.keyCode) {
+                    case $.$mol_keyboard_code.up: return this.event_up(event);
+                    case $.$mol_keyboard_code.down: return this.event_down(event);
+                    case $.$mol_keyboard_code.left: return this.event_left(event);
+                    case $.$mol_keyboard_code.right: return this.event_right(event);
+                    case $.$mol_keyboard_code.pageUp: return this.event_up(event);
+                    case $.$mol_keyboard_code.pageDown: return this.event_down(event);
+                }
+            }
+            event_up(event) {
+                if (!event)
+                    return event;
+                const keys = this.keys_y();
+                if (keys.length < 1)
+                    return;
+                const index_y = this.index_y();
+                const index_old = index_y === null ? 0 : index_y;
+                const index_new = (index_old + keys.length - 1) % keys.length;
+                event.preventDefault();
+                if (index_old === 0 && !this.cycle())
+                    return;
+                this.current_y(this.keys_y()[index_new]);
+            }
+            event_down(event) {
+                if (!event)
+                    return event;
+                const keys = this.keys_y();
+                if (keys.length < 1)
+                    return;
+                const index_y = this.index_y();
+                const index_old = index_y === null ? keys.length - 1 : index_y;
+                const index_new = (index_old + 1) % keys.length;
+                event.preventDefault();
+                if (index_new === 0 && !this.cycle())
+                    return;
+                this.current_y(this.keys_y()[index_new]);
+            }
+            event_left(event) {
+                if (!event)
+                    return event;
+                const keys = this.keys_x();
+                if (keys.length < 1)
+                    return;
+                const index_x = this.index_x();
+                const index_old = index_x === null ? 0 : index_x;
+                const index_new = (index_old + keys.length - 1) % keys.length;
+                event.preventDefault();
+                if (index_old === 0 && !this.cycle())
+                    return;
+                this.current_x(this.keys_x()[index_new]);
+            }
+            event_right(event) {
+                if (!event)
+                    return event;
+                const keys = this.keys_x();
+                if (keys.length < 1)
+                    return;
+                const index_x = this.index_x();
+                const index_old = index_x === null ? keys.length - 1 : index_x;
+                const index_new = (index_old + 1) % keys.length;
+                event.preventDefault();
+                if (index_new === 0 && !this.cycle())
+                    return;
+                this.current_x(this.keys_x()[index_new]);
+            }
+            index_y() {
+                let index = this.keys_y().indexOf(this.current_y());
+                if (index < 0)
+                    return null;
+                return index;
+            }
+            index_x() {
+                let index = this.keys_x().indexOf(this.current_x());
+                if (index < 0)
+                    return null;
+                return index;
+            }
+        }
+        $$.$mol_nav = $mol_nav;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//nav.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_search extends $.$mol_pop {
+        query(val) {
+            if (val !== undefined)
+                return val;
+            return "";
+        }
+        suggests() {
+            return [];
+        }
+        plugins() {
+            return [
+                ...super.plugins(),
+                this.Hotkey(),
+                this.Nav()
+            ];
+        }
+        showed(val) {
+            return this.suggests_showed(val);
+        }
+        Anchor() {
+            return this.Query();
+        }
+        bubble_content() {
+            return [
+                this.Menu()
+            ];
+        }
+        Suggest(id) {
+            const obj = new this.$.$mol_button_minor();
+            obj.click = (event) => this.suggest_select(id, event);
+            obj.sub = () => this.suggest_content(id);
+            return obj;
+        }
+        clear(val) {
+            if (val !== undefined)
+                return val;
+            return null;
+        }
+        Hotkey() {
+            const obj = new this.$.$mol_hotkey();
+            obj.key = () => ({
+                escape: (val) => this.clear(val)
+            });
+            return obj;
+        }
+        nav_components() {
+            return [];
+        }
+        nav_focused(component) {
+            if (component !== undefined)
+                return component;
+            return null;
+        }
+        Nav() {
+            const obj = new this.$.$mol_nav();
+            obj.keys_y = () => this.nav_components();
+            obj.current_y = (component) => this.nav_focused(component);
+            return obj;
+        }
+        suggests_showed(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        hint() {
+            return this.$.$mol_locale.text('$mol_search_hint');
+        }
+        submit(event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        enabled() {
+            return true;
+        }
+        Query() {
+            const obj = new this.$.$mol_string();
+            obj.value = (val) => this.query(val);
+            obj.hint = () => this.hint();
+            obj.submit = (event) => this.submit(event);
+            obj.enabled = () => this.enabled();
+            return obj;
+        }
+        menu_items() {
+            return [];
+        }
+        Menu() {
+            const obj = new this.$.$mol_list();
+            obj.rows = () => this.menu_items();
+            return obj;
+        }
+        suggest_select(id, event) {
+            if (event !== undefined)
+                return event;
+            return null;
+        }
+        suggest_label(id) {
+            return "";
+        }
+        Suggest_label(id) {
+            const obj = new this.$.$mol_dimmer();
+            obj.haystack = () => this.suggest_label(id);
+            obj.needle = () => this.query();
+            return obj;
+        }
+        suggest_content(id) {
+            return [
+                this.Suggest_label(id)
+            ];
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "query", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_search.prototype, "Suggest", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "clear", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "Hotkey", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "nav_focused", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "Nav", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "suggests_showed", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "submit", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "Query", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_search.prototype, "Menu", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_search.prototype, "suggest_select", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_search.prototype, "Suggest_label", null);
+    $.$mol_search = $mol_search;
+})($ || ($ = {}));
+//search.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_style_attach("mol/search/search.view.css", "[mol_search] {\n\talign-self: flex-start;\n\tflex: auto;\n}\n\n[mol_search_query] {\n\tflex-grow: 1;\n}\n\n[mol_search_menu] {\n\tmin-height: .75rem;\n\tdisplay: flex;\n}\n\n[mol_search_suggest] {\n\ttext-align: left;\n}\n");
+})($ || ($ = {}));
+//search.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_search extends $.$mol_search {
+            suggests_showed(next = true) {
+                this.query();
+                if (!this.focused())
+                    return false;
+                return next;
+            }
+            suggest_selected(next) {
+                if (next === undefined)
+                    return;
+                this.query(next);
+                $.$mol_fiber_defer(() => {
+                    this.Query().focused(true);
+                });
+            }
+            nav_components() {
+                return [
+                    this.Query(),
+                    ...this.menu_items(),
+                ];
+            }
+            nav_focused(component) {
+                if (!this.focused())
+                    return null;
+                if (component == null) {
+                    for (let comp of this.nav_components()) {
+                        if (comp && comp.focused())
+                            return comp;
+                    }
+                    return null;
+                }
+                if (this.suggests_showed()) {
+                    this.ensure_visible(component, "center");
+                    component.focused(true);
+                }
+                return component;
+            }
+            suggest_label(key) {
+                return key;
+            }
+            menu_items() {
+                return this.suggests().map((suggest) => this.Suggest(suggest));
+            }
+            suggest_select(id, event) {
+                this.query(id);
+                this.Query().focused(false);
+            }
+            clear(event) {
+                this.query('');
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_search.prototype, "suggests_showed", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_search.prototype, "nav_focused", null);
+        $$.$mol_search = $mol_search;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//search.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_switch extends $.$mol_view {
         Option(id) {
             const obj = new this.$.$mol_check();
@@ -10463,9 +11062,7 @@ var $;
                 this.Source(),
                 this.Settings_link()
             ];
-            obj.body = () => [
-                this.Links()
-            ];
+            obj.body = () => this.roster_body();
             obj.foot = () => [
                 this.Language()
             ];
@@ -10520,7 +11117,9 @@ var $;
         Chat_link(id) {
             const obj = new this.$.$mol_link();
             obj.arg = () => this.chat_arg(id);
-            obj.title = () => this.chat_title(id);
+            obj.sub = () => [
+                this.Chat_link_title(id)
+            ];
             return obj;
         }
         background() {
@@ -10572,6 +11171,16 @@ var $;
             ];
             return obj;
         }
+        links_query(val) {
+            if (val !== undefined)
+                return val;
+            return "";
+        }
+        Links_query() {
+            const obj = new this.$.$mol_search();
+            obj.query = (val) => this.links_query(val);
+            return obj;
+        }
         links() {
             return [];
         }
@@ -10579,6 +11188,12 @@ var $;
             const obj = new this.$.$mol_list();
             obj.rows = () => this.links();
             return obj;
+        }
+        roster_body() {
+            return [
+                this.Links_query(),
+                this.Links()
+            ];
         }
         language(val) {
             if (val !== undefined)
@@ -10630,6 +11245,12 @@ var $;
         chat_title(id) {
             return "";
         }
+        Chat_link_title(id) {
+            const obj = new this.$.$mol_dimmer();
+            obj.haystack = () => this.chat_title(id);
+            obj.needle = () => this.links_query();
+            return obj;
+        }
     }
     __decorate([
         $.$mol_mem
@@ -10678,6 +11299,12 @@ var $;
     ], $hyoo_talks.prototype, "Settings_link", null);
     __decorate([
         $.$mol_mem
+    ], $hyoo_talks.prototype, "links_query", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks.prototype, "Links_query", null);
+    __decorate([
+        $.$mol_mem
     ], $hyoo_talks.prototype, "Links", null);
     __decorate([
         $.$mol_mem
@@ -10703,6 +11330,9 @@ var $;
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks.prototype, "chat", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $hyoo_talks.prototype, "Chat_link_title", null);
     $.$hyoo_talks = $hyoo_talks;
     class $hyoo_talks_placeholder extends $.$mol_page {
         bg_transparent() {
@@ -10718,6 +11348,22 @@ var $;
     $.$hyoo_talks_placeholder = $hyoo_talks_placeholder;
 })($ || ($ = {}));
 //talk.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_match_text(query, values) {
+        const tags = query.toLowerCase().trim().split(/\s+/).filter(tag => tag);
+        if (tags.length === 0)
+            return () => true;
+        return (variant) => {
+            const vals = values(variant);
+            return tags.every(tag => vals.some(val => val.toLowerCase().indexOf(tag) >= 0));
+        };
+    }
+    $.$mol_match_text = $mol_match_text;
+})($ || ($ = {}));
+//text.js.map
 ;
 "use strict";
 var $;
@@ -10747,6 +11393,12 @@ var $;
                 },
                 Foot: {
                     padding: $.$mol_gap.block,
+                },
+            },
+            Links_query: {
+                alignSelf: 'auto',
+                flex: {
+                    grow: 0,
                 },
             },
             Placeholder: {
@@ -10802,8 +11454,16 @@ var $;
                 const uri = this.user().background();
                 return uri ? `url(${JSON.stringify(uri)})` : 'none';
             }
+            roster_body() {
+                return [
+                    ...this.user().chats().length > 1 ? [this.Links_query()] : [],
+                    this.Links(),
+                ];
+            }
             links() {
-                return this.user().chats().map(chat => this.Chat_link(chat.id()));
+                return this.user().chats()
+                    .filter($.$mol_match_text(this.links_query(), chat => [chat.title()]))
+                    .map(chat => this.Chat_link(chat.id()));
             }
             chat(id) {
                 return this.domain().chat(id);
