@@ -84,15 +84,49 @@ namespace $.$$ {
 		}
 		
 		chat_unread_count( id: string ) {
+
 			const chat = this.chat( id )
 			const last_index = this.user().read_messages( chat )
+			
+			if (last_index === -1) {
+				return '0'
+			}
 			
 			const count = this.chat( id ).messages_count()
 
 			return ( count - last_index ).toString()
 		}
 		
-		chat_link_sub( id : string ) {
+		@ $mol_fiber.method
+		message_notify( chat : $hyoo_talks_chat ) {
+
+			const message_last = chat.messages().slice(-1)[0]
+			if (!message_last) return
+			const key = `notify=${chat.id()}_${message_last.id()}`
+			const displayed = this.$.$mol_state_local.value( key )
+			const is_me = message_last.author()?.id() === this.domain().user().id()
+			
+			if (!displayed && !is_me) {
+				this.$.$mol_notify.allowed( true )
+
+				return new $mol_after_timeout( 3_000, ()=> {
+
+					if (Number( this.chat_unread_count( chat.id() ) ) === 0) return
+
+					this.$.$mol_notify.show({
+						context: `${chat.title()} ${message_last.author()!.name()}`,
+						message: `Новое сообщение`,
+						uri: this.$.$mol_state_arg.link({ chat: chat.id() })
+					})
+					this.$.$mol_state_local.value( key , true )
+
+				} )
+			}
+		}
+		
+		chat_link_sub( id : string ) {	
+			this.message_notify( this.chat( id ))
+			
 			const title = this.Chat_link_title(  id )
 			return Number( this.chat_unread_count( id ) ) === 0
 				? [ title ]
