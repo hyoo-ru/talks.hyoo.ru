@@ -2301,7 +2301,7 @@ declare namespace $ {
         online_time(): $mol_time_moment | null;
         online_update(): void;
         chats(next?: $hyoo_talks_chat[]): $hyoo_talks_chat[];
-        draft(chat: $hyoo_talks_chat, next?: string): $hyoo_talks_message;
+        draft(chat: $hyoo_talks_chat, next?: null): $hyoo_talks_message;
         read_messages(chat: $hyoo_talks_chat, next?: number): number;
     }
 }
@@ -3540,6 +3540,7 @@ declare namespace $ {
         Text(): $$.$mol_textarea;
         previews(): readonly any[];
         Previews(): $mol_view;
+        peek_label(): string;
         peek(val?: any): any;
         preview_uri(index: any): string;
         Preview_embed(index: any): $mol_embed_native;
@@ -3562,6 +3563,7 @@ declare namespace $.$$ {
         previews(): $mol_link[];
         preview_uri(index: number): string;
         moment(): string;
+        peek_label(): string;
     }
 }
 
@@ -3644,7 +3646,7 @@ declare namespace $.$$ {
         message(id: string): $hyoo_talks_message;
         bubbles(): $hyoo_talks_message_bubble[];
         draft_controls(): ($mol_button_minor | $mol_textarea)[];
-        draft(next?: string): $hyoo_talks_message;
+        draft(next?: null): $hyoo_talks_message;
         joined(next?: boolean): boolean;
         draft_text(next?: string): string;
         draft_send(): void;
