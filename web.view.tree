@@ -472,6 +472,8 @@ $hyoo_talks_message_bubble $mol_list
 	attr *
 		^
 		hyoo_talks_message_bubble_side <= side \other
+	event *
+		dblclick?event <=> editable_faorce?event null
 	rows /
 		<= Meta $mol_view
 			sub /

@@ -8903,34 +8903,34 @@ var $;
             '@': {
                 mol_text_code_token_type: {
                     'code-keyword': {
-                        color: hsla(0, 70, 60, 1),
+                        color: hsla(0, 70, 40, 1),
                     },
                     'code-field': {
-                        color: hsla(300, 70, 60, 1),
+                        color: hsla(300, 70, 40, 1),
                     },
                     'code-tag': {
-                        color: hsla(330, 70, 60, 1),
+                        color: hsla(330, 70, 40, 1),
                     },
                     'code-global': {
-                        color: hsla(210, 80, 60, 1),
+                        color: hsla(210, 80, 40, 1),
                     },
                     'code-decorator': {
-                        color: hsla(180, 40, 60, 1),
+                        color: hsla(180, 40, 40, 1),
                     },
                     'code-punctuation': {
                         color: hsla(0, 0, 50, 1),
                     },
                     'code-string': {
-                        color: hsla(90, 40, 50, 1),
+                        color: hsla(90, 40, 40, 1),
                     },
                     'code-number': {
                         color: hsla(60, 70, 30, 1),
                     },
                     'code-call': {
-                        color: hsla(270, 60, 60, 1),
+                        color: hsla(270, 60, 40, 1),
                     },
                     'code-link': {
-                        color: hsla(240, 60, 60, 1),
+                        color: hsla(240, 60, 40, 1),
                     },
                     'code-comment-inline': {
                         opacity: .5,
@@ -9412,6 +9412,11 @@ var $;
                 hyoo_talks_message_bubble_side: this.side()
             };
         }
+        event() {
+            return {
+                dblclick: (event) => this.editable_faorce(event)
+            };
+        }
         rows() {
             return [
                 this.Meta(),
@@ -9435,6 +9440,11 @@ var $;
         }
         side() {
             return "other";
+        }
+        editable_faorce(event) {
+            if (event !== undefined)
+                return event;
+            return null;
         }
         author() {
             const obj = new this.$.$hyoo_talks_person();
@@ -9508,6 +9518,9 @@ var $;
     __decorate([
         $.$mol_mem_key
     ], $hyoo_talks_message_bubble.prototype, "Preview", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_message_bubble.prototype, "editable_faorce", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_message_bubble.prototype, "author", null);
@@ -9629,8 +9642,13 @@ var $;
                 const message = this.message();
                 return message.domain().user() === message.author() ? 'self' : 'other';
             }
-            editable() {
+            editable(next) {
+                if (next !== undefined)
+                    return next;
                 return this.side() === 'self';
+            }
+            editable_faorce() {
+                this.editable(true);
             }
             links() {
                 return (this.text().match(/https?:\/\/\S+/g) ?? []).map(uri => uri.replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/'));
@@ -9651,6 +9669,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks_message_bubble.prototype, "side", null);
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks_message_bubble.prototype, "editable", null);
         __decorate([
             $.$mol_mem
         ], $hyoo_talks_message_bubble.prototype, "links", null);

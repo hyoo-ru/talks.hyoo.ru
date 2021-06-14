@@ -3520,10 +3520,14 @@ declare namespace $ {
         attr(): {
             hyoo_talks_message_bubble_side: string;
         };
+        event(): {
+            dblclick: (event?: any) => any;
+        };
         rows(): readonly any[];
         Peek(): $$.$mol_check;
         Preview(index: any): $$.$mol_link;
         side(): string;
+        editable_faorce(event?: any): any;
         author(): $hyoo_talks_person;
         Author(): $$.$hyoo_talks_person_avatar;
         moment(): string;
@@ -3549,7 +3553,8 @@ declare namespace $.$$ {
         text(next?: string): string;
         author(): $hyoo_talks_person;
         side(): "other" | "self";
-        editable(): boolean;
+        editable(next?: boolean): boolean;
+        editable_faorce(): void;
         links(): string[];
         previews(): $mol_link[];
         preview_uri(index: number): string;
