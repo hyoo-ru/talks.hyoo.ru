@@ -44,7 +44,7 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		draft( next?: string ) {
+		draft( next?: null ) {
 			return this.domain().user().draft( this.chat(), next )
 		}
 	
@@ -98,10 +98,18 @@ namespace $.$$ {
 
 		draft_send() {
 			
-			this.draft().moment( new this.$.$mol_time_moment() )
-			this.draft().complete( true )
-			this.draft( '' )
+			const draft = this.draft()
+			const chat = this.chat()
 			
+			draft.moment( new this.$.$mol_time_moment() )
+			draft.complete( true )
+			
+			const messages = new Set( chat.messages() )
+			messages.delete( draft )
+			chat.messages([ ... messages, draft ])
+			
+			this.draft( null )
+		
 			this.$.$mol_wait_rest()
 			this.scroll_end()
 			

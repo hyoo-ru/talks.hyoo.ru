@@ -12,13 +12,11 @@ namespace $.$$ {
 							direction: 'row-reverse',
 						},
 					},
-					Text: {
-						alignSelf: 'flex-end',
-					},
+					alignItems: 'flex-end',
 				},
 				other: {
+					alignItems: 'flex-start',
 					Text: {
-						alignSelf: 'flex-start',
 						background: {
 							color: vary('--hyoo_talks_theme_talker'),
 						},
@@ -52,6 +50,10 @@ namespace $.$$ {
 			},
 		},
 		
+		Peek: {
+			wordBreak: 'break-all',
+		},
+		
 		Preview: {
 			padding: 0,
 			flex: {
@@ -59,7 +61,7 @@ namespace $.$$ {
 				shrink: 1,
 				basis: 'auto',
 			},
-		},	
+		},
 		
 	} )
 	

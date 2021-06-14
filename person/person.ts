@@ -61,10 +61,10 @@ namespace $ {
 		}
 		
 		@ $mol_mem_key
-		draft( chat: $hyoo_talks_chat, next?: string ) {
+		draft( chat: $hyoo_talks_chat, next?: null ) {
 			
 			const drafts = this.sub( 'drafts' )
-			let id = next ?? drafts.value( chat.id() )
+			let id = next === undefined ? drafts.value( chat.id() ) : ''
 			
 			if( !id ) {
 				id = $mol_guid()

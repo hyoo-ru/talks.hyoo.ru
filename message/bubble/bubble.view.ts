@@ -57,7 +57,12 @@ namespace $.$$ {
 		}
 		
 		moment() {
-			return this.message().moment()?.toString( 'YYYY-MM-DD hh:mm' ) ?? '∞'
+			return this.message().moment()?.toString( 'YYYY-MM-DD hh:mm' ) ?? ''
+		}
+		
+		@ $mol_mem
+		peek_label() {
+			return '•'.repeat( this.text().length )
 		}
 		
 	}
