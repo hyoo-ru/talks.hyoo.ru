@@ -19,6 +19,10 @@ namespace $ {
 			return this.value( 'text' , next ) ?? ''
 		}
 		
+		text_selection( next?: number[] ) {
+			return this.selection( 'text', next )
+		}
+		
 		complete( next?: boolean ) {
 			return this.value( 'complete' , next ) ?? false
 		}

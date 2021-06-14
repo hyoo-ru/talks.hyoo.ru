@@ -17,6 +17,9 @@ namespace $.$$ {
 		text( next?: string ) {
 			return this.message().text( next )
 		}
+		text_selection( next?: number[] ) {
+			return this.message().text_selection( next )
+		}
 		
 		author() {
 			return this.message().author()!
