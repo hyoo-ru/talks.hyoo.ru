@@ -8,5 +8,4 @@ $hyoo_talks_person_avatar $mol_link
 		<= Name $mol_paragraph
 			sub <= name_content /
 				<= Online $mol_speck
-					- value \
 				<= name \
