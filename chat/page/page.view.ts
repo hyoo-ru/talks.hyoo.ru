@@ -188,7 +188,6 @@ namespace $.$$ {
 		}
 		
 		auto() {
-			console.log('auto')
 			this.update_last_readed_message()
 		}
 		
