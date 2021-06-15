@@ -158,23 +158,38 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		mark_read() {
-			const [ , end ] = this.Bubbles().view_window()
+		update_last_readed_message() {
+			let [ , last_viewed ] = this.Bubbles().view_window()
+			
+			const last_readed = this.domain().user().read_messages( this.chat() )
 
-			const user = this.domain().user()
-			let last = user.read_messages( this.chat() )
+			while( last_viewed >= last_readed ) {
+
+				const message = this.chat().messages() [ last_viewed ]
+				// why message can be eq to undefined?
+				
+				if ( message === undefined || message.complete() === true ) {
+					break
+				}
+
+				last_viewed--
+			}
 			
-			if (last > end) last = end // Deleted draft
-			
-			const next = Math.max( end , last )
-			
-			this.$.$mol_fiber_defer( () => user.read_messages( this.chat() , next ) )
-			
-			return next
+
+			return this.$.$mol_fiber_defer(
+					() => {
+
+						if ( last_viewed > last_readed ) {
+							this.domain().user().read_messages( this.chat() , last_viewed )
+						}
+
+					}
+				)
 		}
 		
 		auto() {
-			this.mark_read()
+			console.log('auto')
+			this.update_last_readed_message()
 		}
 		
 	}

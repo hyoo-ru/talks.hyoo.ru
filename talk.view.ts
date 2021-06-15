@@ -84,17 +84,13 @@ namespace $.$$ {
 		}
 		
 		chat_unread_count( id: string ) {
-
 			const chat = this.chat( id )
+			
 			const last_index = this.user().read_messages( chat )
+			const messages = this.chat( id ).messages()
+			const messages_completed = messages.slice( last_index ).filter( msg => msg.complete() )
 			
-			if (last_index === -1) {
-				return '0'
-			}
-			
-			const count = this.chat( id ).messages_count()
-
-			return ( count - last_index ).toString()
+			return ( messages_completed.length ).toString()
 		}
 		
 		@ $mol_fiber.method

@@ -23,9 +23,6 @@ namespace $ {
 			return ids.map( id => this.domain().message( id ) )
 		}
 		
-		messages_count() {
-			return this.value( 'messages' ).length
-		}
 	}
 	
 }

@@ -79,7 +79,7 @@ namespace $ {
 		@ $mol_mem_key
 		read_messages( chat: $hyoo_talks_chat , next?: number ) {
 			const sub = this.sub( 'read_messages' )
-			return sub.value( chat.id() , next ) ?? chat.messages_count()
+			return sub.value( chat.id() , next ) ?? chat.messages().length
 		}
 		
 	}
