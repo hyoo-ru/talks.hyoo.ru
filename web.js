@@ -5680,9 +5680,6 @@ var $;
                 return [];
             return ids.map(id => this.domain().message(id));
         }
-        messages_count() {
-            return this.value('messages').length;
-        }
     }
     $.$hyoo_talks_chat = $hyoo_talks_chat;
 })($ || ($ = {}));
@@ -5757,7 +5754,7 @@ var $;
         }
         read_messages(chat, next) {
             const sub = this.sub('read_messages');
-            return sub.value(chat.id(), next) ?? chat.messages_count();
+            return sub.value(chat.id(), next) ?? chat.messages().length;
         }
     }
     __decorate([
@@ -11149,18 +11146,25 @@ var $;
                 const body = this.Body();
                 body.scroll_top(body.dom_node().scrollHeight);
             }
-            mark_read() {
-                const [, end] = this.Bubbles().view_window();
-                const user = this.domain().user();
-                let last = user.read_messages(this.chat());
-                if (last > end)
-                    last = end;
-                const next = Math.max(end, last);
-                this.$.$mol_fiber_defer(() => user.read_messages(this.chat(), next));
-                return next;
+            update_last_readed_message() {
+                let [, last_viewed] = this.Bubbles().view_window();
+                const last_readed = this.domain().user().read_messages(this.chat());
+                while (last_viewed >= last_readed) {
+                    const message = this.chat().messages()[last_viewed];
+                    if (message === undefined || message.complete() === true) {
+                        break;
+                    }
+                    last_viewed--;
+                }
+                return this.$.$mol_fiber_defer(() => {
+                    if (last_viewed > last_readed) {
+                        this.domain().user().read_messages(this.chat(), last_viewed);
+                    }
+                });
             }
             auto() {
-                this.mark_read();
+                console.log('auto');
+                this.update_last_readed_message();
             }
         }
         __decorate([
@@ -11186,7 +11190,7 @@ var $;
         ], $hyoo_talks_chat_page.prototype, "joined", null);
         __decorate([
             $.$mol_mem
-        ], $hyoo_talks_chat_page.prototype, "mark_read", null);
+        ], $hyoo_talks_chat_page.prototype, "update_last_readed_message", null);
         $$.$hyoo_talks_chat_page = $hyoo_talks_chat_page;
         $.$mol_view_component($hyoo_talks_chat_page);
     })($$ = $.$$ || ($.$$ = {}));
@@ -12055,11 +12059,9 @@ var $;
             chat_unread_count(id) {
                 const chat = this.chat(id);
                 const last_index = this.user().read_messages(chat);
-                if (last_index === -1) {
-                    return '0';
-                }
-                const count = this.chat(id).messages_count();
-                return (count - last_index).toString();
+                const messages = this.chat(id).messages();
+                const messages_completed = messages.slice(last_index).filter(msg => msg.complete());
+                return (messages_completed.length).toString();
             }
             message_notify(chat) {
                 const message_last = chat.messages().slice(-1)[0];

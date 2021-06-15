@@ -2261,7 +2261,6 @@ declare namespace $ {
         domain(): $hyoo_talks_domain;
         title(next?: string): string;
         messages(next?: $hyoo_talks_message[]): $hyoo_talks_message[];
-        messages_count(): number;
     }
 }
 
@@ -3831,7 +3830,7 @@ declare namespace $.$$ {
         draft_text(next?: string): string;
         draft_send(): void;
         scroll_end(): void;
-        mark_read(): number;
+        update_last_readed_message(): $mol_fiber<any>;
         auto(): void;
     }
 }
