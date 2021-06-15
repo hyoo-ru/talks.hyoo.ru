@@ -136,6 +136,9 @@ namespace $.$$ {
 		draft_send() {
 			
 			const draft = this.draft()
+			
+			if ( !draft.text() ) return
+
 			const chat = this.chat()
 			
 			draft.moment( new this.$.$mol_time_moment() )
