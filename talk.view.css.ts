@@ -37,6 +37,7 @@ namespace $.$$ {
 			alignSelf: 'auto',
 			flex: {
 				grow: 0,
+				shrink: 0,
 			},
 		},
 		
