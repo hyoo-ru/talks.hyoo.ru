@@ -11968,6 +11968,7 @@ var $;
                 alignSelf: 'auto',
                 flex: {
                     grow: 0,
+                    shrink: 0,
                 },
             },
             Placeholder: {
