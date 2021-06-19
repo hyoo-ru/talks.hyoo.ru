@@ -3803,6 +3803,17 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_notify {
+        static allowed(next?: boolean): boolean;
+        static show(info: {
+            context: string;
+            message: string;
+            uri: string;
+        }): void;
+    }
+}
+
+declare namespace $ {
     const $mol_wait_rest: () => unknown;
 }
 
@@ -4008,17 +4019,6 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_match_text<Variant>(query: string, values: (variant: Variant) => string[]): (variant: Variant) => boolean;
-}
-
-declare namespace $ {
-    class $mol_notify {
-        static allowed(next?: boolean): boolean;
-        static show(info: {
-            context: string;
-            message: string;
-            uri: string;
-        }): void;
-    }
 }
 
 declare namespace $.$$ {

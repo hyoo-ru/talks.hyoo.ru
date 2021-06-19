@@ -10904,6 +10904,81 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_service() {
+        return (typeof window === 'undefined')
+            ? self['registration']
+            : $.$mol_fiber_sync(() => navigator.serviceWorker.ready)();
+    }
+    $.$mol_service = $mol_service;
+    function $mol_service_handler(handle) {
+        return (event) => {
+            event['waitUntil'](handle(event));
+        };
+    }
+    $.$mol_service_handler = $mol_service_handler;
+})($ || ($ = {}));
+//service.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_notify {
+        static allowed(next) {
+            let perm = Notification.permission;
+            if (next === undefined)
+                return perm === 'granted';
+            if (perm === 'granted')
+                return true;
+            perm = $.$mol_fiber_sync(() => new Promise(done => Notification.requestPermission(perm => {
+                done(perm);
+            })))();
+            return perm === 'granted';
+        }
+        static show(info) {
+            navigator.serviceWorker.controller.postMessage(info);
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_notify, "allowed", null);
+    __decorate([
+        $.$mol_fiber.method
+    ], $mol_notify, "show", null);
+    $.$mol_notify = $mol_notify;
+    if (typeof window === 'undefined') {
+        self.addEventListener('message', async (event) => {
+            let { context: title, message: body, uri: data } = event.data;
+            const tag = title;
+            const existen = await $.$mol_service().getNotifications({ tag });
+            for (const not of existen) {
+                if (not.body.indexOf(body) !== -1)
+                    body = not.body;
+                else if (body.indexOf(not.body) === -1)
+                    body = not.body + '\n' + body;
+                not.close();
+            }
+            const vibrate = [100, 200, 300, 400, 500];
+            await $.$mol_service().showNotification(title, { body, data, vibrate, tag });
+        });
+        self.addEventListener('notificationclick', $.$mol_service_handler(async (event) => {
+            const clients = await self['clients'].matchAll({ includeUncontrolled: true });
+            event.notification.close();
+            if (clients.length) {
+                const last = clients[clients.length - 1];
+                await last.focus();
+                await last.navigate(event.notification.data);
+            }
+            else {
+                await self['clients'].openWindow(event.notification.data);
+            }
+        }));
+    }
+})($ || ($ = {}));
+//notify.web.js.map
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_wait_rest = $.$mol_fiber_sync(() => new Promise(done => new $.$mol_after_work(16, () => done(null))));
 })($ || ($ = {}));
 //rest.js.map
@@ -11103,6 +11178,7 @@ var $;
                     return joined;
                 if (next) {
                     user.chats([chat, ...user.chats()]);
+                    this.$.$mol_notify.allowed(true);
                 }
                 else {
                     user.chats(user.chats().filter(c => c !== chat));
@@ -11148,6 +11224,7 @@ var $;
                 this.draft(null);
                 this.$.$mol_wait_rest();
                 this.scroll_end();
+                this.$.$mol_notify.allowed(true);
             }
             scroll_end() {
                 const body = this.Body();
@@ -11867,81 +11944,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_service() {
-        return (typeof window === 'undefined')
-            ? self['registration']
-            : $.$mol_fiber_sync(() => navigator.serviceWorker.ready)();
-    }
-    $.$mol_service = $mol_service;
-    function $mol_service_handler(handle) {
-        return (event) => {
-            event['waitUntil'](handle(event));
-        };
-    }
-    $.$mol_service_handler = $mol_service_handler;
-})($ || ($ = {}));
-//service.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_notify {
-        static allowed(next) {
-            let perm = Notification.permission;
-            if (next === undefined)
-                return perm === 'granted';
-            if (perm === 'granted')
-                return true;
-            perm = $.$mol_fiber_sync(() => new Promise(done => Notification.requestPermission(perm => {
-                done(perm);
-            })))();
-            return perm === 'granted';
-        }
-        static show(info) {
-            navigator.serviceWorker.controller.postMessage(info);
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_notify, "allowed", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_notify, "show", null);
-    $.$mol_notify = $mol_notify;
-    if (typeof window === 'undefined') {
-        self.addEventListener('message', async (event) => {
-            let { context: title, message: body, uri: data } = event.data;
-            const tag = title;
-            const existen = await $.$mol_service().getNotifications({ tag });
-            for (const not of existen) {
-                if (not.body.indexOf(body) !== -1)
-                    body = not.body;
-                else if (body.indexOf(not.body) === -1)
-                    body = not.body + '\n' + body;
-                not.close();
-            }
-            const vibrate = [100, 200, 300, 400, 500];
-            await $.$mol_service().showNotification(title, { body, data, vibrate, tag });
-        });
-        self.addEventListener('notificationclick', $.$mol_service_handler(async (event) => {
-            const clients = await self['clients'].matchAll({ includeUncontrolled: true });
-            event.notification.close();
-            if (clients.length) {
-                const last = clients[clients.length - 1];
-                await last.focus();
-                await last.navigate(event.notification.data);
-            }
-            else {
-                await self['clients'].openWindow(event.notification.data);
-            }
-        }));
-    }
-})($ || ($ = {}));
-//notify.web.js.map
-;
-"use strict";
-var $;
-(function ($) {
     var $$;
     (function ($$) {
         const { rem } = $.$mol_style_unit;
@@ -12071,7 +12073,6 @@ var $;
                 return messages_completed.length;
             }
             message_notify(chat) {
-                this.$.$mol_notify.allowed(true);
                 if (!this.chat_unread_count(chat.id()))
                     return null;
                 this.$.$mol_notify.show({

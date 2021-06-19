@@ -11071,6 +11071,26 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_notify {
+        static allowed(next) {
+            return false;
+        }
+        static show(info) {
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_notify, "allowed", null);
+    __decorate([
+        $.$mol_fiber.method
+    ], $mol_notify, "show", null);
+    $.$mol_notify = $mol_notify;
+})($ || ($ = {}));
+//notify.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_wait_rest = $.$mol_fiber_sync(() => new Promise(done => new $.$mol_after_work(16, () => done(null))));
 })($ || ($ = {}));
 //rest.js.map
@@ -11270,6 +11290,7 @@ var $;
                     return joined;
                 if (next) {
                     user.chats([chat, ...user.chats()]);
+                    this.$.$mol_notify.allowed(true);
                 }
                 else {
                     user.chats(user.chats().filter(c => c !== chat));
@@ -11315,6 +11336,7 @@ var $;
                 this.draft(null);
                 this.$.$mol_wait_rest();
                 this.scroll_end();
+                this.$.$mol_notify.allowed(true);
             }
             scroll_end() {
                 const body = this.Body();
@@ -12034,26 +12056,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_notify {
-        static allowed(next) {
-            return false;
-        }
-        static show(info) {
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_notify, "allowed", null);
-    __decorate([
-        $.$mol_fiber.method
-    ], $mol_notify, "show", null);
-    $.$mol_notify = $mol_notify;
-})($ || ($ = {}));
-//notify.node.js.map
-;
-"use strict";
-var $;
-(function ($) {
     var $$;
     (function ($$) {
         const { rem } = $.$mol_style_unit;
@@ -12183,7 +12185,6 @@ var $;
                 return messages_completed.length;
             }
             message_notify(chat) {
-                this.$.$mol_notify.allowed(true);
                 if (!this.chat_unread_count(chat.id()))
                     return null;
                 this.$.$mol_notify.show({
