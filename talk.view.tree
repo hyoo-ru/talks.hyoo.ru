@@ -61,7 +61,7 @@ $hyoo_talks $mol_book2
 		Tools null
 		bg_transparent <= only_chat
 	Chat_unread_count!id $mol_speck
-		value <= chat_unread_count!id \
+		value <= chat_unread_count!id 0
 	Chat_link_title!id $mol_dimmer
 		haystack <= chat_title!id \
 		needle <= links_query
