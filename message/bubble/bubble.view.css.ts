@@ -3,11 +3,7 @@ namespace $.$$ {
 	const { vary } = $mol_style_func
 	
 	$mol_style_define( $hyoo_talks_message_bubble, {
-		
-		flex: {
-			wrap: 'wrap',
-		},
-		
+
 		'@': {
 			hyoo_talks_message_bubble_side: {
 				self: {
@@ -26,6 +22,12 @@ namespace $.$$ {
 						},
 					},
 				},
+			},
+		},
+		
+		Meta: {
+			flex: {
+				wrap: 'wrap',
 			},
 		},
 		
