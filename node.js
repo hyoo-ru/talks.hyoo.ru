@@ -11168,6 +11168,7 @@ var $;
                 background: {
                     color: 'transparent',
                 },
+                width: rem(12),
                 ':placeholder-shown': {
                     box: {
                         shadow: [{
