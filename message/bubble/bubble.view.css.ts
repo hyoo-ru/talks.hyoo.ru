@@ -5,7 +5,7 @@ namespace $.$$ {
 	$mol_style_define( $hyoo_talks_message_bubble, {
 		
 		flex: {
-			wrap: 'wrap,
+			wrap: 'wrap',
 		},
 		
 		'@': {
