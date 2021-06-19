@@ -6886,7 +6886,7 @@ var $;
         const { rem } = $.$mol_style_unit;
         $.$mol_style_define($$.$hyoo_talks_person_settings, {
             flex: {
-                basis: rem(20),
+                basis: rem(26),
                 shrink: 0,
             },
         });
@@ -11152,7 +11152,7 @@ var $;
                 }
             },
             flex: {
-                basis: rem(60),
+                basis: rem(54),
                 shrink: 0,
             },
             Title: {
@@ -12068,7 +12068,7 @@ var $;
             },
             Roster: {
                 flex: {
-                    basis: rem(20),
+                    basis: rem(26),
                     shrink: 0,
                 },
                 Foot: {
