@@ -97,8 +97,6 @@ namespace $.$$ {
 		@ $mol_mem_key
 		message_notify( chat : $hyoo_talks_chat ) {
 
-			this.$.$mol_notify.allowed( true )
-			
 			if( !this.chat_unread_count( chat.id() ) ) return null
 
 			this.$.$mol_notify.show({
