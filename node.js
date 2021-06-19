@@ -4475,11 +4475,13 @@ var $;
                 store.apply(delta);
                 this.$.$mol_store_local.value(prefix, store.delta());
                 this.version_last(prefix, store.clock.version_max);
+                new $.$mol_after_timeout(1000, $.$mol_fiber_warp);
             });
-            socket.onclose = $.$mol_fiber.func(() => {
-                new this.$.$mol_after_timeout(5000, atom.fresh);
-            });
+            socket.onclose = () => this.scheduled_enforcer(null);
             return socket;
+        }
+        scheduled_enforcer(next) {
+            return new $.$mol_after_timeout(1000, $.$mol_fiber_warp);
         }
         send(key, next) {
             const socket = this.socket();
@@ -4519,6 +4521,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $mol_store_shared.prototype, "socket", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_store_shared.prototype, "scheduled_enforcer", null);
     __decorate([
         $.$mol_fiber.method
     ], $mol_store_shared.prototype, "send", null);
@@ -11898,7 +11903,7 @@ var $;
             return obj;
         }
         chat_unread_count(id) {
-            return "";
+            return 0;
         }
         chat_title(id) {
             return "";
@@ -12175,35 +12180,30 @@ var $;
                 const last_index = this.user().read_messages(chat);
                 const messages = this.chat(id).messages();
                 const messages_completed = messages.slice(last_index).filter(msg => msg.complete());
-                return (messages_completed.length).toString();
+                return messages_completed.length;
             }
             message_notify(chat) {
-                const message_last = chat.messages().slice(-1)[0];
-                if (!message_last)
-                    return;
-                const key = `notify=${chat.id()}_${message_last.id()}`;
-                const displayed = this.$.$mol_state_local.value(key);
-                const is_me = message_last.author()?.id() === this.domain().user().id();
-                if (!displayed && !is_me) {
-                    this.$.$mol_notify.allowed(true);
-                    return new $.$mol_after_timeout(3000, () => {
-                        if (Number(this.chat_unread_count(chat.id())) === 0)
-                            return;
-                        this.$.$mol_notify.show({
-                            context: `${chat.title()} ${message_last.author().name()}`,
-                            message: `Новое сообщение`,
-                            uri: this.$.$mol_state_arg.link({ chat: chat.id() })
-                        });
-                        this.$.$mol_state_local.value(key, true);
-                    });
-                }
+                this.$.$mol_notify.allowed(true);
+                if (!this.chat_unread_count(chat.id()))
+                    return null;
+                this.$.$mol_notify.show({
+                    context: `${chat.title()}`,
+                    message: `Новое сообщение`,
+                    uri: this.$.$mol_state_arg.link({ chat: chat.id() })
+                });
+                return null;
             }
             chat_link_sub(id) {
-                this.message_notify(this.chat(id));
-                const title = this.Chat_link_title(id);
-                return Number(this.chat_unread_count(id)) === 0
-                    ? [title]
-                    : [this.Chat_unread_count(id), title];
+                return [
+                    ...this.chat_unread_count(id) === 0 ? [] : [this.Chat_unread_count(id)],
+                    this.Chat_link_title(id),
+                ];
+            }
+            auto() {
+                for (const chat of this.user().chats()) {
+                    this.message_notify(chat);
+                }
+                return null;
             }
             language(next) {
                 return this.$.$mol_locale.lang(next);
@@ -12219,7 +12219,10 @@ var $;
             $.$mol_mem
         ], $hyoo_talks.prototype, "links", null);
         __decorate([
-            $.$mol_fiber.method
+            $.$mol_mem_key
+        ], $hyoo_talks.prototype, "chat_unread_count", null);
+        __decorate([
+            $.$mol_mem_key
         ], $hyoo_talks.prototype, "message_notify", null);
         $$.$hyoo_talks = $hyoo_talks;
     })($$ = $.$$ || ($.$$ = {}));

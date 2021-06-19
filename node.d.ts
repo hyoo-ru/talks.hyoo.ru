@@ -1971,6 +1971,7 @@ declare namespace $ {
             destructor: () => void;
         };
         socket(): WebSocket;
+        scheduled_enforcer(next?: null): $mol_after_timeout;
         send(key: string, next?: any): void;
     }
 }
@@ -3992,7 +3993,7 @@ declare namespace $ {
         Chat_open_icon(): $mol_icon_open_in_new;
         Chat_icon(): $mol_icon_cross;
         chat(id: any): $hyoo_talks_chat;
-        chat_unread_count(id: any): string;
+        chat_unread_count(id: any): number;
         chat_title(id: any): string;
         chat_arg(id: any): {};
         chat_link_sub(id: any): readonly any[];
@@ -4040,9 +4041,10 @@ declare namespace $.$$ {
         };
         chat_new_id(): string;
         chat_page_tools(): $mol_link[];
-        chat_unread_count(id: string): string;
-        message_notify(chat: $hyoo_talks_chat): $mol_after_timeout | undefined;
+        chat_unread_count(id: string): number;
+        message_notify(chat: $hyoo_talks_chat): null;
         chat_link_sub(id: string): ($mol_speck | $mol_dimmer)[];
+        auto(): null;
         language(next?: string): string;
     }
 }
