@@ -13,7 +13,7 @@ namespace $.$$ {
 		},
 		
 		flex: {
-			basis: rem(60),
+			basis: rem(54),
 			shrink: 0,
 		},
 		

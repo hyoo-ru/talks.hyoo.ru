@@ -23,7 +23,7 @@ namespace $.$$ {
 		Roster: {
 			
 			flex: {
-				basis: rem(20),
+				basis: rem(26),
 				shrink: 0,
 			},
 			
