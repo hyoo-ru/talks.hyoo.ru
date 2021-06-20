@@ -2,6 +2,7 @@ $hyoo_talks_chat_page $mol_page
 	messages?val /string
 	chat $hyoo_talks_chat
 	chat_id \global
+	default_title \
 	bg_transparent false
 	attr *
 		^
