@@ -611,6 +611,7 @@ $hyoo_talks_chat_page $mol_page
 	messages?val /string
 	chat $hyoo_talks_chat
 	chat_id \global
+	default_title \
 	bg_transparent false
 	attr *
 		^
@@ -750,6 +751,7 @@ $hyoo_talks $mol_book2
 		chat <= chat!id $hyoo_talks_chat
 		bg_transparent <= only_chat
 		tools <= chat_page_tools
+		default_title <= chat_title!id
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null

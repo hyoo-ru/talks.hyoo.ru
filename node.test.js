@@ -10831,6 +10831,9 @@ var $;
         chat_id() {
             return "global";
         }
+        default_title() {
+            return "";
+        }
         bg_transparent() {
             return false;
         }
@@ -11255,7 +11258,7 @@ var $;
                 return this.chat().domain();
             }
             title(next) {
-                return this.chat().title(next);
+                return this.chat().title(next) || this.default_title();
             }
             messages(next) {
                 $.$mol_fiber_defer(() => {
@@ -11795,6 +11798,7 @@ var $;
             obj.chat = () => this.chat(id);
             obj.bg_transparent = () => this.only_chat();
             obj.tools = () => this.chat_page_tools();
+            obj.default_title = () => this.chat_title(id);
             return obj;
         }
         Placeholder() {

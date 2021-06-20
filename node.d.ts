@@ -3768,6 +3768,7 @@ declare namespace $ {
         messages(val?: any): any;
         chat(): $hyoo_talks_chat;
         chat_id(): string;
+        default_title(): string;
         bg_transparent(): boolean;
         attr(): {
             hyoo_talks_chat_page_transparent: boolean;
