@@ -59,8 +59,17 @@ namespace $.$$ {
 			return this.domain().chat( id )
 		}
 		
+		@ $mol_mem_key
 		chat_title( id: string ) {
-			return this.chat( id ).title()
+			const talkers = id.split( '-' )
+			if ( talkers.length === 1 ) return this.chat( id ).title()
+			
+			const unnamed = this.$.$mol_locale.text( '$hyoo_talks_unnamed_person' )
+			const auto_title = talkers
+				.filter( id => id !== this.domain().user().id() )
+				.map( id => this.domain().person( id ).name() || unnamed ).join( ',' )
+			
+			return this.chat( id ).title() || auto_title
 		}
 		
 		chat_arg( id: string ) {

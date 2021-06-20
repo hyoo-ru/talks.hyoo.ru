@@ -130,7 +130,7 @@ namespace $.$$ {
 				}
 					
 			} )
-			
+	
 			return draft.text( next )
 		}
 		
@@ -171,9 +171,9 @@ namespace $.$$ {
 			this.$.$mol_wait_rest()
 			this.scroll_end()
 			
-			this.talkers_auto_join( chat )
-
 			this.$.$mol_notify.allowed( true )
+
+			this.talkers_auto_join( chat )
 		}
 		
 		scroll_end() {
