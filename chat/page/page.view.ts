@@ -132,6 +132,23 @@ namespace $.$$ {
 			
 			return draft.text( next )
 		}
+		
+		talkers_auto_join( chat: $hyoo_talks_chat ) {
+
+			const talkers = chat.id().split('-')
+			if ( talkers.length === 1 ) return
+				
+			for ( const id of talkers ) {
+				
+				const person = this.domain().person( id )
+
+				if ( person.chats().findIndex( val => val.id() === chat.id() ) !== -1 ) continue
+					
+				person.chats( [ ...person.chats() , chat ] )
+
+			}
+
+		}
 
 		draft_send() {
 			
@@ -153,6 +170,7 @@ namespace $.$$ {
 			this.$.$mol_wait_rest()
 			this.scroll_end()
 			
+			this.talkers_auto_join( chat )
 		}
 		
 		scroll_end() {
