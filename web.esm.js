@@ -11217,6 +11217,17 @@ var $;
                     });
                 return draft.text(next);
             }
+            talkers_auto_join(chat) {
+                const talkers = chat.id().split('-');
+                if (talkers.length === 1)
+                    return;
+                for (const id of talkers) {
+                    const person = this.domain().person(id);
+                    if (person.chats().findIndex(val => val.id() === chat.id()) !== -1)
+                        continue;
+                    person.chats([...person.chats(), chat]);
+                }
+            }
             draft_send() {
                 const draft = this.draft();
                 if (!draft.text())
@@ -11231,6 +11242,7 @@ var $;
                 this.$.$mol_wait_rest();
                 this.scroll_end();
                 this.$.$mol_notify.allowed(true);
+                this.talkers_auto_join(chat);
             }
             scroll_end() {
                 const body = this.Body();
@@ -11701,6 +11713,9 @@ var $;
             obj.sub = () => this.chat_link_sub(id);
             return obj;
         }
+        unnamed_person() {
+            return this.$.$mol_locale.text('$hyoo_talks_unnamed_person');
+        }
         background() {
             return "";
         }
@@ -12055,7 +12070,14 @@ var $;
                 return this.domain().chat(id);
             }
             chat_title(id) {
-                return this.chat(id).title();
+                const talkers = id.split('-');
+                if (talkers.length === 1)
+                    return this.chat(id).title();
+                const unnamed = this.$.$mol_locale.text('$hyoo_talks_unnamed_person');
+                const auto_title = talkers
+                    .filter(id => id !== this.domain().user().id())
+                    .map(id => this.domain().person(id).name() || unnamed).join(',');
+                return this.chat(id).title() || auto_title;
             }
             chat_arg(id) {
                 return { chat: id };
@@ -12113,6 +12135,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks.prototype, "links", null);
+        __decorate([
+            $.$mol_mem_key
+        ], $hyoo_talks.prototype, "chat_title", null);
         __decorate([
             $.$mol_mem_key
         ], $hyoo_talks.prototype, "chat_unread_count", null);

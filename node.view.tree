@@ -762,6 +762,7 @@ $hyoo_talks $mol_book2
 	Chat_link!id $mol_link
 		arg <= chat_arg!id *
 		sub <= chat_link_sub!id /
+	unnamed_person @ \Unnamed
 
 $hyoo_talks_placeholder $mol_page
 	bg_transparent false

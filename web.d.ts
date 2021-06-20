@@ -3863,6 +3863,7 @@ declare namespace $.$$ {
         draft(next?: null): $hyoo_talks_message;
         joined(next?: boolean): boolean;
         draft_text(next?: string): string;
+        talkers_auto_join(chat: $hyoo_talks_chat): void;
         draft_send(): void;
         scroll_end(): void;
         update_last_readed_message(): $mol_fiber<any>;
@@ -4005,6 +4006,7 @@ declare namespace $ {
         Chat_unread_count(id: any): $mol_speck;
         Chat_link_title(id: any): $$.$mol_dimmer;
         Chat_link(id: any): $$.$mol_link;
+        unnamed_person(): string;
         background(): string;
         Theme(): $$.$mol_theme_auto;
         chat_new_id(): string;
