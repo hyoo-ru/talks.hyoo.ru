@@ -83,6 +83,7 @@ namespace $.$$ {
 			
 		}
 		
+		@ $mol_mem_key
 		chat_unread_count( id: string ) {
 			const chat = this.chat( id )
 			
@@ -90,43 +91,37 @@ namespace $.$$ {
 			const messages = this.chat( id ).messages()
 			const messages_completed = messages.slice( last_index ).filter( msg => msg.complete() )
 			
-			return ( messages_completed.length ).toString()
+			return messages_completed.length
 		}
 		
-		@ $mol_fiber.method
+		@ $mol_mem_key
 		message_notify( chat : $hyoo_talks_chat ) {
 
-			const message_last = chat.messages().slice(-1)[0]
-			if (!message_last) return
-			const key = `notify=${chat.id()}_${message_last.id()}`
-			const displayed = this.$.$mol_state_local.value( key )
-			const is_me = message_last.author()?.id() === this.domain().user().id()
-			
-			if (!displayed && !is_me) {
-				this.$.$mol_notify.allowed( true )
+			if( !this.chat_unread_count( chat.id() ) ) return null
 
-				return new $mol_after_timeout( 3_000, ()=> {
+			this.$.$mol_notify.show({
+				context: `${chat.title()}`,
+				message: `Новое сообщение`,
+				uri: this.$.$mol_state_arg.link({ chat: chat.id() })
+			})
 
-					if (Number( this.chat_unread_count( chat.id() ) ) === 0) return
-
-					this.$.$mol_notify.show({
-						context: `${chat.title()} ${message_last.author()!.name()}`,
-						message: `Новое сообщение`,
-						uri: this.$.$mol_state_arg.link({ chat: chat.id() })
-					})
-					this.$.$mol_state_local.value( key , true )
-
-				} )
-			}
+			return null
 		}
 		
 		chat_link_sub( id : string ) {	
-			this.message_notify( this.chat( id ))
+			return [
+				... this.chat_unread_count( id ) === 0 ? [] : [ this.Chat_unread_count( id ) ],
+				this.Chat_link_title(  id ),
+			]
+		}
+		
+		auto() {
 			
-			const title = this.Chat_link_title(  id )
-			return Number( this.chat_unread_count( id ) ) === 0
-				? [ title ]
-				: [ this.Chat_unread_count( id ) , title ]
+			for( const chat of this.user().chats() ) {
+				this.message_notify( chat )
+			}
+			
+			return null
 		}
 
 		language( next?: string ) {

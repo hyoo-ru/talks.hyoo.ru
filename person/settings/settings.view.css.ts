@@ -5,7 +5,7 @@ namespace $.$$ {
 	$mol_style_define( $hyoo_talks_person_settings, {
 		
 		flex: {
-			basis: rem(20),
+			basis: rem(26),
 			shrink: 0,
 		},
 		

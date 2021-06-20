@@ -96,6 +96,7 @@ namespace $.$$ {
 			
 			if( next ) {
 				user.chats([ chat, ... user.chats() ])
+				this.$.$mol_notify.allowed( true )
 			} else {
 				user.chats( user.chats().filter( c => c !== chat ) )
 			}
@@ -171,6 +172,8 @@ namespace $.$$ {
 			this.scroll_end()
 			
 			this.talkers_auto_join( chat )
+
+			this.$.$mol_notify.allowed( true )
 		}
 		
 		scroll_end() {

@@ -13,7 +13,7 @@ namespace $.$$ {
 		},
 		
 		flex: {
-			basis: rem(60),
+			basis: rem(54),
 			shrink: 0,
 		},
 		
@@ -22,6 +22,7 @@ namespace $.$$ {
 			background: {
 				color: 'transparent',
 			},
+			width: rem(12),
 			':placeholder-shown': {
 				box: {
 					shadow: [{
