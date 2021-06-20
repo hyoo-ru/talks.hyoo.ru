@@ -3842,6 +3842,7 @@ declare namespace $.$$ {
         draft_text(next?: string): string;
         talkers_auto_join(chat: $hyoo_talks_chat): void;
         draft_send(): void;
+        body_scroll_top(next?: number): number;
         scroll_end(): void;
         update_last_readed_message(): $mol_fiber<any>;
         auto(): void;

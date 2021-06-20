@@ -11356,9 +11356,13 @@ var $;
                 this.$.$mol_notify.allowed(true);
                 this.talkers_auto_join(chat);
             }
+            body_scroll_top(next) {
+                const key = `${this}.body_scroll_top()`;
+                return this.$.$mol_state_local.value(key, next)
+                    ?? Number.MAX_SAFE_INTEGER;
+            }
             scroll_end() {
-                const body = this.Body();
-                body.scroll_top(body.dom_node().scrollHeight);
+                this.body_scroll_top(this.Body().dom_node().scrollHeight);
             }
             update_last_readed_message() {
                 let [, last_viewed] = this.Bubbles().view_window();
