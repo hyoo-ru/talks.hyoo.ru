@@ -4451,7 +4451,7 @@ var $;
             return `wss://sync-hyoo-ru.herokuapp.com/`;
         }
         heartbeat() {
-            const timer = this.$.setInterval(() => {
+            const timer = setInterval(() => {
                 this.socket().send('');
             }, 30000);
             return {
@@ -11299,6 +11299,8 @@ var $;
                     return joined;
                 if (next) {
                     user.chats([chat, ...user.chats()]);
+                    user.read_messages(chat, chat.messages().length);
+                    this.scroll_end();
                     this.$.$mol_notify.allowed(true);
                 }
                 else {
