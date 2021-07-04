@@ -51,7 +51,7 @@ namespace $.$$ {
 		}
 		
 		title( next?: string ) {
-			return this.chat().title( next )
+			return this.chat().title( next ) || this.default_title()
 		}
 		
 		@ $mol_mem
@@ -96,6 +96,8 @@ namespace $.$$ {
 			
 			if( next ) {
 				user.chats([ chat, ... user.chats() ])
+				user.read_messages( chat, chat.messages().length )
+				this.scroll_end()
 				this.$.$mol_notify.allowed( true )
 			} else {
 				user.chats( user.chats().filter( c => c !== chat ) )
