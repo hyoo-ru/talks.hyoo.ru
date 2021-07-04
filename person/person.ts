@@ -4,7 +4,7 @@ namespace $ {
 		name: string,
 		background: string,
 		avatar: string,
-		online: [ string ],
+		online: string,
 		chats: string[],
 		drafts: Record< string, string >,
 		read_messages: Record< string , number >,
@@ -43,14 +43,14 @@ namespace $ {
 		
 		@ $mol_mem
 		online_time() {
-			const str = ( this.value( 'online' ) ?? [] )[0]
+			const str = this.value( 'online' )
 			return str ? new $mol_time_moment( str ) : null
 		}
 		
 		online_update() {
 			$mol_fiber_defer( ()=> {
 				if( this.online_near() ) return
-				this.value( 'online', [ new $mol_time_moment().toString() ] )
+				this.value( 'online', new $mol_time_moment().toString() )
 			} )
 		}
 		

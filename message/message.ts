@@ -3,7 +3,7 @@ namespace $ {
 	export class $hyoo_talks_message extends $mol_store<{
 		text: string,
 		author: [ string ],
-		moment: [ string ],
+		moment: string,
 		complete: boolean,
 	}> {
 		
@@ -36,7 +36,7 @@ namespace $ {
 		
 		@ $mol_mem
 		moment( next?: $mol_time_moment ) {
-			const str = ( this.value( 'moment', next && [ next.toString() ] ) ?? [] )[0]
+			const str = this.value( 'moment', next && next.toString() )
 			return str ? new $mol_time_moment( str ) : null
 		}
 		
