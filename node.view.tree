@@ -507,6 +507,8 @@ $mol_icon_eye $mol_icon path \M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C
 $mol_pop $mol_view
 	event * keydown?event <=> keydown?event null
 	showed?val false
+	align_vert \
+	align_hor \
 	sub /
 		<= Anchor null
 		<= Bubble $mol_pop_bubble
@@ -534,8 +536,8 @@ $mol_nav $mol_plugin
 	keys_x?val /
 	keys_y?val /
 	-
-	current_x?val \
-	current_y?val \
+	current_x?val null
+	current_y?val null
 	-
 	event_up?event null
 	event_down?event null
@@ -608,7 +610,7 @@ $mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92
 $mol_icon_arrow_up_bold $mol_icon path \M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z
 
 $hyoo_talks_chat_page $mol_page
-	messages?val /string
+	messages?val /$hyoo_talks_message
 	chat $hyoo_talks_chat
 	chat_id \global
 	default_title \

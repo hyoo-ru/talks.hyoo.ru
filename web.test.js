@@ -3216,6 +3216,9 @@ var $;
         'new lines'() {
             $.$mol_assert_like('\n\r\n'.match($.$hyoo_crowd_text_tokenizer), ['\n', '\r\n']);
         },
+        'numbers'() {
+            $.$mol_assert_like('123'.match($.$hyoo_crowd_text_tokenizer), ['123']);
+        },
         'emoji'() {
             $.$mol_assert_like('😀😁'.match($.$hyoo_crowd_text_tokenizer), ['😀', '😁']);
         },
@@ -3876,9 +3879,9 @@ var $;
             },
             'both binding'($) {
                 const app = $_1.$mol_view_tree_test_binding.make({ $ });
-                $_1.$mol_assert_ok(app.value() !== 1);
-                app.value(1);
-                $_1.$mol_assert_equal(app.value(), 1);
+                $_1.$mol_assert_ok(app.value() !== '1');
+                app.value('1');
+                $_1.$mol_assert_equal(app.value(), '1');
             },
             'left binding'($) {
                 const app = $_1.$mol_view_tree_test_binding.make({ $ });
