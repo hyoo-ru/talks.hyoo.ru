@@ -17,5 +17,6 @@
 	"$mol_link_source_hint": "Source code",
 	"$mol_paginator_backward_hint": "Назад",
 	"$mol_paginator_forward_hint": "Вперёд",
+	"$mol_search_Clear_hint": "Clear",
 	"$mol_search_hint": "Search..."
 }
