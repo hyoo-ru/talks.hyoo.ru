@@ -3304,12 +3304,27 @@ declare namespace $ {
             type: string;
         };
         sub(): readonly any[];
-        uri(): string;
+        uri(val?: any): string;
         mime(): string;
     }
 }
 
 declare namespace $ {
+    const $mol_wait_timeout: (timeout: number) => unknown;
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_embed_native extends $.$mol_embed_native {
+        dom_node: (next?: HTMLIFrameElement) => HTMLObjectElement;
+        loaded(): boolean;
+        uri_resource(): string;
+        _uri_sync: $mol_fiber | undefined;
+        uri_listener(): $mol_dom_listener;
+        render(): void;
+    }
 }
 
 declare namespace $ {
@@ -3341,7 +3356,7 @@ declare namespace $ {
         peek_label(): string;
         peek(val?: any): boolean;
         preview_uri(index: any): string;
-        Preview_embed(index: any): $mol_embed_native;
+        Preview_embed(index: any): $$.$mol_embed_native;
     }
 }
 

@@ -6676,7 +6676,7 @@ var $;
             mol_link_current: {
                 'true': {
                     background: {
-                        color: $.$mol_theme.back,
+                        color: $.$mol_theme.hover,
                     },
                     color: $.$mol_theme.text,
                     textShadow: '0 0',
@@ -9129,13 +9129,18 @@ var $;
                 ""
             ];
         }
-        uri() {
+        uri(val) {
+            if (val !== undefined)
+                return val;
             return "";
         }
         mime() {
             return "";
         }
     }
+    __decorate([
+        $.$mol_mem
+    ], $mol_embed_native.prototype, "uri", null);
     $.$mol_embed_native = $mol_embed_native;
 })($ || ($ = {}));
 //native.view.tree.js.map
@@ -9143,9 +9148,81 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$mol_wait_timeout = $.$mol_fiber_sync((timeout) => new Promise(done => new $.$mol_after_timeout(timeout, () => done(null))));
+})($ || ($ = {}));
+//timeout.js.map
+;
+"use strict";
+var $;
+(function ($) {
     $.$mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmax-width: 100%;\n\tmax-height: 50vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tbackground: var(--mol_theme_shade);\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n}\n");
 })($ || ($ = {}));
 //native.view.css.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_embed_native extends $.$mol_embed_native {
+            loaded() {
+                const node = this.dom_node();
+                this.uri_resource();
+                return $.$mol_fiber_sync(() => new Promise((done, fail) => {
+                    new $.$mol_after_timeout(3000, () => {
+                        try {
+                            if (node.contentWindow.location.href === 'about:blank') {
+                                done(true);
+                            }
+                        }
+                        catch { }
+                    });
+                    node.onload = () => {
+                        done(true);
+                    };
+                    node.onerror = (event) => {
+                        fail(typeof event === 'string' ? new Error(event) : event.error || event);
+                    };
+                }))();
+            }
+            uri_resource() {
+                return this.uri().replace(/#.*/, '');
+            }
+            uri_listener() {
+                const node = this.dom_node();
+                return new $.$mol_dom_listener($.$mol_dom_context, 'message', $.$mol_fiber_root((event) => {
+                    if (event.source !== node.contentWindow)
+                        return;
+                    if (!Array.isArray(event.data))
+                        return;
+                    if (event.data[0] !== 'hashchange')
+                        return;
+                    this._uri_sync?.destructor();
+                    this._uri_sync = $.$mol_fiber.current;
+                    $.$mol_wait_timeout(1000);
+                    this.uri(event.data[1]);
+                }));
+            }
+            render() {
+                const node = super.render();
+                this.uri_listener();
+                this.loaded();
+                return node;
+            }
+        }
+        __decorate([
+            $.$mol_mem
+        ], $mol_embed_native.prototype, "loaded", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_embed_native.prototype, "uri_resource", null);
+        __decorate([
+            $.$mol_mem
+        ], $mol_embed_native.prototype, "uri_listener", null);
+        $$.$mol_embed_native = $mol_embed_native;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//native.view.js.map
 ;
 "use strict";
 var $;
