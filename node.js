@@ -9348,7 +9348,6 @@ var $;
     var $$;
     (function ($$) {
         class $mol_embed_native extends $.$mol_embed_native {
-            dom_node;
             loaded() {
                 const node = this.dom_node();
                 this.uri_resource();
