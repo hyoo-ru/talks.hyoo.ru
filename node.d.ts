@@ -1776,6 +1776,7 @@ declare namespace $ {
         store(prefix: string): $hyoo_crowd_graph;
         version_last(prefix: string, next?: number): number;
         request(prefix: string): null;
+        _send_task: undefined | $mol_fiber;
         value<Key extends keyof $mol_store_shared_data>(key: Key, next?: $mol_store_shared_data[Key]): string | number | boolean | string[];
         selection<Key extends keyof $mol_store_shared_data>(key: Key, next?: number[]): number[];
         selection_range<Key extends keyof $mol_store_shared_data>(key: Key, next?: number[][]): number[][];

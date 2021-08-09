@@ -4131,6 +4131,7 @@ var $;
             $.$mol_fiber_defer(() => this.send(prefix, this.store(prefix).delta()));
             return null;
         }
+        _send_task;
         value(key, next) {
             let [prefix, ...tail] = key.split('/');
             let suffix = tail.join('/');
@@ -4150,7 +4151,12 @@ var $;
             }
             else {
                 const val = store.value(suffix, next);
-                $.$mol_fiber_defer(() => this.send(prefix, store.delta()));
+                if (!this._send_task) {
+                    this._send_task = $.$mol_fiber_defer(() => {
+                        this.send(prefix, store.delta());
+                        this._send_task = undefined;
+                    });
+                }
                 this.$.$mol_store_local.value(prefix, store.delta());
                 return val;
             }
