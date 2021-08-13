@@ -486,10 +486,10 @@ $hyoo_talks_chat_page $mol_page
 	chat $hyoo_talks_chat
 	chat_id \global
 	default_title \
-	bg_transparent false
+	embed false
 	attr *
 		^
-		hyoo_talks_chat_page_transparent <= bg_transparent
+		hyoo_talks_chat_page_embed <= embed
 	Title $mol_string
 		value?val <=> title?val \
 		hint @ \Chat title
@@ -563,14 +563,12 @@ $mol_switch $mol_view
 	keys /string
 	sub <= items /$mol_check
 
-$mol_icon_open_in_new $mol_icon path \M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V12H19V19Z
-
 $hyoo_talks $mol_book2
 	domain $hyoo_talks_domain
-	only_chat false
+	embed false
 	attr *
 		^
-		hyoo_talks_only_chat <= only_chat
+		hyoo_talks_embed <= embed
 	style *
 		^
 		background-image <= background \
@@ -609,25 +607,18 @@ $hyoo_talks $mol_book2
 				arg * settings null
 				sub /
 					<= Settings_close_icon $mol_icon_cross
-	Chat_open $mol_link
-		arg * embed null
-		target \_blank
-		sub /
-			<= Chat_open_icon $mol_icon_open_in_new
 	Chat_close $mol_link
 		arg * chat null
 		sub /
 			<= Chat_icon $mol_icon_cross
-	chat_page_tools /
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
-		bg_transparent <= only_chat
-		tools <= chat_page_tools
+		embed <= embed
 		default_title <= chat_title!id
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null
-		bg_transparent <= only_chat
+		bg_transparent <= embed
 	Chat_unread_count!id $mol_speck
 		value <= chat_unread_count!id 0
 	Chat_link_title!id $mol_dimmer

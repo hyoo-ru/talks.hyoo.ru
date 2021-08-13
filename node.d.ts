@@ -3342,9 +3342,9 @@ declare namespace $ {
         chat(): $hyoo_talks_chat;
         chat_id(): string;
         default_title(): string;
-        bg_transparent(): boolean;
+        embed(): boolean;
         attr(): {
-            hyoo_talks_chat_page_transparent: boolean;
+            hyoo_talks_chat_page_embed: boolean;
         };
         Title(): $$.$mol_string;
         head(): readonly any[];
@@ -3400,6 +3400,7 @@ declare namespace $.$$ {
 
 declare namespace $.$$ {
     class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
+        Head(): $mol_view;
         head(): ($mol_view | $mol_string | $mol_search_jumper)[];
         search_enabled(next?: boolean): boolean;
         search_start(event: Event): void;
@@ -3529,17 +3530,11 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    class $mol_icon_open_in_new extends $mol_icon {
-        path(): string;
-    }
-}
-
-declare namespace $ {
     class $hyoo_talks extends $mol_book2 {
         domain(): $hyoo_talks_domain;
-        only_chat(): boolean;
+        embed(): boolean;
         attr(): {
-            hyoo_talks_only_chat: boolean;
+            hyoo_talks_embed: boolean;
         };
         style(): {
             "background-image": string;
@@ -3547,9 +3542,7 @@ declare namespace $ {
         plugins(): readonly any[];
         Roster(): $$.$mol_page;
         Settings(): $$.$hyoo_talks_person_settings;
-        Chat_open(): $$.$mol_link;
         Chat_close(): $$.$mol_link;
-        chat_page_tools(): readonly any[];
         Chat_page(id: any): $$.$hyoo_talks_chat_page;
         Placeholder(): $hyoo_talks_placeholder;
         Chat_unread_count(id: any): $mol_speck;
@@ -3575,7 +3568,6 @@ declare namespace $ {
         user(): $hyoo_talks_person;
         Settings_close_icon(): $mol_icon_cross;
         Settings_close(): $$.$mol_link;
-        Chat_open_icon(): $mol_icon_open_in_new;
         Chat_icon(): $mol_icon_cross;
         chat(id: any): $hyoo_talks_chat;
         chat_unread_count(id: any): number;
@@ -3602,7 +3594,7 @@ declare namespace $.$$ {
     class $hyoo_talks extends $.$hyoo_talks {
         chat_id_current(): string | null;
         settings_opened(): boolean;
-        only_chat(): boolean;
+        embed(): boolean;
         pages(): ($mol_page | $hyoo_talks_person_settings | $hyoo_talks_chat_page)[];
         user(): $hyoo_talks_person;
         background(): string;
@@ -3614,7 +3606,6 @@ declare namespace $.$$ {
             chat: string;
         };
         chat_new_id(): string;
-        chat_page_tools(): $mol_link[];
         chat_unread_count(id: string): number;
         message_notify(chat: $hyoo_talks_chat): null;
         chat_link_sub(id: string): ($mol_speck | $mol_dimmer)[];

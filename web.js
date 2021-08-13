@@ -9624,13 +9624,13 @@ var $;
         default_title() {
             return "";
         }
-        bg_transparent() {
+        embed() {
             return false;
         }
         attr() {
             return {
                 ...super.attr(),
-                hyoo_talks_chat_page_transparent: this.bg_transparent()
+                hyoo_talks_chat_page_embed: this.embed()
             };
         }
         Title() {
@@ -9996,7 +9996,7 @@ var $;
         const { rem, px, per } = $.$mol_style_unit;
         $.$mol_style_define($$.$hyoo_talks_chat_page, {
             '@': {
-                hyoo_talks_chat_page_transparent: {
+                hyoo_talks_chat_page_embed: {
                     'true': {
                         backgroundColor: 'transparent',
                     }
@@ -10064,6 +10064,9 @@ var $;
     var $$;
     (function ($$) {
         class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
+            Head() {
+                return this.embed() ? null : super.Head();
+            }
             head() {
                 return [
                     this.Title(),
@@ -10560,30 +10563,18 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_open_in_new extends $.$mol_icon {
-        path() {
-            return "M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V12H19V19Z";
-        }
-    }
-    $.$mol_icon_open_in_new = $mol_icon_open_in_new;
-})($ || ($ = {}));
-//new.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $hyoo_talks extends $.$mol_book2 {
         domain() {
             const obj = new this.$.$hyoo_talks_domain();
             return obj;
         }
-        only_chat() {
+        embed() {
             return false;
         }
         attr() {
             return {
                 ...super.attr(),
-                hyoo_talks_only_chat: this.only_chat()
+                hyoo_talks_embed: this.embed()
             };
         }
         style() {
@@ -10620,17 +10611,6 @@ var $;
             ];
             return obj;
         }
-        Chat_open() {
-            const obj = new this.$.$mol_link();
-            obj.arg = () => ({
-                embed: null
-            });
-            obj.target = () => "_blank";
-            obj.sub = () => [
-                this.Chat_open_icon()
-            ];
-            return obj;
-        }
         Chat_close() {
             const obj = new this.$.$mol_link();
             obj.arg = () => ({
@@ -10641,14 +10621,10 @@ var $;
             ];
             return obj;
         }
-        chat_page_tools() {
-            return [];
-        }
         Chat_page(id) {
             const obj = new this.$.$hyoo_talks_chat_page();
             obj.chat = () => this.chat(id);
-            obj.bg_transparent = () => this.only_chat();
-            obj.tools = () => this.chat_page_tools();
+            obj.embed = () => this.embed();
             obj.default_title = () => this.chat_title(id);
             return obj;
         }
@@ -10656,7 +10632,7 @@ var $;
             const obj = new this.$.$hyoo_talks_placeholder();
             obj.Title = () => null;
             obj.Tools = () => null;
-            obj.bg_transparent = () => this.only_chat();
+            obj.bg_transparent = () => this.embed();
             return obj;
         }
         Chat_unread_count(id) {
@@ -10784,10 +10760,6 @@ var $;
             ];
             return obj;
         }
-        Chat_open_icon() {
-            const obj = new this.$.$mol_icon_open_in_new();
-            return obj;
-        }
         Chat_icon() {
             const obj = new this.$.$mol_icon_cross();
             return obj;
@@ -10818,9 +10790,6 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks.prototype, "Settings", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks.prototype, "Chat_open", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks.prototype, "Chat_close", null);
@@ -10886,9 +10855,6 @@ var $;
     ], $hyoo_talks.prototype, "Settings_close", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks.prototype, "Chat_open_icon", null);
-    __decorate([
-        $.$mol_mem
     ], $hyoo_talks.prototype, "Chat_icon", null);
     __decorate([
         $.$mol_mem_key
@@ -10934,7 +10900,7 @@ var $;
         const { url } = $.$mol_style_func;
         $.$mol_style_define($$.$hyoo_talks, {
             '@': {
-                hyoo_talks_only_chat: {
+                hyoo_talks_embed: {
                     'true': {
                         background: {
                             color: 'transparent',
@@ -10997,14 +10963,17 @@ var $;
             settings_opened() {
                 return this.$.$mol_state_arg.value('settings') !== null;
             }
-            only_chat() {
+            embed() {
                 const val = this.$.$mol_state_arg.value('embed');
-                return val !== null;
+                if (val !== null)
+                    return true;
+                const context = this.$.$mol_dom_context;
+                return context.self !== context.parent;
             }
             pages() {
                 this.user().online_update();
                 const chat = this.chat_id_current();
-                const only_chat = this.only_chat();
+                const only_chat = this.embed();
                 return [
                     ...only_chat ? [] : [this.Roster()],
                     ...chat ? [this.Chat_page(chat)] : [],
@@ -11048,14 +11017,6 @@ var $;
             chat_new_id() {
                 return $.$mol_guid();
             }
-            chat_page_tools() {
-                const context = this.$.$mol_dom_context;
-                const embed = context.self !== context.parent;
-                return [
-                    ...embed ? [this.Chat_open()] : [],
-                    ...this.only_chat() ? [] : [this.Chat_close()],
-                ];
-            }
             chat_unread_count(id) {
                 const chat = this.chat(id);
                 const last_index = this.user().read_messages(chat);
@@ -11091,7 +11052,7 @@ var $;
         }
         __decorate([
             $.$mol_mem
-        ], $hyoo_talks.prototype, "only_chat", null);
+        ], $hyoo_talks.prototype, "embed", null);
         __decorate([
             $.$mol_mem
         ], $hyoo_talks.prototype, "pages", null);
