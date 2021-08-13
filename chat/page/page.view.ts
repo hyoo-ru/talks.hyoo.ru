@@ -1,6 +1,10 @@
 namespace $.$$ {
 	
 	export class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
+
+		Head() {
+			return this.embed() ? null! : super.Head()
+		}
 		
 		head() {
 			return [

@@ -11,9 +11,14 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		only_chat() : boolean {
+		embed() : boolean {
+			
 			const val = this.$.$mol_state_arg.value( 'embed' )
-			return val !== null
+			if( val !== null ) return true
+			
+			const context = this.$.$mol_dom_context
+			return context.self !== context.parent
+			
 		}
 		
 		@ $mol_mem
@@ -22,7 +27,7 @@ namespace $.$$ {
 			this.user().online_update()
 			
 			const chat = this.chat_id_current()
-			const only_chat = this.only_chat()
+			const only_chat = this.embed()
 			
 			return [
 				... only_chat ? [] : [ this.Roster() ],
@@ -78,18 +83,6 @@ namespace $.$$ {
 		
 		chat_new_id() {
 			return $mol_guid()
-		}
-		
-		chat_page_tools() {
-			
-			const context = this.$.$mol_dom_context
-			const embed = context.self !== context.parent
-			
-			return [
-				... embed ? [ this.Chat_open() ] : [],
-				... this.only_chat() ? [] : [ this.Chat_close() ],
-			]
-			
 		}
 		
 		@ $mol_mem_key

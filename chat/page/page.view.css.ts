@@ -5,7 +5,7 @@ namespace $.$$ {
 	$mol_style_define( $hyoo_talks_chat_page, {
 		
 		'@': {
-			hyoo_talks_chat_page_transparent: {
+			hyoo_talks_chat_page_embed: {
 				'true': {
 					backgroundColor: 'transparent',
 				}

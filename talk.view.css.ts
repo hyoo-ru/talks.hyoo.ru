@@ -6,7 +6,7 @@ namespace $.$$ {
 	$mol_style_define( $hyoo_talks, {
 		
 		'@': {
-			hyoo_talks_only_chat: {
+			hyoo_talks_embed: {
 				'true': {
 					background: {
 						color: 'transparent',
