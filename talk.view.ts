@@ -126,10 +126,6 @@ namespace $.$$ {
 			return null
 		}
 
-		language( next?: string ) {
-			return this.$.$mol_locale.lang( next )
-		}
-		
 	}
 	
 }

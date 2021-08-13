@@ -29,12 +29,6 @@ $hyoo_talks $mol_book2
 			<= Links_query $mol_search
 				query?val <=> links_query?val \
 			<= Links $mol_list rows <= links /
-		foot /
-			<= Language $mol_switch
-				value?val <=> language?val \en
-				options *
-					en \English
-					ru \Русский
 	Settings $hyoo_talks_person_settings
 		person <= user $hyoo_talks_person
 		tools /
