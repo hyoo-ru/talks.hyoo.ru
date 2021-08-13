@@ -25,7 +25,7 @@ namespace $ {
 		@ $mol_mem_key
 		chat( id: string ) {
 			const chat = this.sub( `chat=${id}`, new $hyoo_talks_chat({
-				title: '',
+				title: id,
 				messages: [],
 			}) )
 			chat.id = $mol_const( id )

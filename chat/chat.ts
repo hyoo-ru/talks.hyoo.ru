@@ -14,7 +14,7 @@ namespace $ {
 		}
 		
 		title( next?: string ) {
-			return this.value( 'title', next ) ?? ''
+			return this.value( 'title', next )
 		}
 		
 		messages( next?: $hyoo_talks_message[] ) {
