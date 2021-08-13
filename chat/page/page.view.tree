@@ -29,7 +29,7 @@ $hyoo_talks_chat_page $mol_page
 		<= Bubbles $mol_list rows <= bubbles /
 	foot <= draft_controls /
 		<= Draft_text $mol_textarea
-			hint @ \Add message..
+			hint @ \Add message.. [Will be exterminated later!]
 			value?val <=> draft_text?val \
 		<= Draft_send $mol_button_minor
 			title @ \Send
