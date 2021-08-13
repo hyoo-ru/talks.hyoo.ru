@@ -4046,7 +4046,7 @@ var $;
         }
         chat(id) {
             const chat = this.sub(`chat=${id}`, new $.$hyoo_talks_chat({
-                title: '',
+                title: id,
                 messages: [],
             }));
             chat.id = $.$mol_const(id);
@@ -5442,7 +5442,7 @@ var $;
             return this.$.$mol_fail(new Error('domain is not defined'));
         }
         title(next) {
-            return this.value('title', next) ?? '';
+            return this.value('title', next);
         }
         messages(next) {
             const ids = this.value('messages', next && next.map(m => m.id()));
