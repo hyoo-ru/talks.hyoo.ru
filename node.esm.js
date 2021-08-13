@@ -10561,114 +10561,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_switch extends $.$mol_view {
-        Option(id) {
-            const obj = new this.$.$mol_check();
-            obj.checked = (val) => this.option_checked(id, val);
-            obj.label = () => this.option_label(id);
-            obj.enabled = () => this.option_enabled(id);
-            obj.minimal_height = () => 24;
-            return obj;
-        }
-        value(val) {
-            if (val !== undefined)
-                return val;
-            return null;
-        }
-        options() {
-            return {};
-        }
-        keys() {
-            return [];
-        }
-        sub() {
-            return this.items();
-        }
-        option_checked(id, val) {
-            if (val !== undefined)
-                return val;
-            return false;
-        }
-        option_title(id) {
-            return "";
-        }
-        option_label(id) {
-            return [
-                this.option_title(id)
-            ];
-        }
-        enabled() {
-            return true;
-        }
-        option_enabled(id) {
-            return this.enabled();
-        }
-        items() {
-            return [];
-        }
-    }
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_switch.prototype, "Option", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_switch.prototype, "value", null);
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_switch.prototype, "option_checked", null);
-    $.$mol_switch = $mol_switch;
-})($ || ($ = {}));
-//switch.view.tree.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    $.$mol_style_attach("mol/switch/switch.view.css", "[mol_switch] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tflex: 1 1 auto;\n\tborder-radius: var(--mol_gap_round);\n}\n\n[mol_switch_option] {\n\tflex: 0 1 auto;\n}\n\n[mol_switch_option][mol_check_checked=\"true\"] {\n\tcolor: var(--mol_theme_text);\n\ttext-shadow: 0 0;\n}\n");
-})($ || ($ = {}));
-//switch.view.css.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_switch extends $.$mol_switch {
-            value(next) {
-                return $.$mol_state_session.value(`${this}.value()`, next);
-            }
-            options() {
-                return {};
-            }
-            keys() {
-                return Object.keys(this.options());
-            }
-            items() {
-                return this.keys().map(key => this.Option(key));
-            }
-            option_title(key) {
-                return this.options()[key];
-            }
-            option_checked(key, next) {
-                if (next === void 0)
-                    return this.value() == key;
-                this.value(next ? key : null);
-                return next;
-            }
-        }
-        __decorate([
-            $.$mol_mem
-        ], $mol_switch.prototype, "keys", null);
-        __decorate([
-            $.$mol_mem
-        ], $mol_switch.prototype, "items", null);
-        $$.$mol_switch = $mol_switch;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-//switch.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $hyoo_talks extends $.$mol_book2 {
         domain() {
             const obj = new this.$.$hyoo_talks_domain();
@@ -10704,9 +10596,6 @@ var $;
                 this.Settings_link()
             ];
             obj.body = () => this.roster_body();
-            obj.foot = () => [
-                this.Language()
-            ];
             return obj;
         }
         Settings() {
@@ -10834,20 +10723,6 @@ var $;
                 this.Links()
             ];
         }
-        language(val) {
-            if (val !== undefined)
-                return val;
-            return "en";
-        }
-        Language() {
-            const obj = new this.$.$mol_switch();
-            obj.value = (val) => this.language(val);
-            obj.options = () => ({
-                en: "English",
-                ru: "Русский"
-            });
-            return obj;
-        }
         user() {
             const obj = new this.$.$hyoo_talks_person();
             return obj;
@@ -10944,12 +10819,6 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks.prototype, "Links", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks.prototype, "language", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks.prototype, "Language", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks.prototype, "user", null);
@@ -11151,9 +11020,6 @@ var $;
                     this.message_notify(chat);
                 }
                 return null;
-            }
-            language(next) {
-                return this.$.$mol_locale.lang(next);
             }
         }
         __decorate([
