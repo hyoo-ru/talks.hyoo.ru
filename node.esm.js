@@ -10731,7 +10731,7 @@ var $;
             obj.arg = () => ({
                 embed: null
             });
-            obj.target = () => "_top";
+            obj.target = () => "_blank";
             obj.sub = () => [
                 this.Chat_open_icon()
             ];
