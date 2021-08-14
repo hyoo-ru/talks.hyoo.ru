@@ -9905,7 +9905,7 @@ var $;
     if (typeof window === 'undefined') {
         self.addEventListener('message', async (event) => {
             let { context: title, message: body, uri: data } = event.data;
-            const tag = title;
+            const tag = data;
             const existen = await $.$mol_service().getNotifications({ tag });
             for (const not of existen) {
                 if (not.body.indexOf(body) !== -1)
