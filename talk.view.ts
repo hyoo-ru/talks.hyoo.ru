@@ -2,8 +2,12 @@ namespace $.$$ {
 	
 	export class $hyoo_talks extends $.$hyoo_talks {
 		
+		@ $mol_mem
 		chat_id_current() {
-			return this.$.$mol_state_arg.value( 'chat' )
+			const opener = this.$.$mol_state_arg.value( 'embed' )
+			const origin = opener ? new URL( opener ).origin : ''
+			const id = this.$.$mol_state_arg.value( 'chat' ) ?? ''
+			return origin ? origin + '/' + id : id
 		}
 		
 		settings_opened() {
