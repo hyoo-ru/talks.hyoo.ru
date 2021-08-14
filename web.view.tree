@@ -131,22 +131,6 @@ $hyoo_talks_person_settings $mol_page
 					control <= Background $mol_string
 						value?val <=> background?val \
 
-$mol_link $mol_view
-	dom_name \a
-	attr *
-		^
-		href <= uri \
-		title <= hint \
-		target <= target \_self
-		download <= file_name \
-		mol_link_current <= current false
-	sub /$mol_view_content
-		<= title
-	arg *
-	event *
-		^
-		click?event <=> click?event <=> event_click?event null
-
 $mol_speck $mol_view
 	attr *
 		^
@@ -192,6 +176,22 @@ $mol_check $mol_button_minor
 			<= Title $mol_view
 				sub /
 					<= title \
+
+$mol_link $mol_view
+	dom_name \a
+	attr *
+		^
+		href <= uri \
+		title <= hint \
+		target <= target \_self
+		download <= file_name \
+		mol_link_current <= current false
+	sub /$mol_view_content
+		<= title
+	arg *
+	event *
+		^
+		click?event <=> click?event <=> event_click?event null
 
 $mol_image $mol_view
 	dom_name \img
@@ -590,14 +590,15 @@ $hyoo_talks $mol_book2
 				arg * settings null
 				sub /
 					<= Settings_close_icon $mol_icon_cross
-	Chat_close $mol_link
-		arg * chat null
-		sub /
-			<= Chat_icon $mol_icon_cross
 	Chat_page!id $hyoo_talks_chat_page
 		chat <= chat!id $hyoo_talks_chat
 		embed <= embed
 		default_title <= chat_title!id
+		tools /
+			<= Chat_close $mol_link
+				arg * chat null
+				sub /
+					<= Chat_icon $mol_icon_cross
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null
