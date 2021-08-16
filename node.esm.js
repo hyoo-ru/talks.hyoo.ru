@@ -4071,54 +4071,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_store_local_class extends $.$mol_store {
-        native() {
-            check: try {
-                const native = $.$mol_dom_context.localStorage;
-                if (!native)
-                    break check;
-                native.setItem('', '');
-                native.removeItem('');
-                return native;
-            }
-            catch (error) {
-                console.warn(error);
-            }
-            const dict = new Map();
-            return {
-                map: dict,
-                getItem: (key) => dict.get(key),
-                setItem: (key, value) => dict.set(key, value),
-                removeItem: (key) => dict.delete(key),
-            };
-        }
-        data() {
-            return $.$mol_fail(new Error('Forbidden for local storage'));
-        }
-        value(key, next, force) {
-            if (next === undefined)
-                return JSON.parse(this.native().getItem(key) || 'null');
-            if (next === null)
-                this.native().removeItem(key);
-            else
-                this.native().setItem(key, JSON.stringify(next));
-            return next;
-        }
-    }
-    __decorate([
-        $.$mol_mem
-    ], $mol_store_local_class.prototype, "native", null);
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_store_local_class.prototype, "value", null);
-    $.$mol_store_local_class = $mol_store_local_class;
-    $.$mol_store_local = new $mol_store_local_class;
-})($ || ($ = {}));
-//local.js.map
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_store_shared extends $.$mol_store {
         store(prefix) {
             return new this.$.$hyoo_crowd_graph;
@@ -4144,9 +4096,6 @@ var $;
             this.request(prefix);
             this.version_last(prefix);
             if (next == undefined) {
-                const delta = this.$.$mol_store_local.value(prefix);
-                if (delta)
-                    store.apply(delta);
                 return store.value(suffix);
             }
             else {
@@ -4157,7 +4106,6 @@ var $;
                         this._send_task = undefined;
                     });
                 }
-                this.$.$mol_store_local.value(prefix, store.delta());
                 return val;
             }
         }
@@ -4224,7 +4172,6 @@ var $;
                     return;
                 const store = this.store(prefix);
                 store.apply(delta);
-                this.$.$mol_store_local.value(prefix, store.delta());
                 this.version_last(prefix, store.clock.version_max);
                 new $.$mol_after_timeout(1000, $.$mol_fiber_warp);
             });
@@ -4281,6 +4228,54 @@ var $;
     $.$mol_store_shared = $mol_store_shared;
 })($ || ($ = {}));
 //shared.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_store_local_class extends $.$mol_store {
+        native() {
+            check: try {
+                const native = $.$mol_dom_context.localStorage;
+                if (!native)
+                    break check;
+                native.setItem('', '');
+                native.removeItem('');
+                return native;
+            }
+            catch (error) {
+                console.warn(error);
+            }
+            const dict = new Map();
+            return {
+                map: dict,
+                getItem: (key) => dict.get(key),
+                setItem: (key, value) => dict.set(key, value),
+                removeItem: (key) => dict.delete(key),
+            };
+        }
+        data() {
+            return $.$mol_fail(new Error('Forbidden for local storage'));
+        }
+        value(key, next, force) {
+            if (next === undefined)
+                return JSON.parse(this.native().getItem(key) || 'null');
+            if (next === null)
+                this.native().removeItem(key);
+            else
+                this.native().setItem(key, JSON.stringify(next));
+            return next;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_store_local_class.prototype, "native", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_store_local_class.prototype, "value", null);
+    $.$mol_store_local_class = $mol_store_local_class;
+    $.$mol_store_local = new $mol_store_local_class;
+})($ || ($ = {}));
+//local.js.map
 ;
 "use strict";
 var $;
