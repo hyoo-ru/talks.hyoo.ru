@@ -4,7 +4,7 @@ namespace $ {
 		name: string,
 		background: string,
 		avatar: string,
-		online: string,
+		online: number,
 		chats: string[],
 		drafts: Record< string, string >,
 		read_messages: Record< string , number >,
@@ -50,7 +50,7 @@ namespace $ {
 		online_update() {
 			$mol_fiber_defer( ()=> {
 				if( this.online_near() ) return
-				this.value( 'online', new $mol_time_moment().toString() )
+				this.value( 'online', new $mol_time_moment().valueOf() )
 			} )
 		}
 		
