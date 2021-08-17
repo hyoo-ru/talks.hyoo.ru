@@ -5499,7 +5499,7 @@ var $;
             $.$mol_fiber_defer(() => {
                 if (this.online_near())
                     return;
-                this.value('online', new $.$mol_time_moment().toString());
+                this.value('online', new $.$mol_time_moment().valueOf());
             });
         }
         chats(next) {

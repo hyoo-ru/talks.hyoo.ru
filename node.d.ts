@@ -2089,7 +2089,7 @@ declare namespace $ {
         name: string;
         background: string;
         avatar: string;
-        online: string;
+        online: number;
         chats: string[];
         drafts: Record<string, string>;
         read_messages: Record<string, number>;
