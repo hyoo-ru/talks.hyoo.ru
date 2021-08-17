@@ -49,8 +49,7 @@ namespace $ {
 		
 		online_update() {
 			$mol_fiber_defer( ()=> {
-				if( this.online_near() ) return
-				this.value( 'online', new $mol_time_moment().valueOf() )
+				this.value( 'online', Math.floor( new $mol_time_moment().valueOf() / 60_000 ) * 60_000 )
 			} )
 		}
 		
