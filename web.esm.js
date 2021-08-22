@@ -10828,6 +10828,9 @@ var $;
             settings_opened() {
                 return this.$.$mol_state_arg.value('settings') !== null;
             }
+            roster_opened() {
+                return this.$.$mol_state_arg.value('roster') !== null;
+            }
             embed() {
                 const val = this.$.$mol_state_arg.value('embed');
                 if (val !== null)
@@ -10838,9 +10841,9 @@ var $;
             pages() {
                 this.user().online_update();
                 const chat = this.chat_id_current();
-                const only_chat = this.embed();
+                const roster = this.roster_opened() || !this.embed();
                 return [
-                    ...only_chat ? [] : [this.Roster()],
+                    ...roster ? [this.Roster()] : [],
                     ...chat ? [this.Chat_page(chat)] : [],
                     ...this.settings_opened() ? [this.Settings()] : [],
                 ];

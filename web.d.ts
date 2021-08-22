@@ -3585,6 +3585,7 @@ declare namespace $.$$ {
     class $hyoo_talks extends $.$hyoo_talks {
         chat_id_current(): string;
         settings_opened(): boolean;
+        roster_opened(): boolean;
         embed(): boolean;
         pages(): ($mol_page | $hyoo_talks_person_settings | $hyoo_talks_chat_page)[];
         user(): $hyoo_talks_person;
