@@ -10835,13 +10835,15 @@ var $;
                 const val = this.$.$mol_state_arg.value('embed');
                 if (val !== null)
                     return true;
+                if (this.roster_opened())
+                    return false;
                 const context = this.$.$mol_dom_context;
                 return context.self !== context.parent;
             }
             pages() {
                 this.user().online_update();
                 const chat = this.chat_id_current();
-                const roster = this.roster_opened() || !this.embed();
+                const roster = !this.embed();
                 return [
                     ...roster ? [this.Roster()] : [],
                     ...chat ? [this.Chat_page(chat)] : [],
