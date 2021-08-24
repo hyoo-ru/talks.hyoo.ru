@@ -1,14 +1,6 @@
 namespace $ {
 	
-	export class $hyoo_talks_person extends $mol_store<{
-		name: string,
-		background: string,
-		avatar: string,
-		online: number,
-		chats: string[],
-		drafts: Record< string, string >,
-		read_messages: Record< string , number >,
-	}> {
+	export class $hyoo_talks_person extends $mol_object2 {
 		
 		id(): string {
 			return this.$.$mol_fail( new Error( 'id is not defined' ) )
@@ -18,16 +10,21 @@ namespace $ {
 			return this.$.$mol_fail( new Error( 'domain is not defined' ) )
 		}
 		
+		@ $mol_mem
+		state() {
+			return this.domain().state().doc( 'person' ).doc( this.id() )
+		}
+		
 		name( next?: string ) {
-			return this.value( 'name' , next ) ?? ''
+			return String( this.state().sub( 'name' ).value( next ) ?? '' )
 		}
 		
 		background( next?: string ) {
-			return this.value( 'background' , next ) ?? ''
+			return String( this.state().sub( 'background' ).value( next ) ?? '' )
 		}
 		
 		avatar( next?: string ) {
-			return this.value( 'avatar' , next ) ?? ''
+			return String( this.state().sub( 'avatar' ).value( next ) ?? '' )
 		}
 		
 		@ $mol_mem
@@ -43,32 +40,34 @@ namespace $ {
 		
 		@ $mol_mem
 		online_time() {
-			const str = this.value( 'online' )
-			return str ? new $mol_time_moment( str ) : null
+			const str = this.state().sub( 'online' ).value()
+			return str ? new $mol_time_moment( String( str ) ) : null
 		}
 		
 		online_update() {
 			$mol_fiber_defer( ()=> {
-				this.value( 'online', Math.floor( new $mol_time_moment().valueOf() / 60_000 ) * 60_000 )
+				this.state().sub( 'online' ).value(
+					new $mol_time_moment().toString( 'YYYY-MM-DDThh:mmZ' )
+				)
 			} )
 		}
 		
 		chats( next?: $hyoo_talks_chat[] ) {
-			const ids = this.value( 'chats' , next && next.map( m => m.id() ) )
+			const ids = this.state().sub( 'chats' ).list( next && next.map( m => m.id() ) )
 			if( !ids ) return []
-			return ids.map( id => this.domain().chat( id ) )
+			return ids.map( id => this.domain().chat( String( id ) ) )
 		}
 		
 		@ $mol_mem_key
 		draft( chat: $hyoo_talks_chat, next?: null ) {
 			
-			const drafts = this.sub( 'drafts' )
-			let id = next === undefined ? drafts.value( chat.id() ) : ''
+			const drafts = this.state().sub( 'drafts' )
+			let id = next === undefined ? String( drafts.sub( chat.id() ).value() ) : ''
 			
 			if( !id ) {
 				id = $mol_guid()
 				$mol_fiber_defer( ()=>
-					drafts.value( chat.id(), id )
+					drafts.sub( chat.id() ).value( id )
 				)
 			}
 			
@@ -77,8 +76,8 @@ namespace $ {
 		
 		@ $mol_mem_key
 		read_messages( chat: $hyoo_talks_chat , next?: number ) {
-			const sub = this.sub( 'read_messages' )
-			return sub.value( chat.id() , next ) ?? chat.messages().length
+			const sub = this.state().sub( 'read_messages' )
+			return Number( sub.sub( chat.id() ).value( next ) ) ?? chat.messages().length
 		}
 		
 	}

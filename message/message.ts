@@ -1,11 +1,6 @@
 namespace $ {
 	
-	export class $hyoo_talks_message extends $mol_store<{
-		text: string,
-		author: [ string ],
-		moment: string,
-		complete: boolean,
-	}> {
+	export class $hyoo_talks_message extends $mol_object2 {
 		
 		id(): string {
 			return this.$.$mol_fail( new Error( 'id is not defined' ) )
@@ -15,29 +10,34 @@ namespace $ {
 			return this.$.$mol_fail( new Error( 'domain is not defined' ) )
 		}
 		
+		@ $mol_mem
+		state() {
+			return this.domain().state().doc( 'message' ).doc( this.id() )
+		}
+		
 		text( next?: string ) {
-			return this.value( 'text' , next ) ?? ''
+			return this.state().sub( 'text' ).text( next )
 		}
 		
 		text_selection( next?: number[] ) {
-			return this.selection( 'text', next )
+			return this.state().sub( 'text' ).selection( next )
 		}
 		
 		complete( next?: boolean ) {
-			return this.value( 'complete' , next ) ?? false
+			return Boolean( this.state().sub( 'complete' ).value( next ) )
 		}
 		
 		@ $mol_mem
 		author( next?: $hyoo_talks_person ) {
-			const id = ( this.value( 'author' , next && [ next.id() ] ) ?? [] )[0]
-			if( id ) return this.domain().person( id )
+			const id = this.state().sub( 'author' ).value( next && next.id() )
+			if( id ) return this.domain().person( String( id ) )
 			return null
 		}
 		
 		@ $mol_mem
 		moment( next?: $mol_time_moment ) {
-			const str = this.value( 'moment', next && next.toString() )
-			return str ? new $mol_time_moment( str ) : null
+			const str = this.state().sub( 'moment' ).value( next && next.toString() )
+			return str ? new $mol_time_moment( String( str ) ) : null
 		}
 		
 	}

@@ -1,9 +1,6 @@
 namespace $ {
 	
-	export class $hyoo_talks_chat extends $mol_store<{
-		title: string,
-		messages: string[],
-	}> {
+	export class $hyoo_talks_chat extends $mol_object2 {
 		
 		id(): string {
 			return this.$.$mol_fail( new Error( 'id is not defined' ) )
@@ -13,14 +10,19 @@ namespace $ {
 			return this.$.$mol_fail( new Error( 'domain is not defined' ) )
 		}
 		
+		@ $mol_mem
+		state() {
+			return this.domain().state().doc( 'chat' ).doc( this.id() )
+		}
+		
 		title( next?: string ) {
-			return this.value( 'title', next )
+			return this.state().sub( 'title' ).text( next )
 		}
 		
 		messages( next?: $hyoo_talks_message[] ) {
-			const ids = this.value( 'messages' , next && next.map( m => m.id() ) )
+			const ids = this.state().sub( 'messages' ).list( next && next.map( m => m.id() ) )
 			if( !ids ) return []
-			return ids.map( id => this.domain().message( id ) )
+			return ids.map( id => this.domain().message( String( id ) ) )
 		}
 		
 	}

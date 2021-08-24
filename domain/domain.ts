@@ -1,6 +1,11 @@
 namespace $ {
 	
-	export class $hyoo_talks_domain extends $mol_store_shared {
+	export class $hyoo_talks_domain extends $mol_object2 {
+		
+		@ $mol_mem
+		state() {
+			return new this.$.$mol_state_shared
+		}
 		
 		@ $mol_mem
 		user() {
@@ -16,7 +21,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		person( id: string ) {
-			const person = this.sub( `person=${id}`, new $hyoo_talks_person() )
+			const person = new $hyoo_talks_person()
 			person.id = $mol_const( id )
 			person.domain = $mol_const( this )
 			return person
@@ -24,10 +29,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		chat( id: string ) {
-			const chat = this.sub( `chat=${id}`, new $hyoo_talks_chat({
-				title: id,
-				messages: [],
-			}) )
+			const chat = new $hyoo_talks_chat
 			chat.id = $mol_const( id )
 			chat.domain = $mol_const( this )
 			return chat
@@ -35,7 +37,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		message( id: string ) {
-			const message = this.sub( `message=${id}`, new $hyoo_talks_message() )
+			const message = new $hyoo_talks_message()
 			message.id = $mol_const( id )
 			message.domain = $mol_const( this )
 			return message
