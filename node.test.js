@@ -5759,7 +5759,7 @@ var $;
         }
         draft(chat, next) {
             const drafts = this.state().sub('drafts');
-            let id = next === undefined ? String(drafts.sub(chat.id()).value()) : '';
+            let id = String(next === undefined ? drafts.sub(chat.id()).value() ?? '' : '');
             if (!id) {
                 id = $.$mol_guid();
                 $.$mol_fiber_defer(() => drafts.sub(chat.id()).value(id));
