@@ -3833,6 +3833,7 @@ var $;
             const state = new State;
             state.node = $.$mol_const(this.node().sub(key));
             state.request = n => this.request(n);
+            state.path = () => this.path();
             state.version_last = n => this.version_last(n);
             return state;
         }
@@ -3845,7 +3846,7 @@ var $;
                 const delta = this.store().delta(this.server_clock);
                 if (next !== undefined && !delta.length)
                     return;
-                this.send(this.path(), next === undefined ? null : delta);
+                this.send(this.path(), next === undefined && !delta.length ? null : delta);
                 for (const chunk of delta) {
                     this.server_clock.see(chunk.peer, chunk.time);
                 }
@@ -7075,7 +7076,7 @@ var $;
         '@': {
             mol_link_current: {
                 'true': {
-                    color: $.$mol_theme.text,
+                    color: $.$mol_theme.focus,
                     textShadow: '0 0',
                 }
             }
