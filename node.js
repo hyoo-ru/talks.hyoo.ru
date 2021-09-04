@@ -3199,6 +3199,58 @@ var $;
 //clock.js.map
 ;
 "use strict";
+var $;
+(function ($) {
+    class $mol_state_local extends $.$mol_object {
+        static 'native()';
+        static native() {
+            if (this['native()'])
+                return this['native()'];
+            check: try {
+                const native = $.$mol_dom_context.localStorage;
+                if (!native)
+                    break check;
+                native.setItem('', '');
+                native.removeItem('');
+                return this['native()'] = native;
+            }
+            catch (error) {
+                console.warn(error);
+            }
+            return this['native()'] = {
+                getItem(key) {
+                    return this[':' + key];
+                },
+                setItem(key, value) {
+                    this[':' + key] = value;
+                },
+                removeItem(key) {
+                    this[':' + key] = void 0;
+                }
+            };
+        }
+        static value(key, next, force) {
+            if (next === void 0)
+                return JSON.parse(this.native().getItem(key) || 'null');
+            if (next === null)
+                this.native().removeItem(key);
+            else
+                this.native().setItem(key, JSON.stringify(next));
+            return next;
+        }
+        prefix() { return ''; }
+        value(key, next) {
+            return $mol_state_local.value(this.prefix() + '.' + key, next);
+        }
+    }
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_state_local, "value", null);
+    $.$mol_state_local = $mol_state_local;
+})($ || ($ = {}));
+//local.js.map
+;
+"use strict";
 //deep.js.map
 ;
 "use strict";
@@ -3291,7 +3343,7 @@ var $;
         }
         h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
         h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-        return 4294967296 * ((1 << 16) & h2) + (h1 >>> 0);
+        return 4294967296 * (((1 << 16) - 1) & h2) + (h1 >>> 0);
     }
     $.$mol_hash_string = $mol_hash_string;
 })($ || ($ = {}));
@@ -4071,8 +4123,19 @@ var $;
             return `wss://sync-hyoo-ru.herokuapp.com/`;
         }
         server_clock = new $.$hyoo_crowd_clock;
+        peer() {
+            const key = this + '.peer()';
+            const peer = this.$.$mol_state_local.value(key);
+            if (peer)
+                return Number(peer);
+            const peer2 = 1 + Math.floor(Math.random() * (2 ** (6 * 8) - 2));
+            $.$mol_fiber_defer(() => {
+                this.$.$mol_state_local.value(key, peer2);
+            });
+            return peer2;
+        }
         store() {
-            return new this.$.$hyoo_crowd_doc;
+            return new this.$.$hyoo_crowd_doc(this.peer());
         }
         path() {
             return '';
@@ -4088,6 +4151,7 @@ var $;
             state.path = $.$mol_const(this.path() ? this.path() + '/' + key : key);
             state.doc = k => this.doc(key + '/' + k);
             state.socket = () => this.socket();
+            state.peer = () => this.peer();
             return state;
         }
         sub(key) {
@@ -4209,6 +4273,9 @@ var $;
             socket.send(JSON.stringify(message));
         }
     }
+    __decorate([
+        $.$mol_mem
+    ], $mol_state_shared.prototype, "peer", null);
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "store", null);
@@ -4608,58 +4675,6 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //page.view.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_state_local extends $.$mol_object {
-        static 'native()';
-        static native() {
-            if (this['native()'])
-                return this['native()'];
-            check: try {
-                const native = $.$mol_dom_context.localStorage;
-                if (!native)
-                    break check;
-                native.setItem('', '');
-                native.removeItem('');
-                return this['native()'] = native;
-            }
-            catch (error) {
-                console.warn(error);
-            }
-            return this['native()'] = {
-                getItem(key) {
-                    return this[':' + key];
-                },
-                setItem(key, value) {
-                    this[':' + key] = value;
-                },
-                removeItem(key) {
-                    this[':' + key] = void 0;
-                }
-            };
-        }
-        static value(key, next, force) {
-            if (next === void 0)
-                return JSON.parse(this.native().getItem(key) || 'null');
-            if (next === null)
-                this.native().removeItem(key);
-            else
-                this.native().setItem(key, JSON.stringify(next));
-            return next;
-        }
-        prefix() { return ''; }
-        value(key, next) {
-            return $mol_state_local.value(this.prefix() + '.' + key, next);
-        }
-    }
-    __decorate([
-        $.$mol_mem_key
-    ], $mol_state_local, "value", null);
-    $.$mol_state_local = $mol_state_local;
-})($ || ($ = {}));
-//local.js.map
 ;
 "use strict";
 var $;
