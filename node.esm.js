@@ -10983,9 +10983,6 @@ var $;
                     basis: rem(26),
                     shrink: 0,
                 },
-                Foot: {
-                    padding: $.$mol_gap.block,
-                },
             },
             Links_query: {
                 alignSelf: 'auto',
