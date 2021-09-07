@@ -894,6 +894,53 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_crypto_auditor_pair(this: $): Promise<{
+        public: $mol_crypto_auditor_public;
+        private: $mol_crypto_auditor_private;
+    }>;
+    class $mol_crypto_auditor_public extends Object {
+        readonly native: CryptoKey & {
+            type: 'public';
+        };
+        static size: number;
+        constructor(native: CryptoKey & {
+            type: 'public';
+        });
+        static from(serial: DataView | ArrayBuffer): Promise<$mol_crypto_auditor_public>;
+        serial(): Promise<ArrayBuffer>;
+        verify(data: DataView | ArrayBuffer, sign: DataView | ArrayBuffer): Promise<boolean>;
+    }
+    class $mol_crypto_auditor_private extends Object {
+        readonly native: CryptoKey & {
+            type: 'private';
+        };
+        constructor(native: CryptoKey & {
+            type: 'private';
+        });
+        static from(serial: DataView | ArrayBuffer): Promise<$mol_crypto_auditor_private>;
+        serial(): Promise<ArrayBuffer>;
+        sign(data: DataView | ArrayBuffer): Promise<ArrayBuffer>;
+    }
+    const $mol_crypto_auditor_sign_size = 32;
+}
+
+declare namespace $ {
+    function $mol_base64_encode(src: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_encode_web(str: string | Uint8Array): string;
+}
+
+declare namespace $ {
+    function $mol_base64_decode(base64: string): Uint8Array;
+}
+
+declare namespace $ {
+    function $mol_base64_decode_web(base64Str: string): Uint8Array;
+}
+
+declare namespace $ {
     type $mol_type_partial_deep<Val> = {
         [field in keyof Val]?: $mol_type_partial_deep<Val[field]>;
     };
@@ -1134,6 +1181,15 @@ declare namespace $ {
         server(): string;
         server_clock: $hyoo_crowd_clock;
         peer(): number;
+        keys_serial(): {
+            public: string;
+            private: string;
+        };
+        keys(): {
+            public: $mol_crypto_auditor_public;
+            private: $mol_crypto_auditor_private;
+        };
+        store_raw(): $hyoo_crowd_doc;
         store(): $hyoo_crowd_doc;
         path(): string;
         node(): $hyoo_crowd_node;
@@ -1157,7 +1213,7 @@ declare namespace $ {
             destructor: () => void;
         };
         scheduled_enforcer(next?: null): $mol_after_timeout;
-        send(key: string, next?: any): void;
+        send(key: string, next?: readonly $hyoo_crowd_chunk[]): void;
     }
 }
 

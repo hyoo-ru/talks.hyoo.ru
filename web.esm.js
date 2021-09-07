@@ -3000,6 +3000,116 @@ var $;
 //local.web.js.map
 ;
 "use strict";
+var $;
+(function ($) {
+    const algorithm = {
+        name: 'RSA-PSS',
+        modulusLength: 256,
+        publicExponent: new Uint8Array([1, 0, 1]),
+        hash: 'SHA-1',
+        saltLength: 8,
+    };
+    async function $mol_crypto_auditor_pair() {
+        const pair = await $.crypto.subtle.generateKey(algorithm, true, ['sign', 'verify']);
+        return {
+            public: new $mol_crypto_auditor_public(pair.publicKey),
+            private: new $mol_crypto_auditor_private(pair.privateKey),
+        };
+    }
+    $.$mol_crypto_auditor_pair = $mol_crypto_auditor_pair;
+    class $mol_crypto_auditor_public extends Object {
+        native;
+        static size = 62;
+        constructor(native) {
+            super();
+            this.native = native;
+        }
+        static async from(serial) {
+            return new this(await crypto.subtle.importKey('spki', serial, algorithm, true, ['verify']));
+        }
+        async serial() {
+            return await crypto.subtle.exportKey('spki', this.native);
+        }
+        async verify(data, sign) {
+            return await crypto.subtle.verify(algorithm, this.native, sign, data);
+        }
+    }
+    $.$mol_crypto_auditor_public = $mol_crypto_auditor_public;
+    class $mol_crypto_auditor_private extends Object {
+        native;
+        constructor(native) {
+            super();
+            this.native = native;
+        }
+        static async from(serial) {
+            return new this(await crypto.subtle.importKey('pkcs8', serial, algorithm, true, ['sign']));
+        }
+        async serial() {
+            return await crypto.subtle.exportKey('pkcs8', this.native);
+        }
+        async sign(data) {
+            return await crypto.subtle.sign(algorithm, this.native, data);
+        }
+    }
+    $.$mol_crypto_auditor_private = $mol_crypto_auditor_private;
+    $.$mol_crypto_auditor_sign_size = 32;
+})($ || ($ = {}));
+//auditor.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_encode(src) {
+        throw new Error('Not implemented');
+    }
+    $.$mol_base64_encode = $mol_base64_encode;
+})($ || ($ = {}));
+//encode.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function binary_string(bytes) {
+        let binary = '';
+        if (typeof bytes !== 'string') {
+            for (const byte of bytes)
+                binary += String.fromCharCode(byte);
+        }
+        else {
+            binary = unescape(encodeURIComponent(bytes));
+        }
+        return binary;
+    }
+    function $mol_base64_encode_web(str) {
+        return $.$mol_dom_context.btoa(binary_string(str));
+    }
+    $.$mol_base64_encode_web = $mol_base64_encode_web;
+    $.$mol_base64_encode = $mol_base64_encode_web;
+})($ || ($ = {}));
+//encode.web.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_decode(base64) {
+        throw new Error('Not implemented');
+    }
+    $.$mol_base64_decode = $mol_base64_decode;
+})($ || ($ = {}));
+//decode.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_decode_web(base64Str) {
+        return new Uint8Array($.$mol_dom_context.atob(base64Str).split('').map(c => c.charCodeAt(0)));
+    }
+    $.$mol_base64_decode_web = $mol_base64_decode_web;
+    $.$mol_base64_decode = $mol_base64_decode_web;
+})($ || ($ = {}));
+//decode.web.js.map
+;
+"use strict";
 //deep.js.map
 ;
 "use strict";
@@ -3883,8 +3993,35 @@ var $;
             });
             return peer2;
         }
-        store() {
+        keys_serial() {
+            const key = this + '.keys()';
+            let serial = this.$.$mol_state_local.value(key);
+            if (serial)
+                return serial;
+            const pair = $.$mol_fiber_sync(this.$.$mol_crypto_auditor_pair).call($);
+            serial = {
+                public: $.$mol_base64_encode(new Uint8Array($.$mol_fiber_sync(pair.public.serial).call(pair.public))),
+                private: $.$mol_base64_encode(new Uint8Array($.$mol_fiber_sync(pair.private.serial).call(pair.private))),
+            };
+            $.$mol_fiber_defer(() => this.$.$mol_state_local.value(key, serial));
+            return serial;
+        }
+        keys() {
+            const prev = this.keys_serial();
+            return {
+                public: $.$mol_fiber_sync(this.$.$mol_crypto_auditor_public.from)
+                    .call(this.$.$mol_crypto_auditor_public, $.$mol_base64_decode(prev.public)),
+                private: $.$mol_fiber_sync(this.$.$mol_crypto_auditor_private.from)
+                    .call(this.$.$mol_crypto_auditor_private, $.$mol_base64_decode(prev.private)),
+            };
+        }
+        store_raw() {
             return new this.$.$hyoo_crowd_doc(this.peer());
+        }
+        store() {
+            const keys = this.keys_serial();
+            const store = this.store_raw();
+            return store;
         }
         path() {
             return '';
@@ -3901,6 +4038,8 @@ var $;
             state.doc = k => this.doc(key + '/' + k);
             state.socket = () => this.socket();
             state.peer = () => this.peer();
+            state.keys_serial = () => this.keys_serial();
+            state.keys = () => this.keys();
             return state;
         }
         sub(key) {
@@ -3921,7 +4060,7 @@ var $;
                 const delta = this.store().delta(this.server_clock);
                 if (next !== undefined && !delta.length)
                     return;
-                this.send(this.path(), next === undefined && !delta.length ? null : delta);
+                this.send(this.path(), next === undefined && !delta.length ? [] : delta);
                 for (const chunk of delta) {
                     this.server_clock.see(chunk.peer, chunk.time);
                 }
@@ -3970,7 +4109,7 @@ var $;
                 const message = JSON.parse(event.data);
                 if (!Array.isArray(message))
                     return;
-                let [path, delta] = message;
+                let [path, ...delta] = message;
                 if (typeof path !== 'string')
                     return;
                 if (!delta)
@@ -4018,13 +4157,22 @@ var $;
             }
             if (socket.readyState !== socket.OPEN)
                 return;
-            const message = next === undefined ? [key] : [key, next];
+            const message = next === undefined ? [key] : [key, ...next];
             socket.send(JSON.stringify(message));
         }
     }
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "peer", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_state_shared.prototype, "keys_serial", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_state_shared.prototype, "keys", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_state_shared.prototype, "store_raw", null);
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "store", null);
@@ -7532,7 +7680,7 @@ var $;
                         color: hsla(330, 70, 50, 1),
                     },
                     'code-global': {
-                        color: hsla(210, 80, 50, 1),
+                        color: hsla(30, 80, 50, 1),
                     },
                     'code-decorator': {
                         color: hsla(180, 40, 50, 1),
@@ -7550,7 +7698,7 @@ var $;
                         color: hsla(270, 60, 50, 1),
                     },
                     'code-link': {
-                        color: hsla(240, 60, 50, 1),
+                        color: hsla(210, 60, 50, 1),
                     },
                     'code-comment-inline': {
                         opacity: .5,
