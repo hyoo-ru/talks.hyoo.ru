@@ -3193,6 +3193,25 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_hash_string(str, seed = 0) {
+        let h1 = 0xdeadbeef ^ seed;
+        let h2 = 0x41c6ce57 ^ seed;
+        for (let i = 0; i < str.length; i++) {
+            const ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return 4294967296 * (((1 << 16) - 1) & h2) + (h1 >>> 0);
+    }
+    $.$mol_hash_string = $mol_hash_string;
+})($ || ($ = {}));
+//string.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_state_local extends $.$mol_object {
         static 'native()';
         static native() {
@@ -3425,25 +3444,6 @@ var $;
     $.$mol_jsx = $mol_jsx;
 })($ || ($ = {}));
 //jsx.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_hash_string(str, seed = 0) {
-        let h1 = 0xdeadbeef ^ seed;
-        let h2 = 0x41c6ce57 ^ seed;
-        for (let i = 0; i < str.length; i++) {
-            const ch = str.charCodeAt(i);
-            h1 = Math.imul(h1 ^ ch, 2654435761);
-            h2 = Math.imul(h2 ^ ch, 1597334677);
-        }
-        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-        return 4294967296 * (((1 << 16) - 1) & h2) + (h1 >>> 0);
-    }
-    $.$mol_hash_string = $mol_hash_string;
-})($ || ($ = {}));
-//string.js.map
 ;
 "use strict";
 var $;
@@ -4220,15 +4220,7 @@ var $;
         }
         server_clock = new $.$hyoo_crowd_clock;
         peer() {
-            const key = this + '.peer()';
-            const peer = this.$.$mol_state_local.value(key);
-            if (peer)
-                return Number(peer);
-            const peer2 = 1 + Math.floor(Math.random() * (2 ** (6 * 8) - 2));
-            $.$mol_fiber_defer(() => {
-                this.$.$mol_state_local.value(key, peer2);
-            });
-            return peer2;
+            return $.$mol_hash_string(this.keys_serial().public);
         }
         keys_serial() {
             const key = this + '.keys()';
@@ -4252,13 +4244,8 @@ var $;
                     .call(this.$.$mol_crypto_auditor_private, $.$mol_base64_decode(prev.private)),
             };
         }
-        store_raw() {
-            return new this.$.$hyoo_crowd_doc(this.peer());
-        }
         store() {
-            const keys = this.keys_serial();
-            const store = this.store_raw();
-            return store;
+            return new this.$.$hyoo_crowd_doc(this.peer());
         }
         path() {
             return '';
@@ -4293,8 +4280,13 @@ var $;
         }
         request(next) {
             this.socket();
+            const store = this.store();
+            if (next !== undefined) {
+                const pub = this.keys_serial().public;
+                store.root.sub(pub).value(pub);
+            }
             $.$mol_fiber_defer(() => {
-                const delta = this.store().delta(this.server_clock);
+                const delta = store.delta(this.server_clock);
                 if (next !== undefined && !delta.length)
                     return;
                 this.send(this.path(), next === undefined && !delta.length ? [] : delta);
@@ -4407,9 +4399,6 @@ var $;
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "keys", null);
-    __decorate([
-        $.$mol_mem
-    ], $mol_state_shared.prototype, "store_raw", null);
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "store", null);

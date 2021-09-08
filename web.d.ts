@@ -877,6 +877,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_hash_string(str: string, seed?: number): number;
+}
+
+declare namespace $ {
     class $mol_state_local<Value> extends $mol_object {
         static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
         static native(): Storage | {
@@ -976,10 +980,6 @@ declare namespace $ {
         interface ElementChildrenAttribute {
         }
     }
-}
-
-declare namespace $ {
-    function $mol_hash_string(str: string, seed?: number): number;
 }
 
 declare namespace $ {
@@ -1189,7 +1189,6 @@ declare namespace $ {
             public: $mol_crypto_auditor_public;
             private: $mol_crypto_auditor_private;
         };
-        store_raw(): $hyoo_crowd_doc;
         store(): $hyoo_crowd_doc;
         path(): string;
         node(): $hyoo_crowd_node;
