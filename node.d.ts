@@ -1217,6 +1217,7 @@ declare namespace $ {
         doc(key: string): $mol_state_shared;
         sub(key: string): $mol_state_shared;
         version_last(next?: number): number;
+        request_done(next?: (res: unknown) => void): (res: unknown) => void;
         request(next?: unknown): null;
         value(next?: unknown): unknown;
         list(next?: readonly unknown[]): readonly unknown[];

@@ -2335,11 +2335,22 @@ var $;
             if (!sub)
                 return 0;
             let min = 0;
-            sub.forEach(view => {
-                if (view instanceof $mol_view) {
-                    min = Math.max(min, view.minimal_width());
+            try {
+                sub.forEach(view => {
+                    if (view instanceof $mol_view) {
+                        min = Math.max(min, view.minimal_width());
+                    }
+                });
+            }
+            catch (error) {
+                if (error instanceof Promise) {
+                    $.$mol_atom2.current.subscribe(error);
                 }
-            });
+                else if ($.$mol_fail_catch(error)) {
+                    console.error(error);
+                }
+                return 24;
+            }
             return min;
         }
         maximal_width() {
@@ -4292,6 +4303,9 @@ var $;
         version_last(next) {
             return this.store().clock.now;
         }
+        request_done(next) {
+            return (res) => { };
+        }
         request(next) {
             this.socket();
             const store = this.store();
@@ -4299,15 +4313,27 @@ var $;
                 const pub = this.keys_serial().public;
                 store.root.sub(pub).value(pub);
             }
-            $.$mol_fiber_defer(() => {
-                const delta = store.delta(this.server_clock);
-                if (next !== undefined && !delta.length)
-                    return;
-                this.send(this.path(), next === undefined && !delta.length ? [] : delta);
-                for (const chunk of delta) {
-                    this.server_clock.see(chunk.peer, chunk.time);
-                }
+            $.$mol_fiber.run(() => {
+                $.$mol_fiber_defer(() => {
+                    const delta = store.delta(this.server_clock);
+                    if (next !== undefined && !delta.length)
+                        return;
+                    this.send(this.path(), next === undefined && !delta.length ? [] : delta);
+                    for (const chunk of delta) {
+                        this.server_clock.see(chunk.peer, chunk.time);
+                    }
+                });
             });
+            if ($.$mol_dom_context.navigator.onLine && next === undefined) {
+                const prev = $.$mol_mem_cached(() => this.request());
+                if (prev === undefined) {
+                    const wait = $.$mol_fiber_sync(() => new Promise(done => {
+                        $.$mol_mem_cached(() => this.request_done(), done);
+                        new $.$mol_after_timeout(5000, () => done(null));
+                    }));
+                    wait();
+                }
+            }
             return null;
         }
         value(next) {
@@ -4359,6 +4385,7 @@ var $;
                     return;
                 const doc = this.doc(path);
                 const store = doc.store();
+                doc.request_done()(null);
                 if (!delta.length) {
                     delta = store.delta();
                     if (!delta.length)
@@ -4425,6 +4452,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "version_last", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_state_shared.prototype, "request_done", null);
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "request", null);
@@ -4775,13 +4805,6 @@ var $;
                     grow: 1000,
                     shrink: 1,
                     basis: per(100),
-                },
-                margin: 0,
-                '>': {
-                    $mol_view: {
-                        margin: $.$mol_gap.block,
-                        maxWidth: calc('100% - 1.5rem'),
-                    }
                 },
             },
             Foot: {
