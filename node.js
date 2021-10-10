@@ -3177,6 +3177,103 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_db_response(request) {
+        return new Promise((done, fail) => {
+            request.onerror = () => fail(new Error(request.error.message));
+            request.onsuccess = () => done(request.result);
+        });
+    }
+    $.$mol_db_response = $mol_db_response;
+})($ || ($ = {}));
+//response.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_store {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get path() {
+            return this.native.keyPath;
+        }
+        get incremental() {
+            return this.native.autoIncrement;
+        }
+        get indexes() {
+            return new Proxy({}, {
+                ownKeys: () => [...this.native.indexNames],
+                has: (_, name) => this.native.indexNames.contains(name),
+                get: (_, name) => new $.$mol_db_index(this.native.index(name))
+            });
+        }
+        index_make(name, path = [], unique = false, multiEntry = false) {
+            return this.native.createIndex(name, path, { multiEntry, unique });
+        }
+        index_drop(name) {
+            this.native.deleteIndex(name);
+            return this;
+        }
+        get transaction() {
+            return new $.$mol_db_transaction(this.native.transaction);
+        }
+        get db() {
+            return this.transaction.db;
+        }
+        clear() {
+            return $.$mol_db_response(this.native.clear());
+        }
+        count(keys) {
+            return $.$mol_db_response(this.native.count(keys));
+        }
+        put(doc, key) {
+            return $.$mol_db_response(this.native.put(doc, key));
+        }
+        get(key) {
+            return $.$mol_db_response(this.native.get(key));
+        }
+        select(key, count) {
+            return $.$mol_db_response(this.native.getAll(key, count));
+        }
+        drop(keys) {
+            return $.$mol_db_response(this.native.delete(keys));
+        }
+    }
+    $.$mol_db_store = $mol_db_store;
+})($ || ($ = {}));
+//store.js.map
+;
+"use strict";
+//store_schema.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    async function $mol_db(name, ...migrations) {
+        const request = this.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
+        request.onupgradeneeded = event => {
+            migrations.splice(0, event.oldVersion - 1);
+            const transaction = new $.$mol_db_transaction(request.transaction);
+            for (const migrate of migrations)
+                migrate(transaction);
+        };
+        const db = await $.$mol_db_response(request);
+        return new $.$mol_db_database(db);
+    }
+    $.$mol_db = $mol_db;
+})($ || ($ = {}));
+//db.js.map
+;
+"use strict";
+//db_schema.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $hyoo_crowd_clock extends Map {
         now = 0;
         constructor(entries) {
@@ -4245,10 +4342,15 @@ var $;
 var $;
 (function ($) {
     class $mol_state_shared extends $.$mol_object2 {
+        db() {
+            const init = $.$mol_fiber_sync(() => $.$$.$mol_db('$mol_state_shared_db', mig => mig.store_make('Chunks'), mig => mig.stores.Chunks.index_make('Path', ['path'])));
+            return init();
+        }
         server() {
             return `wss://sync-hyoo-ru.herokuapp.com/`;
         }
         server_clock = new $.$hyoo_crowd_clock;
+        db_clock = new $.$hyoo_crowd_clock;
         peer() {
             return $.$mol_hash_string(this.keys_serial().public);
         }
@@ -4294,6 +4396,7 @@ var $;
             state.peer = () => this.peer();
             state.keys_serial = () => this.keys_serial();
             state.keys = () => this.keys();
+            state.db = () => this.db();
             return state;
         }
         sub(key) {
@@ -4303,6 +4406,7 @@ var $;
             state.request = n => this.request(n);
             state.path = () => this.path();
             state.version_last = n => this.version_last(n);
+            state.db = () => this.db();
             return state;
         }
         version_last(next) {
@@ -4311,10 +4415,26 @@ var $;
         request_done(next) {
             return (res) => { };
         }
+        db_load() {
+            return $.$mol_fiber_defer(() => {
+                const db = this.db();
+                const Chunks = db.read('Chunks').Chunks;
+                const path = this.path();
+                const delta = $.$mol_fiber_sync(() => Chunks.indexes.Path.select([path]))();
+                const store = this.store();
+                store.apply(delta);
+                this.version_last(-1);
+            });
+        }
         request(next) {
+            const db = this.db();
             this.socket();
             const store = this.store();
-            if (next !== undefined) {
+            const path = this.path();
+            this.db_load();
+            if (next === undefined) {
+            }
+            else {
                 const pub = this.keys_serial().public;
                 store.root.sub(pub).value(pub);
             }
@@ -4323,21 +4443,27 @@ var $;
                     const delta = store.delta(this.server_clock);
                     if (next !== undefined && !delta.length)
                         return;
-                    this.send(this.path(), next === undefined && !delta.length ? [] : delta);
+                    if (next !== undefined) {
+                        const trans = db.change('Chunks');
+                        const Chunks = trans.stores.Chunks;
+                        for (const chunk of delta) {
+                            console.log({ ...chunk, path });
+                            Chunks.put({ ...chunk, path }, [path, chunk.head, chunk.self]);
+                        }
+                        trans.commit().then(console.log);
+                    }
+                    if (delta.length) {
+                        this.send(path, next === undefined && !delta.length ? [] : delta);
+                    }
                     for (const chunk of delta) {
                         this.server_clock.see(chunk.peer, chunk.time);
                     }
                 });
             });
-            if ($.$mol_dom_context.navigator.onLine && next === undefined) {
-                const prev = $.$mol_mem_cached(() => this.request());
-                if (prev === undefined) {
-                    const wait = $.$mol_fiber_sync(() => new Promise(done => {
-                        $.$mol_mem_cached(() => this.request_done(), done);
-                        new $.$mol_after_timeout(5000, () => done(null));
-                    }));
-                    wait();
-                }
+            if (next === undefined) {
+                $.$mol_fiber.run(() => {
+                    $.$mol_fiber_defer(() => { this.send(path, []); });
+                });
             }
             return null;
         }
@@ -4374,6 +4500,7 @@ var $;
             return next ?? [{ chunk: 0, offset: 0 }, { chunk: 0, offset: 0 }];
         }
         socket() {
+            const db = this.db();
             this.heartbeat();
             const atom = $.$mol_atom2.current;
             const socket = new $.$mol_dom_context.WebSocket(this.server());
@@ -4398,6 +4525,12 @@ var $;
                     this.send(path, delta);
                     return;
                 }
+                const trans = db.change('Chunks');
+                const Chunks = trans.stores.Chunks;
+                for (const chunk of delta) {
+                    Chunks.put({ ...chunk, path }, [path, chunk.head, chunk.self]);
+                }
+                trans.commit();
                 store.apply(delta);
                 for (const chunk of delta) {
                     doc.server_clock.see(chunk.peer, chunk.time);
@@ -4438,6 +4571,9 @@ var $;
     }
     __decorate([
         $.$mol_mem
+    ], $mol_state_shared.prototype, "db", null);
+    __decorate([
+        $.$mol_mem
     ], $mol_state_shared.prototype, "peer", null);
     __decorate([
         $.$mol_mem
@@ -4460,6 +4596,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "request_done", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_state_shared.prototype, "db_load", null);
     __decorate([
         $.$mol_mem
     ], $mol_state_shared.prototype, "request", null);
@@ -6612,7 +6751,7 @@ var $;
         }
         Label() {
             const obj = new this.$.$mol_view();
-            obj.minimal_height = () => 24;
+            obj.minimal_height = () => 16;
             obj.sub = () => this.label();
             return obj;
         }
@@ -6639,7 +6778,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_style_attach("mol/labeler/labeler.view.css", "[mol_labeler] {\n\tdisplay: flex;\n\tflex-direction: column;\n\talign-items: stretch;\n\tcursor: inherit;\n}\n\n[mol_labeler_label] {\n\tcolor: var(--mol_theme_shade);\n}\n\n[mol_labeler_content] {\n\tdisplay: flex;\n}\n");
+    $.$mol_style_attach("mol/labeler/labeler.view.css", "[mol_labeler] {\n\tdisplay: flex;\n\tflex-direction: column;\n\talign-items: stretch;\n\tcursor: inherit;\n}\n\n[mol_labeler_label] {\n\tcolor: var(--mol_theme_shade);\n\tline-height: 1rem;\n}\n\n[mol_labeler_content] {\n\tdisplay: flex;\n}\n");
 })($ || ($ = {}));
 //labeler.view.css.js.map
 ;
@@ -11385,6 +11524,129 @@ var $;
     $.$mol_exec = $mol_exec;
 })($ || ($ = {}));
 //exec.node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_database {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get version() {
+            return this.native.version;
+        }
+        get stores() {
+            return [...this.native.objectStoreNames];
+        }
+        read(...names) {
+            return new $.$mol_db_transaction(this.native.transaction(names, 'readonly')).stores;
+        }
+        change(...names) {
+            return new $.$mol_db_transaction(this.native.transaction(names, 'readwrite'));
+        }
+        kill() {
+            this.native.close();
+            const request = indexedDB.deleteDatabase(this.name);
+            request.onblocked = console.error;
+            return $.$mol_db_response(request).then(() => { });
+        }
+        destructor() {
+            this.native.close();
+        }
+    }
+    $.$mol_db_database = $mol_db_database;
+})($ || ($ = {}));
+//database.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_transaction {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get stores() {
+            return new Proxy({}, {
+                ownKeys: () => [...this.native.objectStoreNames],
+                has: (_, name) => this.native.objectStoreNames.contains(name),
+                get: (_, name) => new $.$mol_db_store(this.native.objectStore(name)),
+            });
+        }
+        store_make(name) {
+            return this.native.db.createObjectStore(name, { autoIncrement: true });
+        }
+        store_drop(name) {
+            this.native.db.deleteObjectStore(name);
+            return this;
+        }
+        abort() {
+            this.native.abort();
+        }
+        commit() {
+            this.native.commit();
+            return new Promise((done, fail) => {
+                this.native.onerror = () => fail(new Error(this.native.error.message));
+                this.native.oncomplete = () => done();
+            });
+        }
+        get db() {
+            return new $.$mol_db_database(this.native.db);
+        }
+    }
+    $.$mol_db_transaction = $mol_db_transaction;
+})($ || ($ = {}));
+//transaction.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_db_index {
+        native;
+        constructor(native) {
+            this.native = native;
+        }
+        get name() {
+            return this.native.name;
+        }
+        get paths() {
+            return this.native.keyPath;
+        }
+        get unique() {
+            return this.native.unique;
+        }
+        get multiple() {
+            return this.native.multiEntry;
+        }
+        get store() {
+            return new $.$mol_db_store(this.native.objectStore);
+        }
+        get transaction() {
+            return this.store.transaction;
+        }
+        get db() {
+            return this.store.db;
+        }
+        count(keys) {
+            return $.$mol_db_response(this.native.count(keys));
+        }
+        get(key) {
+            return $.$mol_db_response(this.native.get(key));
+        }
+        select(key, count) {
+            return $.$mol_db_response(this.native.getAll(key, count));
+        }
+    }
+    $.$mol_db_index = $mol_db_index;
+})($ || ($ = {}));
+//index.js.map
+;
+"use strict";
+//index_schema.js.map
 ;
 "use strict";
 var $;
