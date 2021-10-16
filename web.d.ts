@@ -2848,6 +2848,12 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $mol_icon_microphone extends $mol_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
     class $mol_icon_arrow_up extends $mol_icon {
         path(): string;
     }
@@ -2889,6 +2895,9 @@ declare namespace $ {
         Bubbles(): $$.$mol_list;
         draft_text(val?: any): string;
         Draft_text(): $$.$mol_textarea;
+        Speech_toggle_icon(): $mol_icon_microphone;
+        hearing(val?: any): boolean;
+        Speech_toggle(): $mol_check_icon;
         Draft_send_icon(): $mol_icon_arrow_up_bold;
         draft_send(val?: any): any;
         Draft_send(): $mol_button_minor;
@@ -2920,6 +2929,60 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_range2<Item = number>(item?: (index: number) => Item, size?: () => number): Item[];
+    class $mol_range2_array<Item> extends Array<Item> {
+        concat(...tail: this[]): Item[];
+        filter<Context>(check: (val: Item, index: number, list: Item[]) => boolean, context?: Context): Item[];
+        forEach<Context>(proceed: (this: Context, val: Item, index: number, list: Item[]) => void, context?: Context): void;
+        map<Item_out, Context>(proceed: (this: Context, val: Item, index: number, list: Item[]) => Item_out, context?: Context): Item_out[];
+        reduce<Result>(merge: (result: Result, val: Item, index: number, list: Item[]) => Result, result?: Result): Result | undefined;
+        slice(from?: number, to?: number): Item[];
+        some<Context>(check: (this: Context, val: Item, index: number, list: Item[]) => boolean, context?: Context): boolean;
+        every<Context = null>(check: (this: Context, val: Item, index: number, list: Item[]) => boolean, context?: Context): boolean;
+    }
+}
+
+declare namespace $ {
+    class $mol_defer extends $mol_object {
+        run: () => void;
+        constructor(run: () => void);
+        destructor(): void;
+        static all: $mol_defer[];
+        static timer: any;
+        static scheduleNative: (handler: () => void) => any;
+        static schedule(): void;
+        static unschedule(): void;
+        static add(defer: $mol_defer): void;
+        static drop(defer: $mol_defer): void;
+        static run(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_speech extends $mol_plugin {
+        static speaker(): SpeechSynthesis;
+        static voices(): SpeechSynthesisVoice[];
+        static say(text: string): null;
+        static speaking(next?: boolean): boolean;
+        static hearer(): any;
+        static hearing(next?: boolean): boolean;
+        static recognition_index(next?: number): number;
+        static recognition(index: number, next?: SpeechRecognitionResult): SpeechRecognitionResult | null;
+        static recognitions(): SpeechRecognitionResult[];
+        static recognition_last(): SpeechRecognitionResult | null;
+        static commands(): string[];
+        static text(): string;
+        commands_skip(next?: number): number;
+        render(): null;
+        event_catch(found?: string[]): boolean;
+        patterns(): readonly string[];
+        matchers(): RegExp[];
+        prefix(): string;
+        suffix(): string;
+    }
+}
+
+declare namespace $ {
     function $mol_view_component(View: typeof $mol_view): void;
 }
 
@@ -2948,6 +3011,8 @@ declare namespace $.$$ {
         body_scroll_top(next?: number): number;
         scroll_end(): void;
         update_last_readed_message(): $mol_fiber<any>;
+        hearing(next?: boolean): boolean;
+        speech_to_text(): null;
         auto(): void;
     }
 }

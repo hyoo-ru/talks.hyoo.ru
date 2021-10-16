@@ -482,6 +482,8 @@ $mol_search_jumper $mol_search
 				enter?event <=> forward?event
 				escape?val <=> escape?val null
 
+$mol_icon_microphone $mol_icon path \M12,2C13.66,2 15,3.34 15,5V11C15,12.66 13.66,14 12,14C10.34,14 9,12.66 9,11V5C9,3.34 10.34,2 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7C7,13.76 9.24,16 12,16C14.76,16 17,13.76 17,11H19Z
+
 $mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z
 
 $mol_icon_arrow_up_bold $mol_icon path \M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z
@@ -519,6 +521,9 @@ $hyoo_talks_chat_page $mol_page
 		<= Draft_text $mol_textarea
 			hint @ \Add message.. [Will be exterminated later!]
 			value?val <=> draft_text?val \
+		<= Speech_toggle $mol_check_icon
+			Icon <= Speech_toggle_icon $mol_icon_microphone
+			checked?val <=> hearing?val false
 		<= Draft_send $mol_button_minor
 			title @ \Send
 			hint @ \Ctrl+Enter to send

@@ -9987,6 +9987,18 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_icon_microphone extends $.$mol_icon {
+        path() {
+            return "M12,2C13.66,2 15,3.34 15,5V11C15,12.66 13.66,14 12,14C10.34,14 9,12.66 9,11V5C9,3.34 10.34,2 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7C7,13.76 9.24,16 12,16C14.76,16 17,13.76 17,11H19Z";
+        }
+    }
+    $.$mol_icon_microphone = $mol_icon_microphone;
+})($ || ($ = {}));
+//microphone.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_arrow_up extends $.$mol_icon {
         path() {
             return "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z";
@@ -10144,6 +10156,21 @@ var $;
             obj.value = (val) => this.draft_text(val);
             return obj;
         }
+        Speech_toggle_icon() {
+            const obj = new this.$.$mol_icon_microphone();
+            return obj;
+        }
+        hearing(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        Speech_toggle() {
+            const obj = new this.$.$mol_check_icon();
+            obj.Icon = () => this.Speech_toggle_icon();
+            obj.checked = (val) => this.hearing(val);
+            return obj;
+        }
         Draft_send_icon() {
             const obj = new this.$.$mol_icon_arrow_up_bold();
             return obj;
@@ -10166,6 +10193,7 @@ var $;
         draft_controls() {
             return [
                 this.Draft_text(),
+                this.Speech_toggle(),
                 this.Draft_send()
             ];
         }
@@ -10239,6 +10267,15 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Draft_text", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Speech_toggle_icon", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "hearing", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Speech_toggle", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Draft_send_icon", null);
@@ -10342,6 +10379,365 @@ var $;
     $.$mol_wait_rest = $.$mol_fiber_sync(() => new Promise(done => new $.$mol_after_work(16, () => done(null))));
 })($ || ($ = {}));
 //rest.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_range2(item = index => index, size = () => Number.POSITIVE_INFINITY) {
+        return new Proxy(new $mol_range2_array(), {
+            get(target, field) {
+                if (typeof field === 'string') {
+                    if (field === 'length')
+                        return size();
+                    const index = Number(field);
+                    if (index === Math.trunc(index))
+                        return item(index);
+                }
+                return target[field];
+            },
+            set(target, field) {
+                return $.$mol_fail(new TypeError('Lazy range is read only'));
+            },
+            ownKeys(target) {
+                return [...Array(size())].map((v, i) => String(i)).concat('length');
+            },
+            getOwnPropertyDescriptor(target, field) {
+                if (field === "length")
+                    return {
+                        value: size(),
+                        writable: true,
+                        enumerable: false,
+                        configurable: false,
+                    };
+                const index = Number(field);
+                if (index === Math.trunc(index))
+                    return {
+                        get: () => this.get(target, field, this),
+                        enumerable: true,
+                        configurable: true,
+                    };
+                return Object.getOwnPropertyDescriptor(target, field);
+            }
+        });
+    }
+    $.$mol_range2 = $mol_range2;
+    class $mol_range2_array extends Array {
+        concat(...tail) {
+            if (tail.length === 0)
+                return this;
+            if (tail.length > 1) {
+                let list = this;
+                for (let item of tail)
+                    list = list.concat(item);
+                return list;
+            }
+            return $mol_range2(index => index < this.length ? this[index] : tail[0][index - this.length], () => this.length + tail[0].length);
+        }
+        filter(check, context) {
+            const filtered = new $mol_range2_array();
+            for (let index = 0; index < this.length; ++index) {
+                const item = this[index];
+                if (check.call(context, item, index, this))
+                    filtered.push(item);
+            }
+            return filtered;
+        }
+        forEach(proceed, context) {
+            for (let [key, value] of this.entries())
+                proceed.call(context, value, key, this);
+        }
+        map(proceed, context) {
+            return $mol_range2(index => proceed.call(context, this[index], index, this), () => this.length);
+        }
+        reduce(merge, result) {
+            let index = 0;
+            if (arguments.length === 1) {
+                result = this[index++];
+            }
+            for (; index < this.length; ++index) {
+                result = merge(result, this[index], index, this);
+            }
+            return result;
+        }
+        slice(from = 0, to = this.length) {
+            return $mol_range2(index => this[from + index], () => Math.min(to, this.length) - from);
+        }
+        some(check, context) {
+            for (let index = 0; index < this.length; ++index) {
+                if (check.call(context, this[index], index, this))
+                    return true;
+            }
+            return false;
+        }
+        every(check, context) {
+            for (let index = 0; index < this.length; ++index) {
+                if (!check.call(context, this[index], index, this))
+                    return false;
+            }
+            return true;
+        }
+    }
+    $.$mol_range2_array = $mol_range2_array;
+})($ || ($ = {}));
+//range2.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_defer extends $.$mol_object {
+        run;
+        constructor(run) {
+            super();
+            this.run = run;
+            $mol_defer.add(this);
+        }
+        destructor() {
+            $mol_defer.drop(this);
+        }
+        static all = [];
+        static timer = null;
+        static scheduleNative = (typeof requestAnimationFrame == 'function')
+            ? handler => requestAnimationFrame(handler)
+            : handler => setTimeout(handler, 16);
+        static schedule() {
+            if (this.timer)
+                return;
+            this.timer = this.scheduleNative(() => {
+                this.timer = null;
+                this.run();
+            });
+        }
+        static unschedule() {
+            if (!this.timer)
+                return;
+            cancelAnimationFrame(this.timer);
+            this.timer = null;
+        }
+        static add(defer) {
+            this.all.push(defer);
+            this.schedule();
+        }
+        static drop(defer) {
+            var index = this.all.indexOf(defer);
+            if (index >= 0)
+                this.all.splice(index, 1);
+        }
+        static run() {
+            if (this.all.length === 0)
+                return;
+            this.schedule();
+            for (var defer; defer = this.all.shift();)
+                defer.run();
+        }
+    }
+    $.$mol_defer = $mol_defer;
+})($ || ($ = {}));
+//defer.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_speech extends $.$mol_plugin {
+        static speaker() {
+            return $.$mol_fiber_sync(() => new Promise(done => {
+                const API = $.$mol_dom_context.speechSynthesis;
+                if (API.getVoices().length)
+                    return done(API);
+                const on_voices = (event) => {
+                    if (!API.getVoices().length)
+                        return;
+                    API.removeEventListener('voiceschanged', on_voices);
+                    done(API);
+                };
+                API.addEventListener('voiceschanged', on_voices);
+            }))();
+        }
+        static voices() {
+            const lang = this.$.$mol_locale.lang();
+            return this.speaker().getVoices().filter(voice => voice.lang.split('-')[0] === lang);
+        }
+        static say(text) {
+            const speaker = this.speaker();
+            speaker.cancel();
+            speaker.resume();
+            const rate = 1;
+            const voice = this.voices()[this.voices().length - 1];
+            const pitch = 1;
+            var utter = new SpeechSynthesisUtterance(text);
+            utter.voice = voice;
+            utter.rate = rate;
+            utter.pitch = pitch;
+            speaker.speak(utter);
+            return null;
+        }
+        static speaking(next = true) {
+            if (next)
+                this.speaker().resume();
+            else
+                this.speaker().pause();
+            return next;
+        }
+        static hearer() {
+            const API = window['SpeechRecognition'] || window['webkitSpeechRecognition'] || window['mozSpeechRecognition'] || window['msSpeechRecognition'];
+            const api = new API;
+            api.interimResults = true;
+            api.maxAlternatives = 1;
+            api.continuous = true;
+            api.lang = $.$mol_locale.lang();
+            api.onnomatch = $.$mol_fiber_root((event) => {
+                console.log(event);
+                api.stop();
+                return null;
+            });
+            api.onresult = $.$mol_fiber_root((event) => {
+                this.recognition_index(event.resultIndex);
+                const recognition = event.results[event.resultIndex];
+                this.recognition(event.resultIndex, recognition);
+                return null;
+            });
+            api.onerror = $.$mol_fiber_root((event) => {
+                if (event.error === 'no-speech')
+                    return null;
+                console.log(event);
+                console.error(new Error(event.error || event));
+                api.stop();
+                return null;
+            });
+            api.onend = (event) => {
+                this.recognition_index(-1);
+                console.log(event);
+                if (this.hearing())
+                    api.start();
+            };
+            api.onspeechend = (event) => {
+                this.recognition_index(-1);
+                console.log(event);
+                api.stop();
+            };
+            return api;
+        }
+        static hearing(next) {
+            if (next === undefined)
+                return false;
+            if (next) {
+                this.hearer().start();
+            }
+            else {
+                this.hearer().stop();
+            }
+            return next;
+        }
+        static recognition_index(next = -1) {
+            return next;
+        }
+        static recognition(index, next) {
+            return next ?? null;
+        }
+        static recognitions() {
+            if (!this.hearing())
+                return [];
+            const last_index = this.recognition_index();
+            if (last_index < 0)
+                return [];
+            return $.$mol_range2(index => this.recognition(index), () => last_index + 1);
+        }
+        static recognition_last() {
+            return this.recognition(this.recognition_index()) ?? null;
+        }
+        static commands() {
+            return this.recognitions().map(result => result[0].transcript.toLowerCase().trim().replace(/[,\.]/g, ''));
+        }
+        static text() {
+            return this.recognitions().map(result => result[0].transcript).join('');
+        }
+        commands_skip(next = 0) {
+            $mol_speech.hearing();
+            return next;
+        }
+        render() {
+            const matchers = this.matchers();
+            const commands = $mol_speech.commands();
+            for (let i = this.commands_skip(); i < commands.length; ++i) {
+                for (let matcher of matchers) {
+                    const found = commands[i].match(matcher);
+                    if (!found)
+                        continue;
+                    new $.$mol_defer(() => {
+                        if (this.event_catch(found.slice(1))) {
+                            this.commands_skip(i + 1);
+                        }
+                    });
+                    return null;
+                }
+            }
+            return null;
+        }
+        event_catch(found) {
+            return false;
+        }
+        patterns() {
+            return [];
+        }
+        matchers() {
+            return this.patterns().map(pattern => {
+                return new RegExp(this.prefix() + pattern + this.suffix(), 'i');
+            });
+        }
+        prefix() {
+            return '';
+        }
+        suffix() {
+            return '[,\\s]+(?:please|would you kindly|пожалуйста|пожалуй 100|будь любезен|будь любезна|будь добра?)\.?$';
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech.prototype, "commands_skip", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech.prototype, "render", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech.prototype, "matchers", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "speaker", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "voices", null);
+    __decorate([
+        $.$mol_fiber.method
+    ], $mol_speech, "say", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "speaking", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "hearer", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "hearing", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "recognition_index", null);
+    __decorate([
+        $.$mol_mem_key
+    ], $mol_speech, "recognition", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "recognitions", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "recognition_last", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "commands", null);
+    __decorate([
+        $.$mol_mem
+    ], $mol_speech, "text", null);
+    $.$mol_speech = $mol_speech;
+})($ || ($ = {}));
+//speech.js.map
 ;
 "use strict";
 var $;
@@ -10526,6 +10922,7 @@ var $;
             draft_controls() {
                 return [
                     this.Draft_text(),
+                    this.Speech_toggle(),
                     ...this.draft().text().trim() ? [this.Draft_send()] : []
                 ];
             }
@@ -10626,7 +11023,27 @@ var $;
                     }
                 });
             }
+            hearing(next) {
+                return this.$.$mol_speech.hearing(next);
+            }
+            speech_to_text() {
+                if (!this.hearing())
+                    return null;
+                const last = this.$.$mol_speech.recognition_last();
+                if (!last)
+                    return null;
+                $.$mol_fiber.run(() => {
+                    this.draft_text(last[0].transcript ?? '');
+                });
+                if (last.isFinal) {
+                    $.$mol_fiber.run(() => {
+                        new $.$mol_after_tick($.$mol_fiber_root(() => this.draft_send()));
+                    });
+                }
+                return null;
+            }
             auto() {
+                this.speech_to_text();
                 this.update_last_readed_message();
             }
         }
@@ -10654,6 +11071,9 @@ var $;
         __decorate([
             $.$mol_mem
         ], $hyoo_talks_chat_page.prototype, "update_last_readed_message", null);
+        __decorate([
+            $.$mol_mem
+        ], $hyoo_talks_chat_page.prototype, "speech_to_text", null);
         $$.$hyoo_talks_chat_page = $hyoo_talks_chat_page;
         $.$mol_view_component($hyoo_talks_chat_page);
     })($$ = $.$$ || ($.$$ = {}));
