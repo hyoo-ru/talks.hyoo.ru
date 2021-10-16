@@ -80,6 +80,7 @@ namespace $.$$ {
 		draft_controls () {
 			return [
 				this.Draft_text(),
+				this.Speech_toggle(),
 				... this.draft().text().trim() ? [ this.Draft_send() ] : []
 			]
 		}
@@ -222,7 +223,33 @@ namespace $.$$ {
 				)
 		}
 		
+		hearing( next? : boolean ) {
+			return this.$.$mol_speech.hearing( next )
+		}
+		
+		@ $mol_mem
+		speech_to_text() {
+			
+			if( !this.hearing() ) return null
+			
+			const last = this.$.$mol_speech.recognition_last()
+			if( !last ) return null
+			
+			$mol_fiber.run( ()=> {
+				this.draft_text( last[0].transcript ?? '' )
+			} )
+			
+			if( last.isFinal ) {
+				$mol_fiber.run( ()=> {
+					new $mol_after_tick( $mol_fiber_root( ()=> this.draft_send() ) )
+				} )
+			}
+			
+			return null
+		}
+		
 		auto() {
+			this.speech_to_text()
 			this.update_last_readed_message()
 		}
 		

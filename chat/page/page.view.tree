@@ -31,6 +31,9 @@ $hyoo_talks_chat_page $mol_page
 		<= Draft_text $mol_textarea
 			hint @ \Add message.. [Will be exterminated later!]
 			value?val <=> draft_text?val \
+		<= Speech_toggle $mol_check_icon
+			Icon <= Speech_toggle_icon $mol_icon_microphone
+			checked?val <=> hearing?val false
 		<= Draft_send $mol_button_minor
 			title @ \Send
 			hint @ \Ctrl+Enter to send
