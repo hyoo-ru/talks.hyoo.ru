@@ -4066,7 +4066,7 @@ var $;
                     $.$mol_fail(new Error('Exception expected'));
                 }
                 catch (error) {
-                    $.$mol_assert_equal(error.message, `Unable to add key to index 'names': at least one key does not satisfy the uniqueness requirements.`);
+                    $.$mol_assert_unique(error.message, 'Exception expected');
                 }
             }
             finally {
