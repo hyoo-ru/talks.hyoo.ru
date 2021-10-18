@@ -1051,6 +1051,65 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $hyoo_crowd_node {
+        readonly doc: $hyoo_crowd_doc;
+        readonly head: $hyoo_crowd_chunk['head'];
+        constructor(doc: $hyoo_crowd_doc, head: $hyoo_crowd_chunk['head']);
+        static for<Node extends typeof $hyoo_crowd_node>(this: Node, doc: $hyoo_crowd_doc, head?: $hyoo_crowd_chunk['head']): InstanceType<Node>;
+        as<Node extends typeof $hyoo_crowd_node>(Node: Node): InstanceType<Node>;
+        chunks(): readonly $hyoo_crowd_chunk[];
+        nodes<Node extends typeof $hyoo_crowd_node>(Node: Node): InstanceType<Node>[];
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_struct extends $hyoo_crowd_node {
+        sub<Node extends typeof $hyoo_crowd_node>(key: string, Node: Node): InstanceType<Node>;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_doc {
+        readonly peer: number;
+        constructor(peer?: number);
+        readonly clock: $hyoo_crowd_clock;
+        protected _chunk_all: Map<`${number}/${number}`, $hyoo_crowd_chunk>;
+        protected _chunk_lists: Map<number, $hyoo_crowd_chunk[] & {
+            dirty: boolean;
+        }>;
+        protected _chunk_alive: Map<number, $hyoo_crowd_chunk[] | undefined>;
+        size(): number;
+        chunk(head: $hyoo_crowd_chunk['head'], self: $hyoo_crowd_chunk['self']): $hyoo_crowd_chunk | null;
+        protected chunk_list(head: $hyoo_crowd_chunk['head']): $hyoo_crowd_chunk[] & {
+            dirty: boolean;
+        };
+        chunk_alive(head: $hyoo_crowd_chunk['head']): readonly $hyoo_crowd_chunk[];
+        root: $hyoo_crowd_struct;
+        id_new(): number;
+        fork(peer: number): $hyoo_crowd_doc;
+        delta(clock?: $hyoo_crowd_clock): readonly $hyoo_crowd_chunk[];
+        toJSON(): readonly $hyoo_crowd_chunk[];
+        resort(head: $hyoo_crowd_chunk['head']): $hyoo_crowd_chunk[] & {
+            dirty: boolean;
+        };
+        apply(delta: readonly $hyoo_crowd_chunk[]): this;
+        put(head: $hyoo_crowd_chunk['head'], self: $hyoo_crowd_chunk['self'], lead: $hyoo_crowd_chunk['lead'], data: $hyoo_crowd_chunk['data']): $hyoo_crowd_chunk;
+        wipe(chunk: $hyoo_crowd_chunk): $hyoo_crowd_chunk;
+        move(chunk: $hyoo_crowd_chunk, head: $hyoo_crowd_chunk['head'], lead: $hyoo_crowd_chunk['lead']): $hyoo_crowd_chunk;
+        insert(chunk: $hyoo_crowd_chunk, head: $hyoo_crowd_chunk['head'], seat: $hyoo_crowd_chunk['seat']): $hyoo_crowd_chunk;
+    }
+}
+
+declare namespace $ {
+    class $hyoo_crowd_reg extends $hyoo_crowd_node {
+        value(next?: unknown): unknown;
+        str(next?: string): string;
+        numb(next?: number): number;
+        bool(next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
     function $mol_reconcile<Prev, Next>({ prev, from, to, next, equal, drop, insert, update, }: {
         prev: readonly Prev[];
         from: number;
@@ -1061,6 +1120,15 @@ declare namespace $ {
         insert: (next: Next, lead: Prev | null) => Prev;
         update: (next: Next, prev: Prev, lead: Prev | null) => Prev;
     }): void;
+}
+
+declare namespace $ {
+    class $hyoo_crowd_list extends $hyoo_crowd_node {
+        list(next?: readonly unknown[]): readonly unknown[];
+        insert(next: readonly unknown[], from?: number, to?: number): void;
+        move(from: number, to: number): $hyoo_crowd_chunk;
+        cut(seat: number): $hyoo_crowd_chunk;
+    }
 }
 
 declare namespace $ {
@@ -1172,32 +1240,9 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_dom_serialize(node: Node): string;
-}
-
-declare namespace $ {
-    function $mol_dom_parse(text: string, type?: DOMParserSupportedType): Document;
-}
-
-declare namespace $ {
-    class $hyoo_crowd_node {
-        readonly tree: $hyoo_crowd_doc;
-        readonly head: $hyoo_crowd_chunk['head'];
-        constructor(tree: $hyoo_crowd_doc, head: $hyoo_crowd_chunk['head']);
-        sub(key: string): $hyoo_crowd_node;
-        chunks(): readonly $hyoo_crowd_chunk[];
-        nodes(): $hyoo_crowd_node[];
-        value(next?: unknown): unknown;
-        str(next?: string): string;
-        numb(next?: number): number;
-        bool(next?: boolean): boolean;
-        count(): number;
-        list(next?: readonly unknown[]): readonly unknown[];
-        insert(next: readonly unknown[], from?: number, to?: number): void;
+    class $hyoo_crowd_text extends $hyoo_crowd_node {
         text(next?: string): string;
         write(next: string, str_from?: number, str_to?: number): this;
-        dom(next?: Element | DocumentFragment): Element | DocumentFragment;
-        html(next?: string): string;
         point_by_offset(offset: number): {
             chunk: number;
             offset: number;
@@ -1206,41 +1251,6 @@ declare namespace $ {
             chunk: number;
             offset: number;
         }): number;
-        move(from: number, to: number): $hyoo_crowd_chunk;
-        cut(seat: number): $hyoo_crowd_chunk;
-    }
-}
-
-declare namespace $ {
-    class $hyoo_crowd_doc {
-        readonly peer: number;
-        constructor(peer?: number);
-        readonly clock: $hyoo_crowd_clock;
-        protected _chunk_all: Map<`${number}/${number}`, $hyoo_crowd_chunk>;
-        protected _chunk_lists: Map<number, $hyoo_crowd_chunk[] & {
-            dirty: boolean;
-        }>;
-        protected _chunk_alive: Map<number, $hyoo_crowd_chunk[] | undefined>;
-        size(): number;
-        chunk(head: $hyoo_crowd_chunk['head'], self: $hyoo_crowd_chunk['self']): $hyoo_crowd_chunk | null;
-        protected chunk_list(head: $hyoo_crowd_chunk['head']): $hyoo_crowd_chunk[] & {
-            dirty: boolean;
-        };
-        chunk_alive(head: $hyoo_crowd_chunk['head']): readonly $hyoo_crowd_chunk[];
-        root: $hyoo_crowd_node;
-        node(head: $hyoo_crowd_chunk['head']): $hyoo_crowd_node;
-        id_new(): number;
-        fork(peer: number): $hyoo_crowd_doc;
-        delta(clock?: $hyoo_crowd_clock): readonly $hyoo_crowd_chunk[];
-        toJSON(): readonly $hyoo_crowd_chunk[];
-        resort(head: $hyoo_crowd_chunk['head']): $hyoo_crowd_chunk[] & {
-            dirty: boolean;
-        };
-        apply(delta: readonly $hyoo_crowd_chunk[]): this;
-        put(head: $hyoo_crowd_chunk['head'], self: $hyoo_crowd_chunk['self'], lead: $hyoo_crowd_chunk['lead'], data: $hyoo_crowd_chunk['data']): $hyoo_crowd_chunk;
-        wipe(chunk: $hyoo_crowd_chunk): $hyoo_crowd_chunk;
-        move(chunk: $hyoo_crowd_chunk, head: $hyoo_crowd_chunk['head'], lead: $hyoo_crowd_chunk['lead']): $hyoo_crowd_chunk;
-        insert(chunk: $hyoo_crowd_chunk, head: $hyoo_crowd_chunk['head'], seat: $hyoo_crowd_chunk['seat']): $hyoo_crowd_chunk;
     }
 }
 
@@ -1272,7 +1282,7 @@ declare namespace $ {
         };
         store(): $hyoo_crowd_doc;
         path(): string;
-        node(): $hyoo_crowd_node;
+        node(): $hyoo_crowd_struct;
         doc(key: string): $mol_state_shared;
         sub(key: string): $mol_state_shared;
         version_last(next?: number): number;

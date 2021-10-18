@@ -3575,6 +3575,232 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $hyoo_crowd_node {
+        doc;
+        head;
+        constructor(doc, head) {
+            this.doc = doc;
+            this.head = head;
+        }
+        static for(doc, head = 0) {
+            return new this(doc, head);
+        }
+        as(Node) {
+            return new Node(this.doc, this.head);
+        }
+        chunks() {
+            return this.doc.chunk_alive(this.head);
+        }
+        nodes(Node) {
+            return this.chunks().map(chunk => new Node(this.doc, chunk.self));
+        }
+        [$.$mol_dev_format_head]() {
+            return $.$mol_dev_format_span({}, $.$mol_dev_format_native(this), $.$mol_dev_format_shade('/'), $.$mol_dev_format_auto(this.as($.$hyoo_crowd_list).list()), $.$mol_dev_format_shade('/'), $.$mol_dev_format_auto(this.nodes($hyoo_crowd_node)));
+        }
+    }
+    $.$hyoo_crowd_node = $hyoo_crowd_node;
+})($ || ($ = {}));
+//node.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crowd_struct extends $.$hyoo_crowd_node {
+        sub(key, Node) {
+            return new Node(this.doc, $.$mol_hash_string(key, this.head));
+        }
+    }
+    $.$hyoo_crowd_struct = $hyoo_crowd_struct;
+})($ || ($ = {}));
+//struct.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crowd_doc {
+        peer;
+        constructor(peer = 0) {
+            this.peer = peer;
+            if (!peer)
+                this.peer = this.id_new();
+        }
+        clock = new $.$hyoo_crowd_clock;
+        _chunk_all = new Map();
+        _chunk_lists = new Map();
+        _chunk_alive = new Map();
+        size() {
+            return this._chunk_all.size;
+        }
+        chunk(head, self) {
+            return this._chunk_all.get(`${head}/${self}`) ?? null;
+        }
+        chunk_list(head) {
+            let chunks = this._chunk_lists.get(head);
+            if (!chunks)
+                this._chunk_lists.set(head, chunks = Object.assign([], { dirty: false }));
+            return chunks;
+        }
+        chunk_alive(head) {
+            let chunks = this._chunk_alive.get(head);
+            if (!chunks) {
+                const all = this.chunk_list(head);
+                if (all.dirty)
+                    this.resort(head);
+                chunks = all.filter(chunk => chunk.data !== null);
+                this._chunk_alive.set(head, chunks);
+            }
+            return chunks;
+        }
+        root = new $.$hyoo_crowd_struct(this, 0);
+        id_new() {
+            return 1 + Math.floor(Math.random() * (2 ** (6 * 8) - 2));
+        }
+        fork(peer) {
+            return new $hyoo_crowd_doc(peer).apply(this.delta());
+        }
+        delta(clock = new $.$hyoo_crowd_clock) {
+            const delta = [];
+            for (const chunk of this._chunk_all.values()) {
+                const time = clock.get(chunk.peer);
+                if (time && chunk.time <= time)
+                    continue;
+                delta.push(chunk);
+            }
+            delta.sort($.$hyoo_crowd_chunk_compare);
+            return delta;
+        }
+        toJSON() {
+            return this.delta();
+        }
+        resort(head) {
+            const chunks = this._chunk_lists.get(head);
+            const queue = chunks.splice(0).sort((left, right) => {
+                if (left.seat > right.seat)
+                    return +1;
+                if (left.seat < right.seat)
+                    return -1;
+                return $.$hyoo_crowd_chunk_compare(left, right);
+            });
+            for (const kid of queue) {
+                let leader = kid.lead ? this.chunk(head, kid.lead) : null;
+                let index = leader ? chunks.indexOf(leader) + 1 : 0;
+                if (index === 0 && leader)
+                    index = chunks.length;
+                if (index < kid.seat) {
+                    index = chunks.length;
+                }
+                chunks.splice(index, 0, kid);
+            }
+            this._chunk_lists.set(head, chunks);
+            chunks.dirty = false;
+            return chunks;
+        }
+        apply(delta) {
+            for (const next of delta) {
+                this.clock.see(next.peer, next.time);
+                const chunks = this.chunk_list(next.head);
+                const guid = `${next.head}/${next.self}`;
+                let prev = this._chunk_all.get(guid);
+                if (prev) {
+                    if ($.$hyoo_crowd_chunk_compare(prev, next) > 0)
+                        continue;
+                    chunks.splice(chunks.indexOf(prev), 1, next);
+                }
+                else {
+                    chunks.push(next);
+                }
+                this._chunk_all.set(guid, next);
+                chunks.dirty = true;
+                this._chunk_alive.set(next.head, undefined);
+            }
+            return this;
+        }
+        put(head, self, lead, data) {
+            let chunk_old = this.chunk(head, self);
+            let chunk_lead = lead ? this.chunk(head, lead) : null;
+            const chunk_list = this.chunk_list(head);
+            if (chunk_old) {
+                chunk_list.splice(chunk_list.indexOf(chunk_old), 1);
+            }
+            let seat = chunk_lead ? chunk_list.indexOf(chunk_lead) + 1 : 0;
+            const chunk_new = {
+                head,
+                self,
+                lead,
+                seat,
+                peer: this.peer,
+                time: this.clock.tick(this.peer),
+                data,
+            };
+            this._chunk_all.set(`${chunk_new.head}/${chunk_new.self}`, chunk_new);
+            chunk_list.splice(seat, 0, chunk_new);
+            this._chunk_alive.set(head, undefined);
+            return chunk_new;
+        }
+        wipe(chunk) {
+            if (chunk.data === null)
+                return chunk;
+            for (const kid of this.chunk_list(chunk.self)) {
+                this.wipe(kid);
+            }
+            return this.put(chunk.head, chunk.self, chunk.lead, null);
+        }
+        move(chunk, head, lead) {
+            this.wipe(chunk);
+            return this.put(head, chunk.self, lead, chunk.data);
+        }
+        insert(chunk, head, seat) {
+            const lead = seat ? this.chunk_list(head)[seat - 1].self : 0;
+            return this.move(chunk, head, lead);
+        }
+    }
+    $.$hyoo_crowd_doc = $hyoo_crowd_doc;
+})($ || ($ = {}));
+//doc.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crowd_reg extends $.$hyoo_crowd_node {
+        value(next) {
+            const chunks = this.chunks();
+            let last;
+            for (const chunk of chunks) {
+                if (!last || $.$hyoo_crowd_chunk_compare(chunk, last) > 0)
+                    last = chunk;
+            }
+            if (next === undefined) {
+                return last?.data ?? null;
+            }
+            else {
+                if (last?.data === next)
+                    return next;
+                for (const chunk of chunks) {
+                    if (chunk === last)
+                        continue;
+                    this.doc.wipe(chunk);
+                }
+                this.doc.put(this.head, last?.self ?? this.doc.id_new(), 0, next);
+                return next;
+            }
+        }
+        str(next) {
+            return String(this.value(next) ?? '');
+        }
+        numb(next) {
+            return Number(this.value(next) ?? 0);
+        }
+        bool(next) {
+            return Boolean(this.value(next) ?? false);
+        }
+    }
+    $.$hyoo_crowd_reg = $hyoo_crowd_reg;
+})($ || ($ = {}));
+//reg.js.map
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_reconcile({ prev, from, to, next, equal, drop, insert, update, }) {
         let p = from;
         let n = 0;
@@ -3607,6 +3833,45 @@ var $;
     $.$mol_reconcile = $mol_reconcile;
 })($ || ($ = {}));
 //reconcile.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crowd_list extends $.$hyoo_crowd_node {
+        list(next) {
+            const chunks = this.chunks();
+            if (next === undefined) {
+                return chunks.map(chunk => chunk.data);
+            }
+            else {
+                this.insert(next, 0, chunks.length);
+                return next;
+            }
+        }
+        insert(next, from = this.chunks().length, to = from) {
+            $.$mol_reconcile({
+                prev: this.chunks(),
+                from,
+                to,
+                next,
+                equal: (next, prev) => prev.data === next,
+                drop: (prev, lead) => this.doc.wipe(prev),
+                insert: (next, lead) => this.doc.put(this.head, this.doc.id_new(), lead?.self ?? 0, next),
+                update: (next, prev, lead) => this.doc.put(prev.head, prev.self, lead?.self ?? 0, next),
+            });
+        }
+        move(from, to) {
+            const chunks = this.chunks();
+            const lead = to ? chunks[to - 1].self : 0;
+            return this.doc.move(chunks[from], this.head, lead);
+        }
+        cut(seat) {
+            return this.doc.wipe(this.chunks()[seat]);
+        }
+    }
+    $.$hyoo_crowd_list = $hyoo_crowd_list;
+})($ || ($ = {}));
+//list.js.map
 ;
 "use strict";
 //equals.js.map
@@ -3927,106 +4192,10 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_dom_serialize(node) {
-        const serializer = new $.$mol_dom_context.XMLSerializer;
-        return serializer.serializeToString(node);
-    }
-    $.$mol_dom_serialize = $mol_dom_serialize;
-})($ || ($ = {}));
-//serialize.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_dom_parse(text, type = 'application/xhtml+xml') {
-        const parser = new $.$mol_dom_context.DOMParser();
-        const doc = parser.parseFromString(text, type);
-        const error = doc.getElementsByTagName('parsererror');
-        if (error.length)
-            throw new Error(error[0].textContent);
-        return doc;
-    }
-    $.$mol_dom_parse = $mol_dom_parse;
-})($ || ($ = {}));
-//parse.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crowd_node {
-        tree;
-        head;
-        constructor(tree, head) {
-            this.tree = tree;
-            this.head = head;
-        }
-        sub(key) {
-            return this.tree.node($.$mol_hash_string(key, this.head));
-        }
-        chunks() {
-            return this.tree.chunk_alive(this.head);
-        }
-        nodes() {
-            return this.chunks().map(chunk => this.tree.node(chunk.self));
-        }
-        value(next) {
-            const chunks = this.chunks();
-            let last;
-            for (const chunk of chunks) {
-                if (!last || $.$hyoo_crowd_chunk_compare(chunk, last) > 0)
-                    last = chunk;
-            }
-            if (next === undefined) {
-                return last?.data ?? null;
-            }
-            else {
-                if (last?.data === next)
-                    return next;
-                for (const chunk of chunks) {
-                    if (chunk === last)
-                        continue;
-                    this.tree.wipe(chunk);
-                }
-                this.tree.put(this.head, last?.self ?? this.tree.id_new(), 0, next);
-                return next;
-            }
-        }
-        str(next) {
-            return String(this.value(next) ?? '');
-        }
-        numb(next) {
-            return Number(this.value(next) ?? 0);
-        }
-        bool(next) {
-            return Boolean(this.value(next) ?? false);
-        }
-        count() {
-            return this.chunks().length;
-        }
-        list(next) {
-            if (next === undefined) {
-                return this.chunks().map(chunk => chunk.data);
-            }
-            else {
-                this.insert(next, 0, this.count());
-                return next;
-            }
-        }
-        insert(next, from = this.count(), to = from) {
-            $.$mol_reconcile({
-                prev: this.chunks(),
-                from,
-                to,
-                next,
-                equal: (next, prev) => prev.data === next,
-                drop: (prev, lead) => this.tree.wipe(prev),
-                insert: (next, lead) => this.tree.put(this.head, this.tree.id_new(), lead?.self ?? 0, next),
-                update: (next, prev, lead) => this.tree.put(prev.head, prev.self, lead?.self ?? 0, next),
-            });
-        }
+    class $hyoo_crowd_text extends $.$hyoo_crowd_node {
         text(next) {
             if (next === undefined) {
-                return this.list().filter(item => typeof item === 'string').join('');
+                return this.as($.$hyoo_crowd_list).list().filter(item => typeof item === 'string').join('');
             }
             else {
                 this.write(next, 0, -1);
@@ -4063,97 +4232,8 @@ var $;
                 next = String(list[from].data) + next;
             }
             const words = [...next.matchAll($.$hyoo_crowd_tokenizer)].map(token => token[0]);
-            this.insert(words, from, to);
+            this.as($.$hyoo_crowd_list).insert(words, from, to);
             return this;
-        }
-        dom(next) {
-            if (next) {
-                const sample = [];
-                function collect(next) {
-                    for (const node of next.childNodes) {
-                        if (node.nodeType === node.TEXT_NODE) {
-                            for (const token of node.nodeValue.matchAll($.$hyoo_crowd_tokenizer)) {
-                                sample.push(token[0]);
-                            }
-                        }
-                        else {
-                            if (node.nodeName === 'span' && !Number(node.id)) {
-                                collect(node);
-                            }
-                            else {
-                                sample.push(node);
-                            }
-                        }
-                    }
-                }
-                collect(next);
-                function attr(el) {
-                    let res = {};
-                    for (const a of el.attributes) {
-                        if (a.name === 'id')
-                            continue;
-                        res[a.name] = a.value;
-                    }
-                    return res;
-                }
-                function val(el) {
-                    return typeof el === 'string'
-                        ? el
-                        : el.nodeName === 'span'
-                            ? el.textContent
-                            : {
-                                tag: el.nodeName,
-                                attr: attr(el),
-                            };
-                }
-                $.$mol_reconcile({
-                    prev: this.chunks(),
-                    from: 0,
-                    to: this.count(),
-                    next: sample,
-                    equal: (next, prev) => typeof next === 'string'
-                        ? prev.data === next
-                        : String(prev.self) === next['id'],
-                    drop: (prev, lead) => this.tree.wipe(prev),
-                    insert: (next, lead) => {
-                        return this.tree.put(this.head, typeof next === 'string'
-                            ? this.tree.id_new()
-                            : Number(next.id) || this.tree.id_new(), lead?.self ?? 0, val(next));
-                    },
-                    update: (next, prev, lead) => this.tree.put(prev.head, prev.self, lead?.self ?? 0, val(next)),
-                });
-                const chunks = this.chunks();
-                for (let i = 0; i < chunks.length; ++i) {
-                    const sam = sample[i];
-                    if (typeof sam !== 'string') {
-                        this.tree.node(chunks[i].self).dom(sam);
-                    }
-                }
-                return next;
-            }
-            else {
-                return $.$mol_jsx($.$mol_jsx_frag, null, this.chunks().map(chunk => {
-                    const Tag = typeof chunk.data === 'string'
-                        ? 'span'
-                        : chunk.data.tag ?? 'span';
-                    const attr = typeof chunk.data === 'string'
-                        ? {}
-                        : chunk.data.attr ?? {};
-                    const content = typeof chunk.data === 'string'
-                        ? chunk.data
-                        : this.tree.node(chunk.self).dom();
-                    return $.$mol_jsx(Tag, { ...attr, id: String(chunk.self) }, content);
-                }));
-            }
-        }
-        html(next) {
-            if (next === undefined) {
-                return $.$mol_dom_serialize($.$mol_jsx("body", null, this.dom()));
-            }
-            else {
-                this.dom($.$mol_dom_parse(next).documentElement);
-                return next;
-            }
         }
         point_by_offset(offset) {
             let off = offset;
@@ -4175,168 +4255,10 @@ var $;
             }
             return offset;
         }
-        move(from, to) {
-            const chunks = this.chunks();
-            const lead = to ? chunks[to - 1].self : 0;
-            return this.tree.move(chunks[from], this.head, lead);
-        }
-        cut(seat) {
-            return this.tree.wipe(this.chunks()[seat]);
-        }
-        [$.$mol_dev_format_head]() {
-            return $.$mol_dev_format_span({}, $.$mol_dev_format_native(this), $.$mol_dev_format_shade('/'), $.$mol_dev_format_auto(this.list()), $.$mol_dev_format_shade('/'), $.$mol_dev_format_auto(this.nodes()));
-        }
     }
-    $.$hyoo_crowd_node = $hyoo_crowd_node;
+    $.$hyoo_crowd_text = $hyoo_crowd_text;
 })($ || ($ = {}));
-//node.js.map
-;
-"use strict";
-var $;
-(function ($) {
-    class $hyoo_crowd_doc {
-        peer;
-        constructor(peer = 0) {
-            this.peer = peer;
-            if (!peer)
-                this.peer = this.id_new();
-        }
-        clock = new $.$hyoo_crowd_clock;
-        _chunk_all = new Map();
-        _chunk_lists = new Map();
-        _chunk_alive = new Map();
-        size() {
-            return this._chunk_all.size;
-        }
-        chunk(head, self) {
-            return this._chunk_all.get(`${head}/${self}`) ?? null;
-        }
-        chunk_list(head) {
-            let chunks = this._chunk_lists.get(head);
-            if (!chunks)
-                this._chunk_lists.set(head, chunks = Object.assign([], { dirty: false }));
-            return chunks;
-        }
-        chunk_alive(head) {
-            let chunks = this._chunk_alive.get(head);
-            if (!chunks) {
-                const all = this.chunk_list(head);
-                if (all.dirty)
-                    this.resort(head);
-                chunks = all.filter(chunk => chunk.data !== null);
-                this._chunk_alive.set(head, chunks);
-            }
-            return chunks;
-        }
-        root = this.node(0);
-        node(head) {
-            return new $.$hyoo_crowd_node(this, head);
-        }
-        id_new() {
-            return 1 + Math.floor(Math.random() * (2 ** (6 * 8) - 2));
-        }
-        fork(peer) {
-            return new $hyoo_crowd_doc(peer).apply(this.delta());
-        }
-        delta(clock = new $.$hyoo_crowd_clock) {
-            const delta = [];
-            for (const chunk of this._chunk_all.values()) {
-                const time = clock.get(chunk.peer);
-                if (time && chunk.time <= time)
-                    continue;
-                delta.push(chunk);
-            }
-            delta.sort($.$hyoo_crowd_chunk_compare);
-            return delta;
-        }
-        toJSON() {
-            return this.delta();
-        }
-        resort(head) {
-            const chunks = this._chunk_lists.get(head);
-            const queue = chunks.splice(0).sort((left, right) => {
-                if (left.seat > right.seat)
-                    return +1;
-                if (left.seat < right.seat)
-                    return -1;
-                return $.$hyoo_crowd_chunk_compare(left, right);
-            });
-            for (const kid of queue) {
-                let leader = kid.lead ? this.chunk(head, kid.lead) : null;
-                let index = leader ? chunks.indexOf(leader) + 1 : 0;
-                if (index === 0 && leader)
-                    index = chunks.length;
-                if (index < kid.seat) {
-                    index = chunks.length;
-                }
-                chunks.splice(index, 0, kid);
-            }
-            this._chunk_lists.set(head, chunks);
-            chunks.dirty = false;
-            return chunks;
-        }
-        apply(delta) {
-            for (const next of delta) {
-                this.clock.see(next.peer, next.time);
-                const chunks = this.chunk_list(next.head);
-                const guid = `${next.head}/${next.self}`;
-                let prev = this._chunk_all.get(guid);
-                if (prev) {
-                    if ($.$hyoo_crowd_chunk_compare(prev, next) > 0)
-                        continue;
-                    chunks.splice(chunks.indexOf(prev), 1, next);
-                }
-                else {
-                    chunks.push(next);
-                }
-                this._chunk_all.set(guid, next);
-                chunks.dirty = true;
-                this._chunk_alive.set(next.head, undefined);
-            }
-            return this;
-        }
-        put(head, self, lead, data) {
-            let chunk_old = this.chunk(head, self);
-            let chunk_lead = lead ? this.chunk(head, lead) : null;
-            const chunk_list = this.chunk_list(head);
-            if (chunk_old) {
-                chunk_list.splice(chunk_list.indexOf(chunk_old), 1);
-            }
-            let seat = chunk_lead ? chunk_list.indexOf(chunk_lead) + 1 : 0;
-            const chunk_new = {
-                head,
-                self,
-                lead,
-                seat,
-                peer: this.peer,
-                time: this.clock.tick(this.peer),
-                data,
-            };
-            this._chunk_all.set(`${chunk_new.head}/${chunk_new.self}`, chunk_new);
-            chunk_list.splice(seat, 0, chunk_new);
-            this._chunk_alive.set(head, undefined);
-            return chunk_new;
-        }
-        wipe(chunk) {
-            if (chunk.data === null)
-                return chunk;
-            for (const kid of this.chunk_list(chunk.self)) {
-                this.wipe(kid);
-            }
-            return this.put(chunk.head, chunk.self, chunk.lead, null);
-        }
-        move(chunk, head, lead) {
-            this.wipe(chunk);
-            return this.put(head, chunk.self, lead, chunk.data);
-        }
-        insert(chunk, head, seat) {
-            const lead = seat ? this.chunk_list(head)[seat - 1].self : 0;
-            return this.move(chunk, head, lead);
-        }
-    }
-    $.$hyoo_crowd_doc = $hyoo_crowd_doc;
-})($ || ($ = {}));
-//doc.js.map
+//text.js.map
 ;
 "use strict";
 var $;
@@ -4402,7 +4324,7 @@ var $;
         sub(key) {
             const State = this.constructor;
             const state = new State;
-            state.node = $.$mol_const(this.node().sub(key));
+            state.node = $.$mol_const(this.node().sub(key, $.$hyoo_crowd_struct));
             state.request = n => this.request(n);
             state.path = () => this.path();
             state.version_last = n => this.version_last(n);
@@ -4438,7 +4360,7 @@ var $;
             }
             else {
                 const pub = this.keys_serial().public;
-                store.root.sub(pub).value(pub);
+                store.root.sub(pub, $.$hyoo_crowd_reg).value(pub);
             }
             $.$mol_fiber.run(() => {
                 $.$mol_fiber_defer(() => {
@@ -4470,24 +4392,24 @@ var $;
         }
         value(next) {
             this.request(next);
-            const res = this.node().value(next);
+            const res = this.node().as($.$hyoo_crowd_reg).value(next);
             this.version_last(next);
             return res;
         }
         list(next) {
             this.request(next);
-            const res = this.node().list(next) ?? [];
+            const res = this.node().as($.$hyoo_crowd_list).list(next) ?? [];
             this.version_last(next);
             return res;
         }
         text(next) {
             this.request(next);
-            const res = this.node().text(next) ?? '';
+            const res = this.node().as($.$hyoo_crowd_text).text(next) ?? '';
             this.version_last(next);
             return res;
         }
         selection(next) {
-            const node = this.node();
+            const node = this.node().as($.$hyoo_crowd_text);
             this.version_last();
             if (next) {
                 this.selection_range(next.map(offset => node.point_by_offset(offset)));
