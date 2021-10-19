@@ -895,6 +895,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_db<Schema extends $mol_db_schema>(this: $, name: string, ...migrations: ((transaction: $mol_db_transaction<$mol_db_schema>) => void)[]): Promise<$mol_db_database<Schema>>;
+}
+
+declare namespace $ {
     class $mol_db_store<Schema extends $mol_db_store_schema> {
         readonly native: IDBObjectStore;
         constructor(native: IDBObjectStore);
@@ -927,7 +931,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_db<Schema extends $mol_db_schema>(this: $, name: string, ...migrations: ((transaction: $mol_db_transaction<$mol_db_schema>) => void)[]): Promise<$mol_db_database<Schema>>;
 }
 
 declare namespace $ {

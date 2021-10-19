@@ -3182,6 +3182,24 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    async function $mol_db(name, ...migrations) {
+        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
+        request.onupgradeneeded = event => {
+            migrations.splice(0, event.oldVersion - 1);
+            const transaction = new $.$mol_db_transaction(request.transaction);
+            for (const migrate of migrations)
+                migrate(transaction);
+        };
+        const db = await $.$mol_db_response(request);
+        return new $.$mol_db_database(db);
+    }
+    $.$mol_db = $mol_db;
+})($ || ($ = {}));
+//db.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_db_store {
         native;
         constructor(native) {
@@ -3245,20 +3263,9 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    async function $mol_db(name, ...migrations) {
-        const request = this.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
-        request.onupgradeneeded = event => {
-            migrations.splice(0, event.oldVersion - 1);
-            const transaction = new $.$mol_db_transaction(request.transaction);
-            for (const migrate of migrations)
-                migrate(transaction);
-        };
-        const db = await $.$mol_db_response(request);
-        return new $.$mol_db_database(db);
-    }
-    $.$mol_db = $mol_db;
+    $.$mol_dom_context.indexedDB = $node['fake-indexeddb'];
 })($ || ($ = {}));
-//db.js.map
+//db.node.js.map
 ;
 "use strict";
 //db_schema.js.map
@@ -11885,7 +11892,7 @@ var $;
         }
         kill() {
             this.native.close();
-            const request = indexedDB.deleteDatabase(this.name);
+            const request = $.$mol_dom_context.indexedDB.deleteDatabase(this.name);
             request.onblocked = console.error;
             return $.$mol_db_response(request).then(() => { });
         }

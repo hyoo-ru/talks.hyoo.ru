@@ -2992,7 +2992,7 @@ var $;
 var $;
 (function ($) {
     async function $mol_db(name, ...migrations) {
-        const request = this.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
+        const request = this.$mol_dom_context.indexedDB.open(name, migrations.length ? migrations.length + 1 : undefined);
         request.onupgradeneeded = event => {
             migrations.splice(0, event.oldVersion - 1);
             const transaction = new $.$mol_db_transaction(request.transaction);
@@ -11746,7 +11746,7 @@ var $;
         }
         kill() {
             this.native.close();
-            const request = indexedDB.deleteDatabase(this.name);
+            const request = $.$mol_dom_context.indexedDB.deleteDatabase(this.name);
             request.onblocked = console.error;
             return $.$mol_db_response(request).then(() => { });
         }
