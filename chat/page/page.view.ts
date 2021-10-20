@@ -55,7 +55,7 @@ namespace $.$$ {
 		}
 		
 		title( next?: string ) {
-			return this.chat().title( next ) || this.default_title()
+			return this.chat().title( next ) //|| this.default_title()
 		}
 		
 		@ $mol_mem

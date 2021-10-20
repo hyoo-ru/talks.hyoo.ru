@@ -77,7 +77,7 @@ namespace $.$$ {
 		@ $mol_mem_key
 		chat_title( id: string ) {
 			const talkers = id.split( '-' )
-			if ( talkers.length === 1 ) return this.chat( id ).title()
+			if ( talkers.length === 1 ) return this.chat( id ).title() || id
 			
 			const unnamed = this.$.$mol_locale.text( '$hyoo_talks_unnamed_person' )
 			const auto_title = talkers
