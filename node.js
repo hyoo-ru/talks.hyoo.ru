@@ -10168,6 +10168,7 @@ var $;
         }
         body() {
             return [
+                this.Disclaimer(),
                 this.Bubbles()
             ];
         }
@@ -10238,6 +10239,11 @@ var $;
             obj.query = (val) => this.search(val);
             obj.Root = () => this.Body();
             obj.escape = (val) => this.search_end(val);
+            return obj;
+        }
+        Disclaimer() {
+            const obj = new this.$.$mol_paragraph();
+            obj.title = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Disclaimer_title');
             return obj;
         }
         bubbles() {
@@ -10361,6 +10367,9 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Search", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Disclaimer", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Bubbles", null);
@@ -10888,6 +10897,10 @@ var $;
                     grow: 0,
                     basis: 'auto',
                 },
+            },
+            Disclaimer: {
+                color: $.$mol_theme.shade,
+                justifyContent: 'center',
             },
             Bubble: {
                 margin: $.$mol_gap.block,

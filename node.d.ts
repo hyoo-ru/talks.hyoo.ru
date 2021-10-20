@@ -2888,6 +2888,7 @@ declare namespace $ {
         search(val?: any): string;
         search_end(val?: any): any;
         Search(): $$.$mol_search_jumper;
+        Disclaimer(): $$.$mol_paragraph;
         bubbles(): readonly any[];
         Bubbles(): $$.$mol_list;
         draft_text(val?: any): string;

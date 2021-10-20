@@ -516,10 +516,12 @@ $hyoo_talks_chat_page $mol_page
 			Root <= Body
 			escape?val <=> search_end?val null
 	body /
+		<= Disclaimer $mol_paragraph
+			title @ \Alpha version, release is coming soon!
 		<= Bubbles $mol_list rows <= bubbles /
 	foot <= draft_controls /
 		<= Draft_text $mol_textarea
-			hint @ \Add message.. [Will be exterminated later!]
+			hint @ \New message..
 			value?val <=> draft_text?val \
 		<= Speech_toggle $mol_check_icon
 			Icon <= Speech_toggle_icon $mol_icon_microphone
