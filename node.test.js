@@ -6977,6 +6977,9 @@ var $;
                 basis: rem(26),
                 shrink: 0,
             },
+            Form: {
+                padding: $.$mol_gap.block,
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -11652,6 +11655,9 @@ var $;
                 flex: {
                     basis: rem(26),
                     shrink: 0,
+                },
+                Body: {
+                    padding: $.$mol_gap.block,
                 },
             },
             Links_query: {
