@@ -56,6 +56,11 @@ namespace $.$$ {
 			},
 		},
 		
+		Disclaimer: {
+			color: $mol_theme.shade,
+			justifyContent: 'center',
+		},
+		
 		Bubble: {
 			margin: $mol_gap.block,
 		},
