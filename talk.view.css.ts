@@ -27,9 +27,9 @@ namespace $.$$ {
 				shrink: 0,
 			},
 			
-// 			Foot: {
-// 				padding: $mol_gap.block,
-// 			},
+			Body: {
+				padding: $mol_gap.block,
+			},
 			
 		},
 		
