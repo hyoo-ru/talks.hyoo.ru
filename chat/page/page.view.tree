@@ -12,15 +12,22 @@ $hyoo_talks_chat_page $mol_page
 		hint @ \Chat title
 	head /
 		<= Title
-		<= Search_toggle $mol_check_icon
-			hint @ \Toggle search
-			Icon <= Search_toggle_icon $mol_icon_magnify
-			checked?val <=> search_enabled?val false
+		<= Dump $mol_link
+			hint @ \Download all messages
+			click?event <=> dump_prepare?event null
+			uri <= dump_uri?val \
+			file_name <= dump_name \chat.сsv
+			sub /
+				<= Dump_icon $mol_icon_download
 		<= Joined $mol_check_icon
 			hint @ \Joined
 			Icon <= Joined_icon $mol_icon_eye
 			checked?val <=> joined?val false
 		<= Tools
+		<= Search_toggle $mol_check_icon
+			hint @ \Toggle search
+			Icon <= Search_toggle_icon $mol_icon_magnify
+			checked?val <=> search_enabled?val false
 		<= Search $mol_search_jumper
 			query?val <=> search?val \
 			Root <= Body

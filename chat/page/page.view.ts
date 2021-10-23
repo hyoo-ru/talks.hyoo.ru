@@ -10,6 +10,7 @@ namespace $.$$ {
 			return [
 				this.Title(),
 				this.Joined(),
+				this.Dump(),
 				this.Search_toggle(),
 				this.Tools(),
 				... this.search_enabled() ? [ this.Search() ] : [],
@@ -221,6 +222,29 @@ namespace $.$$ {
 
 					}
 				)
+		}
+		
+		dump_prepare() {
+			
+			const messages = this.chat().messages()
+			const lines = messages.map( msg => {
+				return [
+					msg.author()?.name() || msg.author()?.id() || '',
+					msg.text() ?? '',
+					msg.moment()?.toOffset( new $mol_time_moment().offset! ).toString( 'YYYY-MM-DD hh:mm:ss' ) ?? '',
+				].map( v => JSON.stringify( v ) ).join( '\t' )
+			} )
+			const tsv = [ 'Name\tMessage\tMoment\n', ... lines ].join( '\n' )
+			
+			const blob = new Blob( [ tsv ], { type: 'text/tab-separated-values' } )
+			const uri = URL.createObjectURL( blob )
+			this.dump_uri( uri )
+			
+		}
+		
+		dump_name() {
+			const name = this.chat().title() || this.chat().id() || super.dump_name()
+			return name + '.csv'
 		}
 		
 		hearing( next? : boolean ) {
