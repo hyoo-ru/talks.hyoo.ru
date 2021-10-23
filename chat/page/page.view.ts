@@ -258,7 +258,14 @@ namespace $.$$ {
 			if( !last ) return null
 			
 			$mol_fiber.run( ()=> {
-				this.draft_text( last[0].transcript ?? '' )
+				
+				let text = last[0].transcript
+				
+				const sure = last[0].confidence
+				if( sure < .75 ) text = '`' + text + '`'
+				
+				this.draft_text( text )
+				
 			} )
 			
 			if( last.isFinal ) {
