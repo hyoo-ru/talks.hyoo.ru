@@ -361,11 +361,13 @@ $mol_icon $mol_svg_root
 		<= Path $mol_svg_path
 			geometry <= path \
 
-$mol_icon_magnify $mol_icon path \M9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z
+$mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+
+$mol_icon_eye $mol_icon path \M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z
 
 $mol_check_icon $mol_check
 
-$mol_icon_eye $mol_icon path \M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z
+$mol_icon_magnify $mol_icon path \M9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z
 
 $mol_pop $mol_view
 	event * keydown?event <=> keydown?event null
@@ -502,15 +504,22 @@ $hyoo_talks_chat_page $mol_page
 		hint @ \Chat title
 	head /
 		<= Title
-		<= Search_toggle $mol_check_icon
-			hint @ \Toggle search
-			Icon <= Search_toggle_icon $mol_icon_magnify
-			checked?val <=> search_enabled?val false
+		<= Dump $mol_link
+			hint @ \Download all messages
+			click?event <=> dump_prepare?event null
+			uri <= dump_uri?val \
+			file_name <= dump_name \chat.сsv
+			sub /
+				<= Dump_icon $mol_icon_download
 		<= Joined $mol_check_icon
 			hint @ \Joined
 			Icon <= Joined_icon $mol_icon_eye
 			checked?val <=> joined?val false
 		<= Tools
+		<= Search_toggle $mol_check_icon
+			hint @ \Toggle search
+			Icon <= Search_toggle_icon $mol_icon_magnify
+			checked?val <=> search_enabled?val false
 		<= Search $mol_search_jumper
 			query?val <=> search?val \
 			Root <= Body

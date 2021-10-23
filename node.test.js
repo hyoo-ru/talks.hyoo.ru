@@ -9082,14 +9082,26 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_magnify extends $.$mol_icon {
+    class $mol_icon_download extends $.$mol_icon {
         path() {
-            return "M9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z";
+            return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
         }
     }
-    $.$mol_icon_magnify = $mol_icon_magnify;
+    $.$mol_icon_download = $mol_icon_download;
 })($ || ($ = {}));
-//magnify.view.tree.js.map
+//download.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_icon_eye extends $.$mol_icon {
+        path() {
+            return "M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z";
+        }
+    }
+    $.$mol_icon_eye = $mol_icon_eye;
+})($ || ($ = {}));
+//eye.view.tree.js.map
 ;
 "use strict";
 var $;
@@ -9110,14 +9122,14 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_icon_eye extends $.$mol_icon {
+    class $mol_icon_magnify extends $.$mol_icon {
         path() {
-            return "M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z";
+            return "M9.5,3C13.09,3 16,5.91 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16C5.91,16 3,13.09 3,9.5C3,5.91 5.91,3 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z";
         }
     }
-    $.$mol_icon_eye = $mol_icon_eye;
+    $.$mol_icon_magnify = $mol_icon_magnify;
 })($ || ($ = {}));
-//eye.view.tree.js.map
+//magnify.view.tree.js.map
 ;
 "use strict";
 var $;
@@ -10152,9 +10164,10 @@ var $;
         head() {
             return [
                 this.Title(),
-                this.Search_toggle(),
+                this.Dump(),
                 this.Joined(),
                 this.Tools(),
+                this.Search_toggle(),
                 this.Search()
             ];
         }
@@ -10184,20 +10197,32 @@ var $;
                 return val;
             return "";
         }
-        Search_toggle_icon() {
-            const obj = new this.$.$mol_icon_magnify();
-            return obj;
+        dump_prepare(event) {
+            if (event !== undefined)
+                return event;
+            return null;
         }
-        search_enabled(val) {
+        dump_uri(val) {
             if (val !== undefined)
                 return val;
-            return false;
+            return "";
         }
-        Search_toggle() {
-            const obj = new this.$.$mol_check_icon();
-            obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Search_toggle_hint');
-            obj.Icon = () => this.Search_toggle_icon();
-            obj.checked = (val) => this.search_enabled(val);
+        dump_name() {
+            return "chat.сsv";
+        }
+        Dump_icon() {
+            const obj = new this.$.$mol_icon_download();
+            return obj;
+        }
+        Dump() {
+            const obj = new this.$.$mol_link();
+            obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Dump_hint');
+            obj.click = (event) => this.dump_prepare(event);
+            obj.uri = () => this.dump_uri();
+            obj.file_name = () => this.dump_name();
+            obj.sub = () => [
+                this.Dump_icon()
+            ];
             return obj;
         }
         Joined_icon() {
@@ -10214,6 +10239,22 @@ var $;
             obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Joined_hint');
             obj.Icon = () => this.Joined_icon();
             obj.checked = (val) => this.joined(val);
+            return obj;
+        }
+        Search_toggle_icon() {
+            const obj = new this.$.$mol_icon_magnify();
+            return obj;
+        }
+        search_enabled(val) {
+            if (val !== undefined)
+                return val;
+            return false;
+        }
+        Search_toggle() {
+            const obj = new this.$.$mol_check_icon();
+            obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Search_toggle_hint');
+            obj.Icon = () => this.Search_toggle_icon();
+            obj.checked = (val) => this.search_enabled(val);
             return obj;
         }
         search(val) {
@@ -10334,13 +10375,16 @@ var $;
     ], $hyoo_talks_chat_page.prototype, "title", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_chat_page.prototype, "Search_toggle_icon", null);
+    ], $hyoo_talks_chat_page.prototype, "dump_prepare", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_chat_page.prototype, "search_enabled", null);
+    ], $hyoo_talks_chat_page.prototype, "dump_uri", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_chat_page.prototype, "Search_toggle", null);
+    ], $hyoo_talks_chat_page.prototype, "Dump_icon", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Dump", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Joined_icon", null);
@@ -10350,6 +10394,15 @@ var $;
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Joined", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Search_toggle_icon", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "search_enabled", null);
+    __decorate([
+        $.$mol_mem
+    ], $hyoo_talks_chat_page.prototype, "Search_toggle", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "search", null);
@@ -10923,6 +10976,7 @@ var $;
                 return [
                     this.Title(),
                     this.Joined(),
+                    this.Dump(),
                     this.Search_toggle(),
                     this.Tools(),
                     ...this.search_enabled() ? [this.Search()] : [],
@@ -11075,6 +11129,24 @@ var $;
                         this.domain().user().read_messages(this.chat(), last_viewed);
                     }
                 });
+            }
+            dump_prepare() {
+                const messages = this.chat().messages();
+                const lines = messages.map(msg => {
+                    return [
+                        msg.author()?.name() || msg.author()?.id() || '',
+                        msg.text() ?? '',
+                        msg.moment()?.toOffset(new $.$mol_time_moment().offset).toString('YYYY-MM-DD hh:mm:ss') ?? '',
+                    ].map(v => JSON.stringify(v)).join('\t');
+                });
+                const tsv = ['Name\tMessage\tMoment\n', ...lines].join('\n');
+                const blob = new Blob([tsv], { type: 'text/tab-separated-values' });
+                const uri = URL.createObjectURL(blob);
+                this.dump_uri(uri);
+            }
+            dump_name() {
+                const name = this.chat().title() || this.chat().id() || super.dump_name();
+                return name + '.csv';
             }
             hearing(next) {
                 return this.$.$mol_speech.hearing(next);
