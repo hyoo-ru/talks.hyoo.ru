@@ -250,28 +250,31 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
+		speech_index( next = 0 ) {
+			return next
+		}
+		
+		@ $mol_mem
 		speech_to_text() {
 			
 			if( !this.hearing() ) return null
 			
-			const last = this.$.$mol_speech.recognition_last()
+			const index = this.speech_index()
+			const last = this.$.$mol_speech.recognition( index )
 			if( !last ) return null
 			
-			$mol_fiber.run( ()=> {
-				
-				let text = last[0].transcript
-				
-				const sure = last[0].confidence
-				if( sure < .75 ) text = '`' + text + '`'
-				
-				this.draft_text( text )
-				
-			} )
+			let text = last[0].transcript
+			
+			const sure = last[0].confidence
+			if( sure < .75 ) text = '`' + text + '`'
+			
+			this.draft_text( text )
 			
 			if( last.isFinal ) {
-				$mol_fiber.run( ()=> {
-					new $mol_after_tick( $mol_fiber_root( ()=> this.draft_send() ) )
-				} )
+				new $mol_after_tick( $mol_fiber_root( ()=> {
+					this.speech_index( index + 1 )
+					this.draft_send()
+				} ) )
 			}
 			
 			return null
