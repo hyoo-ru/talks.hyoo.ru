@@ -2647,6 +2647,21 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_button_download extends $mol_button_minor {
+        blob(): any;
+        file_name(): string;
+        sub(): readonly any[];
+        Icon(): $mol_icon_download;
+    }
+}
+
+declare namespace $.$$ {
+    class $mol_button_download extends $.$mol_button_download {
+        click(): void;
+    }
+}
+
+declare namespace $ {
     class $mol_icon_eye extends $mol_icon {
         path(): string;
     }
@@ -2902,11 +2917,9 @@ declare namespace $ {
         Bubble(id: any): $$.$hyoo_talks_message_bubble;
         plugins(): readonly any[];
         title(val?: any): string;
-        dump_prepare(event?: any): any;
-        dump_uri(val?: any): string;
         dump_name(): string;
-        Dump_icon(): $mol_icon_download;
-        Dump(): $$.$mol_link;
+        dump_blob(val?: any): any;
+        Dump(): $$.$mol_button_download;
         Joined_icon(): $mol_icon_eye;
         joined(val?: any): boolean;
         Joined(): $mol_check_icon;
@@ -3018,7 +3031,7 @@ declare namespace $.$$ {
 declare namespace $.$$ {
     class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
         Head(): $mol_view;
-        head(): ($mol_view | $mol_string | $mol_search_jumper)[];
+        head(): ($mol_view | $mol_string | $mol_button_download | $mol_search_jumper)[];
         search_enabled(next?: boolean): boolean;
         search_start(event: Event): void;
         search_end(event: Event): void;
@@ -3037,7 +3050,7 @@ declare namespace $.$$ {
         body_scroll_top(next?: number): number;
         scroll_end(): void;
         update_last_readed_message(): $mol_fiber<any>;
-        dump_prepare(): void;
+        dump_blob(): Blob;
         dump_name(): string;
         hearing(next?: boolean): boolean;
         speech_to_text(): null;

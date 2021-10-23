@@ -9094,6 +9094,52 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $mol_button_download extends $.$mol_button_minor {
+        blob() {
+            return null;
+        }
+        file_name() {
+            return "blob.bin";
+        }
+        sub() {
+            return [
+                this.Icon()
+            ];
+        }
+        Icon() {
+            const obj = new this.$.$mol_icon_download();
+            return obj;
+        }
+    }
+    __decorate([
+        $.$mol_mem
+    ], $mol_button_download.prototype, "Icon", null);
+    $.$mol_button_download = $mol_button_download;
+})($ || ($ = {}));
+//download.view.tree.js.map
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_button_download extends $.$mol_button_download {
+            click() {
+                const blob = this.blob();
+                const name = this.file_name();
+                const uri = URL.createObjectURL(blob);
+                const a = $.$mol_jsx("a", { href: uri, download: name });
+                a.click();
+            }
+        }
+        $$.$mol_button_download = $mol_button_download;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+//download.view.js.map
+;
+"use strict";
+var $;
+(function ($) {
     class $mol_icon_eye extends $.$mol_icon {
         path() {
             return "M12,9C10.34,9 9,10.34 9,12C9,13.66 10.34,15 12,15C13.66,15 15,13.66 15,12C15,10.34 13.66,9 12,9M12,17C9.24,17 7,14.76 7,12C7,9.24 9.24,7 12,7C14.76,7 17,9.24 17,12C17,14.76 14.76,17 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z";
@@ -10197,32 +10243,19 @@ var $;
                 return val;
             return "";
         }
-        dump_prepare(event) {
-            if (event !== undefined)
-                return event;
-            return null;
-        }
-        dump_uri(val) {
-            if (val !== undefined)
-                return val;
-            return "";
-        }
         dump_name() {
             return "chat.сsv";
         }
-        Dump_icon() {
-            const obj = new this.$.$mol_icon_download();
-            return obj;
+        dump_blob(val) {
+            if (val !== undefined)
+                return val;
+            return null;
         }
         Dump() {
-            const obj = new this.$.$mol_link();
+            const obj = new this.$.$mol_button_download();
             obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Dump_hint');
-            obj.click = (event) => this.dump_prepare(event);
-            obj.uri = () => this.dump_uri();
             obj.file_name = () => this.dump_name();
-            obj.sub = () => [
-                this.Dump_icon()
-            ];
+            obj.blob = () => this.dump_blob();
             return obj;
         }
         Joined_icon() {
@@ -10375,13 +10408,7 @@ var $;
     ], $hyoo_talks_chat_page.prototype, "title", null);
     __decorate([
         $.$mol_mem
-    ], $hyoo_talks_chat_page.prototype, "dump_prepare", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks_chat_page.prototype, "dump_uri", null);
-    __decorate([
-        $.$mol_mem
-    ], $hyoo_talks_chat_page.prototype, "Dump_icon", null);
+    ], $hyoo_talks_chat_page.prototype, "dump_blob", null);
     __decorate([
         $.$mol_mem
     ], $hyoo_talks_chat_page.prototype, "Dump", null);
@@ -11130,7 +11157,7 @@ var $;
                     }
                 });
             }
-            dump_prepare() {
+            dump_blob() {
                 const messages = this.chat().messages();
                 const lines = messages.map(msg => {
                     return [
@@ -11139,10 +11166,8 @@ var $;
                         msg.moment()?.toOffset(new $.$mol_time_moment().offset).toString('YYYY-MM-DD hh:mm:ss') ?? '',
                     ].map(v => JSON.stringify(v)).join('\t');
                 });
-                const tsv = ['Name\tMessage\tMoment\n', ...lines].join('\n');
-                const blob = new Blob([tsv], { type: 'text/tab-separated-values' });
-                const uri = URL.createObjectURL(blob);
-                this.dump_uri(uri);
+                const tsv = ['Name\tMessage\tMoment', ...lines].join('\n');
+                return new Blob([tsv], { type: 'text/tab-separated-values' });
             }
             dump_name() {
                 const name = this.chat().title() || this.chat().id() || super.dump_name();
