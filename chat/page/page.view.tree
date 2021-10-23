@@ -12,13 +12,10 @@ $hyoo_talks_chat_page $mol_page
 		hint @ \Chat title
 	head /
 		<= Title
-		<= Dump $mol_link
+		<= Dump $mol_button_download
 			hint @ \Download all messages
-			click?event <=> dump_prepare?event null
-			uri <= dump_uri?val \
 			file_name <= dump_name \chat.сsv
-			sub /
-				<= Dump_icon $mol_icon_download
+			blob <= dump_blob?val null
 		<= Joined $mol_check_icon
 			hint @ \Joined
 			Icon <= Joined_icon $mol_icon_eye

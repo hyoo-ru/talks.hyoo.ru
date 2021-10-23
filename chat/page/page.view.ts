@@ -224,7 +224,7 @@ namespace $.$$ {
 				)
 		}
 		
-		dump_prepare() {
+		dump_blob() {
 			
 			const messages = this.chat().messages()
 			const lines = messages.map( msg => {
@@ -234,11 +234,9 @@ namespace $.$$ {
 					msg.moment()?.toOffset( new $mol_time_moment().offset! ).toString( 'YYYY-MM-DD hh:mm:ss' ) ?? '',
 				].map( v => JSON.stringify( v ) ).join( '\t' )
 			} )
-			const tsv = [ 'Name\tMessage\tMoment\n', ... lines ].join( '\n' )
+			const tsv = [ 'Name\tMessage\tMoment', ... lines ].join( '\n' )
 			
-			const blob = new Blob( [ tsv ], { type: 'text/tab-separated-values' } )
-			const uri = URL.createObjectURL( blob )
-			this.dump_uri( uri )
+			return new Blob( [ tsv ], { type: 'text/tab-separated-values' } )
 			
 		}
 		
