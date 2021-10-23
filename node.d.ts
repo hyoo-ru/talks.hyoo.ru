@@ -2984,9 +2984,9 @@ declare namespace $ {
         static hearer(): any;
         static hearing(next?: boolean): boolean;
         static recognition_index(next?: number): number;
+        static recognition_offset(next?: number): number;
         static recognition(index: number, next?: SpeechRecognitionResult): SpeechRecognitionResult | null;
         static recognitions(): SpeechRecognitionResult[];
-        static recognition_last(): SpeechRecognitionResult | null;
         static commands(): string[];
         static text(): string;
         commands_skip(next?: number): number;
@@ -3031,6 +3031,7 @@ declare namespace $.$$ {
         dump_blob(): Blob;
         dump_name(): string;
         hearing(next?: boolean): boolean;
+        speech_index(next?: number): number;
         speech_to_text(): null;
         auto(): void;
     }
