@@ -15,6 +15,8 @@ yarn
 yarn start hyoo/talks
 ```
 
+Standalone build will be placed at `mam/hyoo/talks/-`
+
 ## Dev Server
 
 ```
