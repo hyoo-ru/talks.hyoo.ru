@@ -224,59 +224,82 @@ namespace $.$$ {
 				)
 		}
 		
+		/** All messages in CSV (actually TSV) as Blob */
 		dump_blob() {
 			
+			// get all messages in the chat
 			const messages = this.chat().messages()
+			
+			// makes CSV lines: author, message, date-time
 			const lines = messages.map( msg => {
 				return [
+					// author name or id
 					msg.author()?.name() || msg.author()?.id() || '',
+					// message text
 					msg.text() ?? '',
+					// formatted time moment in local time zone
 					msg.moment()?.toOffset( new $mol_time_moment().offset! ).toString( 'YYYY-MM-DD hh:mm:ss' ) ?? '',
 				].map( v => JSON.stringify( v ) ).join( '\t' )
 			} )
+			
+			// prepend lines vith headers
 			const tsv = [ 'Name\tMessage\tMoment', ... lines ].join( '\n' )
 			
+			// convert to blob and return
 			return new Blob( [ tsv ], { type: 'text/tab-separated-values' } )
 			
 		}
 		
+		/** File name for dump messages. */
 		dump_name() {
 			const name = this.chat().title() || this.chat().id() || super.dump_name()
 			return name + '.csv'
 		}
 		
+		/** App listens speech or not. **/
 		hearing( next? : boolean ) {
+			// Bind "microphone" toggler with speech api
 			return this.$.$mol_speech.hearing( next )
 		}
 		
+		/** Current watched recognition result. */
 		@ $mol_mem
 		speech_index( next = 0 ) {
 			return next
 		}
 		
+		/** Task for convertion continous speech to messages. */
 		@ $mol_mem
 		speech_to_text() {
 			
+			// skip task when speech recognition is disabled
 			if( !this.hearing() ) return null
 			
+			// get last recognition result
 			const index = this.speech_index()
 			const last = this.$.$mol_speech.recognition( index )
 			if( !last ) return null
 			
+			// get recognized text
 			let text = last[0].transcript
 			
+			// highlight if we unsure in result
 			const sure = last[0].confidence
 			if( sure < .75 ) text = '`' + text + '`'
 			
+			// update draft text
 			this.draft_text( text )
 			
+			// if recognition result is finalized
 			if( last.isFinal ) {
+				// delayed mutaion
 				new $mol_after_tick( $mol_fiber_root( ()=> {
-					this.speech_index( index + 1 )
-					this.draft_send()
+					this.speech_index( index + 1 ) // watch next recognition
+					this.draft_send() // submit message and make new draft
 				} ) )
 			}
 			
+			// all tasks should return something
 			return null
 		}
 		
