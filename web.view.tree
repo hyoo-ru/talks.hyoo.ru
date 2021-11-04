@@ -301,7 +301,7 @@ $mol_embed_native $mol_view
 		data <= uri?val \
 		type <= mime \
 	sub /
-		\
+		<= title?val \
 
 $hyoo_talks_message_bubble $mol_list
 	message $hyoo_talks_message
@@ -787,4 +787,6 @@ $mol_text_image $mol_view
 		mol_text_type <= type?val \
 		data <= link?val \
 	sub /
-		<= title?val \
+		<= Image $mol_image
+			uri <= link
+			title <= title?val \
