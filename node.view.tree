@@ -283,7 +283,7 @@ $mol_textarea $mol_view
 		<= Edit $mol_string
 			dom_name \textarea
 			value?val <=> value?val \
-			hint <= hint \
+			hint <= hint \ 
 			enabled <= enabled true
 			length_max <= length_max Infinity
 			selection?val <=> selection?val /number
@@ -365,6 +365,7 @@ $mol_icon_download $mol_icon path \M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
 
 $mol_button_download $mol_button_minor
 	blob null
+	uri \
 	file_name \blob.bin
 	sub /
 		<= Icon $mol_icon_download
