@@ -14,6 +14,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    let $mol_report_bugsnag: string;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
     function $mol_fail(error: any): never;
 }
 
@@ -2880,7 +2887,7 @@ declare namespace $.$$ {
     class $mol_search_jumper extends $.$mol_search_jumper {
         results(): $mol_view[][];
         index(next?: number): number;
-        sub(): ($mol_string | $mol_button_minor | $mol_paginator)[];
+        anchor_content(): ($mol_string | $mol_button_minor | $mol_paginator)[];
     }
 }
 
