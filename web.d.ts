@@ -966,6 +966,7 @@ declare namespace $ {
         readonly native: CryptoKey & {
             type: 'private';
         };
+        static size: number;
         constructor(native: CryptoKey & {
             type: 'private';
         });
@@ -973,7 +974,7 @@ declare namespace $ {
         serial(): Promise<ArrayBuffer>;
         sign(data: DataView | ArrayBuffer): Promise<ArrayBuffer>;
     }
-    const $mol_crypto_auditor_sign_size = 32;
+    const $mol_crypto_auditor_sign_size = 64;
 }
 
 declare namespace $ {
