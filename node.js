@@ -5865,46 +5865,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_fiber_defer(calculate) {
-        const host = {};
-        const fiber = new $mol_wire_fiber(host, calculate, calculate.name);
-        fiber.plan();
-        return fiber;
-    }
-    $.$mol_fiber_defer = $mol_fiber_defer;
-    function $mol_fiber_root(calculate) {
-        const wrapper = function (...args) {
-            const fiber = new $mol_wire_fiber(this, calculate, this + '.' + calculate.name, ...args);
-            return fiber.sync();
-        };
-        wrapper[Symbol.toStringTag] = calculate.name;
-        return wrapper;
-    }
-    $.$mol_fiber_root = $mol_fiber_root;
-    function $mol_fiber_sync(request) {
-        throw new Error('Use $mol_wire_sync instead');
-    }
-    $.$mol_fiber_sync = $mol_fiber_sync;
-    async function $mol_fiber_warp() {
-        $mol_wire_fiber.sync();
-    }
-    $.$mol_fiber_warp = $mol_fiber_warp;
-    class $mol_fiber_solid extends $mol_wrapper {
-        static func(task) {
-            return task;
-        }
-    }
-    $.$mol_fiber_solid = $mol_fiber_solid;
-    class $mol_fiber {
-        static method = $mol_action;
-    }
-    $.$mol_fiber = $mol_fiber;
-})($ || ($ = {}));
-//mol/fiber/fiber.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $hyoo_talks_message extends $mol_object2 {
         id() {
             return this.$.$mol_fail(new Error('id is not defined'));
@@ -6012,9 +5972,7 @@ var $;
             return str ? new $mol_time_moment(String(str)) : null;
         }
         online_update() {
-            $mol_fiber_defer(() => {
-                this.state().sub('online').value(new $mol_time_moment().toString('YYYY-MM-DDThh:mmZ'));
-            });
+            this.state().sub('online').value(new $mol_time_moment().toString('YYYY-MM-DDThh:mmZ'));
         }
         chats(next) {
             const ids = this.state().sub('chats').list(next && next.map(m => m.id()));
@@ -6027,7 +5985,7 @@ var $;
             let id = String(next === undefined ? drafts.sub(chat.id()).value() ?? '' : '');
             if (!id) {
                 id = $mol_guid();
-                $mol_fiber_defer(() => drafts.sub(chat.id()).value(id));
+                drafts.sub(chat.id()).value(id);
             }
             return this.domain().message(id);
         }
@@ -9835,6 +9793,46 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_fiber_defer(calculate) {
+        const host = {};
+        const fiber = new $mol_wire_fiber(host, calculate, calculate.name);
+        fiber.plan();
+        return fiber;
+    }
+    $.$mol_fiber_defer = $mol_fiber_defer;
+    function $mol_fiber_root(calculate) {
+        const wrapper = function (...args) {
+            const fiber = new $mol_wire_fiber(this, calculate, this + '.' + calculate.name, ...args);
+            return fiber.async();
+        };
+        wrapper[Symbol.toStringTag] = calculate.name;
+        return wrapper;
+    }
+    $.$mol_fiber_root = $mol_fiber_root;
+    function $mol_fiber_sync(request) {
+        throw new Error('Use $mol_wire_sync instead');
+    }
+    $.$mol_fiber_sync = $mol_fiber_sync;
+    async function $mol_fiber_warp() {
+        $mol_wire_fiber.sync();
+    }
+    $.$mol_fiber_warp = $mol_fiber_warp;
+    class $mol_fiber_solid extends $mol_wrapper {
+        static func(task) {
+            return task;
+        }
+    }
+    $.$mol_fiber_solid = $mol_fiber_solid;
+    class $mol_fiber {
+        static method = $mol_action;
+    }
+    $.$mol_fiber = $mol_fiber;
+})($ || ($ = {}));
+//mol/fiber/fiber.ts
+;
+"use strict";
+var $;
+(function ($) {
     $mol_style_attach("mol/search/search.view.css", "[mol_search] {\n\talign-self: flex-start;\n\tflex: auto;\n}\n\n[mol_search_anchor] {\n\tflex: 1 1 auto;\n}\n\n[mol_search_query] {\n\tflex-grow: 1;\n}\n\n[mol_search_menu] {\n\tmin-height: .75rem;\n\tdisplay: flex;\n}\n\n[mol_search_suggest] {\n\ttext-align: left;\n}\n\n[mol_search_suggest_label_high] {\n\tcolor: var(--mol_theme_shade);\n\ttext-shadow: none;\n}\n");
 })($ || ($ = {}));
 //mol/search/-css/search.view.css.ts
@@ -11132,7 +11130,7 @@ var $;
                 if (next === undefined)
                     return false;
                 if (next) {
-                    $mol_fiber_defer(() => this.Search().Query().focused(true));
+                    this.Search().Query().focused(true);
                 }
                 else {
                     this.search('');
@@ -11159,7 +11157,7 @@ var $;
                 return this.chat().title(next);
             }
             messages(next) {
-                $mol_fiber_defer(() => {
+                new $mol_after_frame(() => {
                     if (this.Bubbles().gap_after() === 0) {
                         this.scroll_end();
                     }
@@ -11204,25 +11202,24 @@ var $;
                 const draft = this.draft();
                 const user = this.domain().user();
                 user.online_update();
-                if (next !== undefined)
-                    $mol_fiber_defer(() => {
-                        const chats = new Set(user.chats());
-                        if (!chats.has(chat))
-                            user.chats([...chats, chat]);
-                        if (draft.author() !== user)
-                            draft.author(user);
-                        const messages = new Set(chat.messages());
-                        if (messages.has(draft)) {
-                            if (!next) {
-                                messages.delete(draft);
-                                chat.messages([...messages]);
-                            }
+                if (next !== undefined) {
+                    const chats = new Set(user.chats());
+                    if (!chats.has(chat))
+                        user.chats([...chats, chat]);
+                    if (draft.author() !== user)
+                        draft.author(user);
+                    const messages = new Set(chat.messages());
+                    if (messages.has(draft)) {
+                        if (!next) {
+                            messages.delete(draft);
+                            chat.messages([...messages]);
                         }
-                        else {
-                            if (next)
-                                chat.messages([...messages, draft]);
-                        }
-                    });
+                    }
+                    else {
+                        if (next)
+                            chat.messages([...messages, draft]);
+                    }
+                }
                 return draft.text(next);
             }
             talkers_auto_join(chat) {
@@ -11270,11 +11267,9 @@ var $;
                     }
                     last_viewed--;
                 }
-                return this.$.$mol_fiber_defer(() => {
-                    if (last_viewed > last_readed) {
-                        this.domain().user().read_messages(this.chat(), last_viewed);
-                    }
-                });
+                if (last_viewed > last_readed) {
+                    this.domain().user().read_messages(this.chat(), last_viewed);
+                }
             }
             dump_blob() {
                 const messages = this.chat().messages();
