@@ -45,11 +45,9 @@ namespace $ {
 		}
 		
 		online_update() {
-			$mol_fiber_defer( ()=> {
-				this.state().sub( 'online' ).value(
-					new $mol_time_moment().toString( 'YYYY-MM-DDThh:mmZ' )
-				)
-			} )
+			this.state().sub( 'online' ).value(
+				new $mol_time_moment().toString( 'YYYY-MM-DDThh:mmZ' )
+			)
 		}
 		
 		chats( next?: $hyoo_talks_chat[] ) {
@@ -66,9 +64,7 @@ namespace $ {
 			
 			if( !id ) {
 				id = $mol_guid()
-				$mol_fiber_defer( ()=>
-					drafts.sub( chat.id() ).value( id )
-				)
+				drafts.sub( chat.id() ).value( id )
 			}
 			
 			return this.domain().message( id )

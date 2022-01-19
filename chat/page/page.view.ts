@@ -23,9 +23,7 @@ namespace $.$$ {
 			if( next === undefined ) return false
 			
 			if( next ) {
-				$mol_fiber_defer( ()=>
-					this.Search().Query().focused( true )
-				)
+				this.Search().Query().focused( true )
 			} else {
 				this.search( '' )
 			}
@@ -61,7 +59,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		messages( next?: $hyoo_talks_message[] ) {
-			$mol_fiber_defer( ()=> {
+			new $mol_after_frame( ()=> {
 				if( this.Bubbles().gap_after() === 0 ){
 					this.scroll_end()
 				}
@@ -120,7 +118,7 @@ namespace $.$$ {
 			
 			user.online_update()
 			
-			if( next !== undefined ) $mol_fiber_defer( ()=> {
+			if( next !== undefined ) {
 				
 				const chats = new Set( user.chats() )
 				if( !chats.has( chat ) ) user.chats([ ... chats, chat ])
@@ -137,7 +135,7 @@ namespace $.$$ {
 					if( next ) chat.messages([ ... messages, draft ])
 				}
 					
-			} )
+			}
 	
 			return draft.text( next )
 		}
@@ -213,15 +211,10 @@ namespace $.$$ {
 			}
 			
 
-			return this.$.$mol_fiber_defer(
-					() => {
-
-						if ( last_viewed > last_readed ) {
-							this.domain().user().read_messages( this.chat() , last_viewed )
-						}
-
-					}
-				)
+			if ( last_viewed > last_readed ) {
+				this.domain().user().read_messages( this.chat() , last_viewed )
+			}
+			
 		}
 		
 		/** All messages in CSV (actually TSV) as Blob */
