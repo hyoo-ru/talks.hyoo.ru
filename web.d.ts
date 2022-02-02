@@ -2615,7 +2615,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $mol_embed_native extends $.$mol_embed_native {
         window(): Window;
-        load(frame: HTMLIFrameElement, uri: string): Promise<Window>;
+        load(frame: HTMLIFrameElement): Promise<Window>;
         uri_resource(): string;
         uri_listener(): $mol_dom_listener;
         uri_change(event?: MessageEvent<[string, string]>): void;
