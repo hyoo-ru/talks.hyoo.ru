@@ -201,7 +201,7 @@ $mol_image $mol_view
 		^
 		src <= uri \
 		alt <= title
-		loading <= loading \lazy
+		loading <= loading \eager
 
 $mol_paragraph $mol_view
 	line_height 24
