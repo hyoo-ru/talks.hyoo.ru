@@ -12053,6 +12053,9 @@ var $;
         hierarchy_col() {
             return "";
         }
+        minimal_width() {
+            return 0;
+        }
         sub() {
             return [
                 this.Head(),
@@ -12067,6 +12070,7 @@ var $;
         Row(id) {
             const obj = new this.$.$mol_grid_row();
             obj.minimal_height = () => this.row_height();
+            obj.minimal_width = () => this.minimal_width();
             obj.cells = () => this.cells(id);
             return obj;
         }
