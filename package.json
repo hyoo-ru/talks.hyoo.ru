@@ -350,9 +350,9 @@
     "$mol_match"
   ],
   "dependencies": {
+    "colorette": "*",
     "jsdom": "*",
     "fake-indexeddb": "*",
-    "colorette": "*",
     "chokidar": "*"
   }
 }
