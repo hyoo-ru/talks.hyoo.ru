@@ -1748,7 +1748,7 @@ var $;
 (function ($) {
     class $mol_wire_task extends $mol_wire_fiber {
         static getter(task) {
-            return function $mol_wire_fiber_temp_get(host, args) {
+            return function $mol_wire_task_get(host, args) {
                 const existen = $mol_wire_auto()?.track_next();
                 reuse: if (existen) {
                     if (!(existen instanceof $mol_wire_task))
@@ -1821,7 +1821,7 @@ var $;
         static getter(task, keys) {
             const field = task.name + '()';
             if (keys) {
-                return function $mol_wire_fiber_persist_get(host, args) {
+                return function $mol_wire_atom_get(host, args) {
                     let dict, key, fiber;
                     key = `${host?.[Symbol.toStringTag] ?? host}.${task.name}(${args.map(v => $mol_key(v)).join(',')})`;
                     dict = Object.getOwnPropertyDescriptor(host ?? task, field)?.value;
@@ -1839,7 +1839,7 @@ var $;
                 };
             }
             else {
-                return function $mol_wire_fiber_persist_get(host, args) {
+                return function $mol_wire_atom_get(host, args) {
                     const existen = Object.getOwnPropertyDescriptor(host ?? task, field)?.value;
                     if (existen)
                         return existen;
@@ -2285,7 +2285,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/view/view/view.css", "[mol_view] {\n\ttransition-property: height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\ttransform-origin: center;\n\t-webkit-appearance: none;\n\tword-break: break-word;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n\tflex-shrink: 0;\n\tmax-width: 100%;\n\tcontain: style;\n\ttab-size: 4;\n}\n\n[mol_view]::selection {\n\tbackground: var(--mol_theme_current);\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont: var(--mol_skin_font);\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tcontain: unset; /** Fixes bg ignoring when applied to body on Chrome */\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t-45deg,\n\t\t#f92323,\n\t\t#f92323 10px,\n\t\t#ff3d3d 10px,\n\t\t#ff3d3d 30px\n\t);\n\tcolor: black;\n}\n\n@keyframes mol_view_wait_move {\n\tfrom {\n\t\tbackground-position: 0 0;\n\t}\n\tto {\n\t\tbackground-position: 200vmax 0;\n\t}\n}\n\n@keyframes mol_view_wait_show {\n\tto {\n\t\tbackground-image: repeating-linear-gradient(\n\t\t\t45deg,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 0% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 5% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 45% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 50% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 55% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 95% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 100%\n\t\t);\n\t\tbackground-size: 200vmax 200vmax;\n\t}\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait_show .5s .5s linear forwards , mol_view_wait_move 1s linear infinite;\n\topacity: .75;\n}\n");
+    $mol_style_attach("mol/view/view/view.css", "[mol_view] {\n\ttransition-property: height, width, min-height, min-width, max-width, max-height, transform;\n\ttransition-duration: .2s;\n\ttransition-timing-function: ease-out;\n\t-webkit-appearance: none;\n\tword-break: break-word;\n\tbox-sizing: border-box;\n\tdisplay: flex;\n\tflex-shrink: 0;\n\tmax-width: 100%;\n\tcontain: style;\n\ttab-size: 4;\n}\n\n[mol_view]::selection {\n\tbackground: var(--mol_theme_current);\n}\n\n[mol_view] > * {\n\tword-break: inherit;\n}\n\n[mol_view_root] {\n\tmargin: 0;\n\tpadding: 0;\n\twidth: 100%;\n\theight: 100%;\n\tbox-sizing: border-box;\n\tfont: var(--mol_skin_font);\n\tbackground: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n\tcontain: unset; /** Fixes bg ignoring when applied to body on Chrome */\n}\n\n[mol_view][mol_view_error]:not([mol_view_error=\"Promise\"]) {\n\tbackground-image: repeating-linear-gradient(\n\t\t-45deg,\n\t\t#f92323,\n\t\t#f92323 10px,\n\t\t#ff3d3d 10px,\n\t\t#ff3d3d 30px\n\t);\n\tcolor: black;\n}\n\n@keyframes mol_view_wait_move {\n\tfrom {\n\t\tbackground-position: 0 0;\n\t}\n\tto {\n\t\tbackground-position: 200vmax 0;\n\t}\n}\n\n@keyframes mol_view_wait_show {\n\tto {\n\t\tbackground-image: repeating-linear-gradient(\n\t\t\t45deg,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 0% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 5% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 45% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 50% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 55% ,\n\t\t\thsla( 0 , 0% , 50% , 0 ) 95% ,\n\t\t\thsla( 0 , 0% , 50% , .25 ) 100%\n\t\t);\n\t\tbackground-size: 200vmax 200vmax;\n\t}\n}\n\n[mol_view][mol_view_error=\"Promise\"] {\n\tanimation: mol_view_wait_show .5s .5s linear forwards , mol_view_wait_move 1s linear infinite;\n\topacity: .75;\n}\n");
 })($ || ($ = {}));
 //mol/view/view/-css/view.css.ts
 ;
@@ -4285,10 +4285,18 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    const { unicode_only, line_end, repeat_greedy, optional, char_only, char_except } = $mol_regexp;
+    const { unicode_only, line_end, tab, repeat_greedy, optional, forbid_after, char_only, char_except } = $mol_regexp;
     $.$hyoo_crowd_tokenizer = $mol_regexp.from({
         token: {
             'line-break': line_end,
+            'indents': {
+                tab,
+                spaces: '  ',
+            },
+            'spaces': repeat_greedy([
+                forbid_after(line_end),
+                unicode_only('White_Space'),
+            ], 1),
             'emoji': [
                 unicode_only('Extended_Pictographic'),
                 optional(unicode_only('Emoji_Modifier')),
@@ -4298,25 +4306,31 @@ var $;
                     optional(unicode_only('Emoji_Modifier')),
                 ]),
             ],
-            'Word-punctuation-space': [
+            'Word': [
                 repeat_greedy(char_only([
                     unicode_only('General_Category', 'Uppercase_Letter'),
                     unicode_only('Diacritic'),
                     unicode_only('General_Category', 'Number'),
-                ])),
+                ]), 1),
                 repeat_greedy(char_only([
                     unicode_only('General_Category', 'Lowercase_Letter'),
                     unicode_only('Diacritic'),
                     unicode_only('General_Category', 'Number'),
                 ])),
+            ],
+            'word': repeat_greedy(char_only([
+                unicode_only('General_Category', 'Lowercase_Letter'),
+                unicode_only('Diacritic'),
+                unicode_only('General_Category', 'Number'),
+            ]), 1),
+            'others': [
                 repeat_greedy(char_except([
                     unicode_only('General_Category', 'Uppercase_Letter'),
                     unicode_only('General_Category', 'Lowercase_Letter'),
                     unicode_only('Diacritic'),
                     unicode_only('General_Category', 'Number'),
                     unicode_only('White_Space'),
-                ])),
-                optional(unicode_only('White_Space')),
+                ]), 1),
             ],
         },
     });
@@ -7516,7 +7530,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/icon/icon.view.css", "[mol_icon] {\n\tfill: currentColor;\n\tstroke: none;\n\twidth: 1em;\n\theight: 1em;\n\tflex: 0 0 auto;\n\tvertical-align: top;\n\tmargin: .25em 0;\n\tdisplay: inline-block;\n\tfilter: drop-shadow(0px 1px 1px var(--mol_theme_back));\n}\n");
+    $mol_style_attach("mol/icon/icon.view.css", "[mol_icon] {\n\tfill: currentColor;\n\tstroke: none;\n\twidth: 1em;\n\theight: 1em;\n\tflex: 0 0 auto;\n\tvertical-align: top;\n\tmargin: .25em 0;\n\tdisplay: inline-block;\n\tfilter: drop-shadow(0px 1px 1px var(--mol_theme_back));\n\ttransform-origin: center;\n}\n");
 })($ || ($ = {}));
 //mol/icon/-css/icon.view.css.ts
 ;
