@@ -176,6 +176,7 @@ declare namespace $ {
     const $mol_theme: {
         back: $mol_style_func<"var", "--mol_theme_back">;
         hover: $mol_style_func<"var", "--mol_theme_hover">;
+        card: $mol_style_func<"var", "--mol_theme_card">;
         current: $mol_style_func<"var", "--mol_theme_current">;
         text: $mol_style_func<"var", "--mol_theme_text">;
         control: $mol_style_func<"var", "--mol_theme_control">;
@@ -2081,18 +2082,20 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_form extends $mol_view {
+    class $mol_form extends $mol_list {
         submit_blocked(): boolean;
         event(): {
             keydown: (event?: any) => any;
         };
         submit(event?: any): any;
-        sub(): readonly any[];
+        rows(): readonly any[];
         keydown(event?: any): any;
         form_fields(): readonly $mol_form_field[];
-        Bar_fields(): $mol_view;
+        body(): readonly $mol_form_field[];
+        Body(): $$.$mol_list;
         buttons(): readonly $mol_view[];
-        Bar_buttons(): $mol_row;
+        foot(): readonly $mol_view[];
+        Foot(): $mol_row;
     }
 }
 
