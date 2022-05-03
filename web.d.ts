@@ -2059,6 +2059,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_form_field extends $mol_labeler {
+        bids(): readonly string[];
         label(): readonly any[];
         content(): readonly any[];
         name(): string;
@@ -2069,6 +2070,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
+}
+
+declare namespace $.$$ {
+    class $mol_form_field extends $.$mol_form_field {
+        bid(): string;
+    }
 }
 
 declare namespace $ {
@@ -2102,6 +2109,8 @@ declare namespace $ {
 
 declare namespace $.$$ {
     class $mol_form extends $.$mol_form {
+        form_fields(): readonly $mol_form_field[];
+        submit_allowed(): boolean;
         submit_blocked(): boolean;
         keydown(next: KeyboardEvent): void;
     }
@@ -2114,13 +2123,13 @@ declare namespace $ {
         body(): readonly any[];
         name(val?: any): string;
         Name(): $$.$mol_string;
-        Name_field(): $mol_form_field;
+        Name_field(): $$.$mol_form_field;
         avatar(val?: any): string;
         Avatar(): $$.$mol_string;
-        Avatar_field(): $mol_form_field;
+        Avatar_field(): $$.$mol_form_field;
         background(val?: any): string;
         Background(): $$.$mol_string;
-        Background_field(): $mol_form_field;
+        Background_field(): $$.$mol_form_field;
         Form(): $$.$mol_form;
     }
 }
@@ -2645,7 +2654,7 @@ declare namespace $ {
     class $mol_grid extends $mol_view {
         row_height(): number;
         row_ids(): readonly string[][];
-        row_id(index: any): any;
+        row_id(id: any): any;
         col_ids(): readonly any[];
         records(): {};
         record(id: any): any;
@@ -2922,7 +2931,7 @@ declare namespace $ {
         length_max(): number;
         selection(val?: any): readonly number[];
         Edit(): $mol_textarea_edit;
-        row_numb(index: any): number;
+        row_numb(id: any): number;
         highlight(): string;
         View(): $$.$mol_text_code;
     }
@@ -3011,7 +3020,7 @@ declare namespace $ {
         };
         rows(): readonly any[];
         Peek(): $$.$mol_check;
-        Preview(index: any): $$.$mol_link;
+        Preview(id: any): $$.$mol_link;
         side(): string;
         editable_faorce(event?: any): any;
         author(): $hyoo_talks_person;
@@ -3028,8 +3037,8 @@ declare namespace $ {
         Previews(): $mol_view;
         peek_label(): string;
         peek(val?: any): boolean;
-        preview_uri(index: any): string;
-        Preview_embed(index: any): $$.$mol_embed_native;
+        preview_uri(id: any): string;
+        Preview_embed(id: any): $$.$mol_embed_native;
     }
 }
 
