@@ -1,9 +1,0 @@
-[hyoo_talks][mol_theme="$mol_theme_light"] {
-	--mol_theme_back: hsl( 210 , 50% , 99%, .8 );
-	--hyoo_talks_theme_talker: hsla( 0 , 0% , 90%, .75 );
-}
-
-[hyoo_talks][mol_theme="$mol_theme_dark"] {
-	--mol_theme_back: hsl( 210 , 50% , 10%, .8 );
-	--hyoo_talks_theme_talker: hsla( 0 , 0% , 5%, .5 );
-}
