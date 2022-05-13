@@ -10236,11 +10236,6 @@ var $;
                     },
                     other: {
                         alignItems: 'flex-start',
-                        Text: {
-                            background: {
-                                color: vary('--hyoo_talks_theme_talker'),
-                            },
-                        },
                     },
                 },
             },
