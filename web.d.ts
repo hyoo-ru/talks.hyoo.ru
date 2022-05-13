@@ -3618,7 +3618,4 @@ declare namespace $.$$ {
     }
 }
 
-declare namespace $ {
-}
-
 export = $;

@@ -8501,7 +8501,7 @@ var $;
 (function ($) {
     $.$mol_syntax2_md_flow = new $mol_syntax2({
         'quote': /^((?:(?:> )(?:[^]*?)$(\r?\n?))+)([\n\r]*)/,
-        'header': /^(#+)(\s*)(.*?)$([\n\r]*)/,
+        'header': /^(#+)(\s+)(.*?)$([\n\r]*)/,
         'list': /^((?:(?:\s?[*+-]|\d+\.)\s+(?:[^]*?)$(?:\r?\n?)(?:(?:  |\t)(?:[^]*?)$(?:\r?\n?))*)+)((?:\r?\n)*)/,
         'code': /^(```\s*)([\w.-]*)[\r\n]+([^]*?)^(```)$([\n\r]*)/,
         'code-indent': /^((?:(?:  |\t)(?:[^]*?)$([\n\r]*))+)/,
@@ -13267,12 +13267,5 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 //hyoo/talks/talk.view.ts
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("hyoo/talks/talks.view.css", "[hyoo_talks][mol_theme=\"$mol_theme_light\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 99%, .8 );\n\t--hyoo_talks_theme_talker: hsla( 0 , 0% , 90%, .75 );\n}\n\n[hyoo_talks][mol_theme=\"$mol_theme_dark\"] {\n\t--mol_theme_back: hsl( 210 , 50% , 10%, .8 );\n\t--hyoo_talks_theme_talker: hsla( 0 , 0% , 5%, .5 );\n}\n");
-})($ || ($ = {}));
-//hyoo/talks/-css/talks.view.css.ts
 
 //# sourceMappingURL=node.js.map
