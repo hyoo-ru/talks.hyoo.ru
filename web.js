@@ -12921,7 +12921,8 @@ var $;
             }
             background() {
                 const uri = this.user().background();
-                return uri ? `url(${JSON.stringify(uri)})` : 'none';
+                const shade = `hsl( var(--mol_theme_hue), 0% , calc( 50% + 50% * var(--mol_theme_luma) ), .8 )`;
+                return uri ? `linear-gradient( ${shade}, ${shade} ), url(${JSON.stringify(uri)})` : shade;
             }
             roster_body() {
                 return [
