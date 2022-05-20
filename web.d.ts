@@ -3311,6 +3311,7 @@ declare namespace $ {
             hyoo_talks_chat_page_embed: boolean;
         };
         Title(): $$.$mol_string;
+        tools(): readonly any[];
         head(): readonly any[];
         body(): readonly any[];
         foot(): readonly any[];
@@ -3326,6 +3327,7 @@ declare namespace $ {
         Search_toggle_icon(): $mol_icon_magnify;
         search_enabled(val?: any): boolean;
         Search_toggle(): $mol_check_icon;
+        Close(): any;
         search(val?: any): string;
         search_end(val?: any): any;
         Search(): $$.$mol_search_jumper;
@@ -3435,7 +3437,7 @@ declare namespace $.$$ {
 declare namespace $.$$ {
     class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
         Head(): $mol_view;
-        head(): ($mol_view | $mol_string | $mol_button_download | $mol_search_jumper)[];
+        head(): ($mol_view | $mol_string | $mol_search_jumper)[];
         search_enabled(next?: boolean): boolean;
         search_start(event: Event): void;
         search_end(event: Event): void;

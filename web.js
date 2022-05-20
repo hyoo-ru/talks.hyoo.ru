@@ -6863,9 +6863,6 @@ var $;
                 basis: rem(26),
                 shrink: 0,
             },
-            Form: {
-                padding: $mol_gap.block,
-            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -11218,13 +11215,18 @@ var $;
             obj.hint = () => this.$.$mol_locale.text('$hyoo_talks_chat_page_Title_hint');
             return obj;
         }
+        tools() {
+            return [
+                this.Dump(),
+                this.Joined(),
+                this.Search_toggle(),
+                this.Close()
+            ];
+        }
         head() {
             return [
                 this.Title(),
-                this.Dump(),
-                this.Joined(),
                 this.Tools(),
-                this.Search_toggle(),
                 this.Search()
             ];
         }
@@ -11300,6 +11302,9 @@ var $;
             obj.Icon = () => this.Search_toggle_icon();
             obj.checked = (val) => this.search_enabled(val);
             return obj;
+        }
+        Close() {
+            return null;
         }
         search(val) {
             if (val !== undefined)
@@ -12020,25 +12025,14 @@ var $;
                 shrink: 0,
             },
             Title: {
-                boxShadow: 'none',
+                width: rem(12),
                 background: {
                     color: 'transparent',
                 },
-                width: rem(12),
-                ':placeholder-shown': {
-                    box: {
-                        shadow: [{
-                                inset: true,
-                                x: 0,
-                                y: 0,
-                                blur: 0,
-                                spread: px(1),
-                                color: $mol_theme.line,
-                            }],
-                    },
-                    background: {
-                        color: $mol_theme.field,
-                    },
+            },
+            Tools: {
+                flex: {
+                    grow: 0,
                 },
             },
             Search: {
@@ -12087,9 +12081,6 @@ var $;
             head() {
                 return [
                     this.Title(),
-                    this.Joined(),
-                    this.Dump(),
-                    this.Search_toggle(),
                     this.Tools(),
                     ...this.search_enabled() ? [this.Search()] : [],
                 ];
@@ -12576,9 +12567,7 @@ var $;
             obj.chat = () => this.chat(id);
             obj.embed = () => this.embed();
             obj.default_title = () => this.chat_title(id);
-            obj.tools = () => [
-                this.Chat_close()
-            ];
+            obj.Close = () => this.Chat_close();
             return obj;
         }
         Placeholder() {
