@@ -9,9 +9,6 @@ namespace $.$$ {
 		head() {
 			return [
 				this.Title(),
-				this.Joined(),
-				this.Dump(),
-				this.Search_toggle(),
 				this.Tools(),
 				... this.search_enabled() ? [ this.Search() ] : [],
 			]

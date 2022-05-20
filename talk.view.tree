@@ -40,11 +40,10 @@ $hyoo_talks $mol_book2
 		chat <= chat!id $hyoo_talks_chat
 		embed <= embed
 		default_title <= chat_title!id
-		tools /
-			<= Chat_close $mol_link
-				arg * chat null
-				sub /
-					<= Chat_icon $mol_icon_cross
+		Close <= Chat_close $mol_link
+			arg * chat null
+			sub /
+				<= Chat_icon $mol_icon_cross
 	Placeholder $hyoo_talks_placeholder
 		Title null
 		Tools null

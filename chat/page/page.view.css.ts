@@ -18,25 +18,15 @@ namespace $.$$ {
 		},
 		
 		Title: {
-			boxShadow: 'none',
+			width: rem(12),
 			background: {
 				color: 'transparent',
 			},
-			width: rem(12),
-			':placeholder-shown': {
-				box: {
-					shadow: [{
-						inset: true,
-						x: 0,
-						y: 0,
-						blur: 0,
-						spread: px(1),
-						color: $mol_theme.line,
-					}],
-				},
-				background: {
-					color: $mol_theme.field,
-				},
+		},
+		
+		Tools: {
+			flex: {
+				grow: 0,
 			},
 		},
 		

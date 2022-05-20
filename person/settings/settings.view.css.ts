@@ -9,10 +9,6 @@ namespace $.$$ {
 			shrink: 0,
 		},
 		
-		Form: {
-			padding: $mol_gap.block,
-		},
-		
 	} )
 	
 }

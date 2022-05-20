@@ -10,8 +10,7 @@ $hyoo_talks_chat_page $mol_page
 	Title $mol_string
 		value?val <=> title?val \
 		hint @ \Chat title
-	head /
-		<= Title
+	tools /
 		<= Dump $mol_button_download
 			hint @ \Download all messages
 			file_name <= dump_name \chat.сsv
@@ -20,11 +19,14 @@ $hyoo_talks_chat_page $mol_page
 			hint @ \Joined
 			Icon <= Joined_icon $mol_icon_eye
 			checked?val <=> joined?val false
-		<= Tools
 		<= Search_toggle $mol_check_icon
 			hint @ \Toggle search
 			Icon <= Search_toggle_icon $mol_icon_magnify
 			checked?val <=> search_enabled?val false
+		<= Close null
+	head /
+		<= Title
+		<= Tools
 		<= Search $mol_search_jumper
 			query?val <=> search?val \
 			Root <= Body
