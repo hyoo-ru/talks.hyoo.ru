@@ -459,7 +459,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_memo extends $mol_wrapper {
-        static wrap<This extends object, Value>(task: (this: This, next?: Value) => Value): (this: This, next?: Value | undefined) => Value | undefined;
+        static wrap<This extends object, Value>(task: (this: This, next?: Value) => Value): (this: This, next?: Value) => Value | undefined;
     }
 }
 
@@ -878,10 +878,10 @@ declare namespace $ {
         get name(): string;
         get path(): string | string[];
         get incremental(): boolean;
-        get indexes(): { [Name in keyof Schema["Indexes"]]: $mol_db_index<{
+        get indexes(): Schema["Indexes"] extends infer T ? { [Name in keyof T]: $mol_db_index<{
             Key: Schema["Indexes"][Name];
             Doc: Schema['Doc'];
-        }>; };
+        }>; } : never;
         index_make(name: string, path?: string[], unique?: boolean, multiEntry?: boolean): IDBIndex;
         index_drop(name: string): this;
         get transaction(): $mol_db_transaction<$mol_db_schema>;
@@ -1281,7 +1281,7 @@ declare namespace $ {
         get name(): string;
         get version(): number;
         get stores(): (keyof Schema)[];
-        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): { [Name in keyof Pick<Schema, Names>]: $mol_db_store<Pick<Schema, Names>[Name]>; };
+        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
         change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
         kill(): Promise<void>;
         destructor(): void;
@@ -2825,7 +2825,7 @@ declare namespace $.$$ {
         uri_resource(): string;
         uri_listener(): $mol_dom_listener;
         uri_change(event?: MessageEvent<[string, string]>): void;
-        auto(): ($mol_dom_listener | Window)[];
+        auto(): (Window | $mol_dom_listener)[];
     }
 }
 
