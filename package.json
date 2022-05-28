@@ -177,6 +177,7 @@
     "$mol_image",
     "$mol_paragraph",
     "$mol_textarea",
+    "$mol_stack",
     "$mol_text_code",
     "$mol_text",
     "$mol_grid",
