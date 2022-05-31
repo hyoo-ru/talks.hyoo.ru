@@ -208,6 +208,7 @@
     "$mol_icon_cross",
     "$mol_fiber",
     "$mol_paginator",
+    "$mol_bar",
     "$mol_icon_chevron_left",
     "$mol_icon_chevron_right",
     "$mol_icon_microphone",
