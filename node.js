@@ -3434,25 +3434,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_hash_string(str, seed = 0) {
-        let h1 = 0xdeadbeef ^ seed;
-        let h2 = 0x41c6ce57 ^ seed;
-        for (let i = 0; i < str.length; i++) {
-            const ch = str.charCodeAt(i);
-            h1 = Math.imul(h1 ^ ch, 2654435761);
-            h2 = Math.imul(h2 ^ ch, 1597334677);
-        }
-        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-        return 4294967296 * (((1 << 16) - 1) & h2) + (h1 >>> 0);
-    }
-    $.$mol_hash_string = $mol_hash_string;
-})($ || ($ = {}));
-//mol/hash/string/string.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $mol_state_local extends $mol_object {
         static 'native()';
         static native() {
@@ -3506,109 +3487,6 @@ var $;
     $.$mol_state_local = $mol_state_local;
 })($ || ($ = {}));
 //mol/state/local/local.ts
-;
-"use strict";
-var $;
-(function ($) {
-    const algorithm = {
-        name: "ECDSA",
-        hash: { name: "SHA-256" },
-        namedCurve: 'P-256',
-    };
-    async function $mol_crypto_auditor_pair() {
-        const pair = await $.crypto.subtle.generateKey(algorithm, true, ['sign', 'verify']);
-        return {
-            public: new $mol_crypto_auditor_public(pair.publicKey),
-            private: new $mol_crypto_auditor_private(pair.privateKey),
-        };
-    }
-    $.$mol_crypto_auditor_pair = $mol_crypto_auditor_pair;
-    class $mol_crypto_auditor_public extends Object {
-        native;
-        static size = 91;
-        constructor(native) {
-            super();
-            this.native = native;
-        }
-        static async from(serial) {
-            return new this(await crypto.subtle.importKey('spki', serial, algorithm, true, ['verify']));
-        }
-        async serial() {
-            return await crypto.subtle.exportKey('spki', this.native);
-        }
-        async verify(data, sign) {
-            return await crypto.subtle.verify(algorithm, this.native, sign, data);
-        }
-    }
-    $.$mol_crypto_auditor_public = $mol_crypto_auditor_public;
-    class $mol_crypto_auditor_private extends Object {
-        native;
-        static size = 138;
-        constructor(native) {
-            super();
-            this.native = native;
-        }
-        static async from(serial) {
-            return new this(await crypto.subtle.importKey('pkcs8', serial, algorithm, true, ['sign']));
-        }
-        async serial() {
-            return await crypto.subtle.exportKey('pkcs8', this.native);
-        }
-        async sign(data) {
-            return await crypto.subtle.sign(algorithm, this.native, data);
-        }
-    }
-    $.$mol_crypto_auditor_private = $mol_crypto_auditor_private;
-    $.$mol_crypto_auditor_sign_size = 64;
-})($ || ($ = {}));
-//mol/crypto/auditor/auditor.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_encode(src) {
-        throw new Error('Not implemented');
-    }
-    $.$mol_base64_encode = $mol_base64_encode;
-})($ || ($ = {}));
-//mol/base64/encode/encode.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_encode_node(str) {
-        if (!str)
-            return '';
-        if (Buffer.isBuffer(str))
-            return str.toString('base64');
-        return Buffer.from(str).toString('base64');
-    }
-    $.$mol_base64_encode_node = $mol_base64_encode_node;
-    $.$mol_base64_encode = $mol_base64_encode_node;
-})($ || ($ = {}));
-//mol/base64/encode/encode.node.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_decode(base64) {
-        throw new Error('Not implemented');
-    }
-    $.$mol_base64_decode = $mol_base64_decode;
-})($ || ($ = {}));
-//mol/base64/decode/decode.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_base64_decode_node(base64Str) {
-        const buffer = Buffer.from(base64Str, 'base64');
-        return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
-    }
-    $.$mol_base64_decode_node = $mol_base64_decode_node;
-    $.$mol_base64_decode = $mol_base64_decode_node;
-})($ || ($ = {}));
-//mol/base64/decode/decode.node.ts
 ;
 "use strict";
 //mol/type/partial/deep/deep.ts
@@ -3724,6 +3602,25 @@ var $;
     $.$hyoo_crowd_node = $hyoo_crowd_node;
 })($ || ($ = {}));
 //hyoo/crowd/node/node.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_hash_string(str, seed = 0) {
+        let h1 = 0xdeadbeef ^ seed;
+        let h2 = 0x41c6ce57 ^ seed;
+        for (let i = 0; i < str.length; i++) {
+            const ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return 4294967296 * (((1 << 16) - 1) & h2) + (h1 >>> 0);
+    }
+    $.$mol_hash_string = $mol_hash_string;
+})($ || ($ = {}));
+//mol/hash/string/string.ts
 ;
 "use strict";
 var $;
@@ -4519,27 +4416,11 @@ var $;
         }
         db_clock = new $hyoo_crowd_clock;
         peer() {
-            return $mol_hash_string(this.keys_serial().public);
-        }
-        keys_serial() {
-            const key = this + '.keys()';
-            let serial = this.$.$mol_state_local.value(key);
-            if (serial)
-                return serial;
-            const pair = $mol_wire_sync(this.$).$mol_crypto_auditor_pair();
-            serial = {
-                public: $mol_base64_encode(new Uint8Array($mol_wire_sync(pair.public).serial())),
-                private: $mol_base64_encode(new Uint8Array($mol_wire_sync(pair.private).serial())),
-            };
-            this.$.$mol_state_local.value(key, serial);
-            return serial;
-        }
-        keys() {
-            const prev = this.keys_serial();
-            return {
-                public: $mol_wire_sync(this.$.$mol_crypto_auditor_public).from($mol_base64_decode(prev.public)),
-                private: $mol_wire_sync(this.$.$mol_crypto_auditor_private).from($mol_base64_decode(prev.private)),
-            };
+            const key = `${this}.peer()`;
+            const id = this.$.$mol_state_local.value(key);
+            if (id)
+                return id;
+            return this.$.$mol_state_local.value(key, 1 + Math.floor(Math.random() * (2 ** (6 * 8) - 2)));
         }
         store() {
             return new this.$.$hyoo_crowd_doc(this.peer());
@@ -4559,8 +4440,6 @@ var $;
             state.doc = k => this.doc(key + '/' + k);
             state.socket = () => this.socket();
             state.peer = () => this.peer();
-            state.keys_serial = () => this.keys_serial();
-            state.keys = () => this.keys();
             state.db = () => this.db();
             return state;
         }
@@ -4726,12 +4605,6 @@ var $;
     __decorate([
         $mol_mem
     ], $mol_state_shared.prototype, "peer", null);
-    __decorate([
-        $mol_mem
-    ], $mol_state_shared.prototype, "keys_serial", null);
-    __decorate([
-        $mol_mem
-    ], $mol_state_shared.prototype, "keys", null);
     __decorate([
         $mol_mem
     ], $mol_state_shared.prototype, "store", null);

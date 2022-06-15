@@ -343,7 +343,7 @@ declare namespace $ {
     class $mol_wire_task<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
         static getter<Host, Args extends readonly unknown[], Result>(task: (this: Host, ...args: Args) => Result): (host: Host, args: Args) => $mol_wire_task<Host, [...Args], Result>;
         complete(): void;
-        put(next: Result | Error | Promise<Result | Error>): Result | Error | Promise<Result | Error>;
+        put(next: Result | Error | Promise<Result | Error>): Error | Result | Promise<Error | Result>;
     }
 }
 
@@ -960,10 +960,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_hash_string(str: string, seed?: number): number;
-}
-
-declare namespace $ {
     class $mol_state_local<Value> extends $mol_object {
         static 'native()': Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
         static native(): Storage | {
@@ -979,54 +975,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-}
-
-declare namespace $ {
-    function $mol_crypto_auditor_pair(this: $): Promise<{
-        public: $mol_crypto_auditor_public;
-        private: $mol_crypto_auditor_private;
-    }>;
-    class $mol_crypto_auditor_public extends Object {
-        readonly native: CryptoKey & {
-            type: 'public';
-        };
-        static size: number;
-        constructor(native: CryptoKey & {
-            type: 'public';
-        });
-        static from(serial: DataView | ArrayBuffer): Promise<$mol_crypto_auditor_public>;
-        serial(): Promise<ArrayBuffer>;
-        verify(data: DataView | ArrayBuffer, sign: DataView | ArrayBuffer): Promise<boolean>;
-    }
-    class $mol_crypto_auditor_private extends Object {
-        readonly native: CryptoKey & {
-            type: 'private';
-        };
-        static size: number;
-        constructor(native: CryptoKey & {
-            type: 'private';
-        });
-        static from(serial: DataView | ArrayBuffer): Promise<$mol_crypto_auditor_private>;
-        serial(): Promise<ArrayBuffer>;
-        sign(data: DataView | ArrayBuffer): Promise<ArrayBuffer>;
-    }
-    const $mol_crypto_auditor_sign_size = 64;
-}
-
-declare namespace $ {
-    function $mol_base64_encode(src: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_encode_web(str: string | Uint8Array): string;
-}
-
-declare namespace $ {
-    function $mol_base64_decode(base64: string): Uint8Array;
-}
-
-declare namespace $ {
-    function $mol_base64_decode_web(base64Str: string): Uint8Array;
 }
 
 declare namespace $ {
@@ -1079,6 +1027,10 @@ declare namespace $ {
         chunks(): readonly $hyoo_crowd_chunk[];
         nodes<Node extends typeof $hyoo_crowd_node>(Node: Node): InstanceType<Node>[];
     }
+}
+
+declare namespace $ {
+    function $mol_hash_string(str: string, seed?: number): number;
 }
 
 declare namespace $ {
@@ -1334,14 +1286,6 @@ declare namespace $ {
         server(): string;
         db_clock: $hyoo_crowd_clock;
         peer(): number;
-        keys_serial(): {
-            public: string;
-            private: string;
-        };
-        keys(): {
-            public: $mol_crypto_auditor_public;
-            private: $mol_crypto_auditor_private;
-        };
         store(): $hyoo_crowd_doc;
         path(): string;
         node(): $hyoo_crowd_struct;
