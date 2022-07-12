@@ -1730,6 +1730,15 @@ var $;
 "use strict";
 var $;
 (function ($_1) {
+    $mol_test_mocks.push($ => {
+        $.$mol_after_work = $mol_after_mock_timeout;
+    });
+})($ || ($ = {}));
+//mol/after/work/work.test.ts
+;
+"use strict";
+var $;
+(function ($_1) {
     $mol_test({
         'id auto generation'($) {
             class $mol_view_test_item extends $mol_view {
@@ -4470,15 +4479,6 @@ var $;
     });
 })($ || ($ = {}));
 //mol/syntax2/md/md.test.ts
-;
-"use strict";
-var $;
-(function ($_1) {
-    $mol_test_mocks.push($ => {
-        $.$mol_after_work = $mol_after_mock_timeout;
-    });
-})($ || ($ = {}));
-//mol/after/work/work.test.ts
 ;
 "use strict";
 var $;
