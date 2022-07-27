@@ -4151,12 +4151,17 @@ var $;
         sync() {
             try {
                 this.db_sync();
+            }
+            catch (error) {
+                if (!(error instanceof Promise))
+                    $mol_fail_log(error);
+            }
+            try {
                 this.server_sync();
             }
             catch (error) {
-                if (error instanceof Promise)
-                    return null;
-                $mol_fail_log(error);
+                if (!(error instanceof Promise))
+                    $mol_fail_log(error);
             }
             return null;
         }
