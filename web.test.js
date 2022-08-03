@@ -41,12 +41,8 @@ var $;
         scheduled = true;
         setTimeout(async () => {
             scheduled = false;
-            try {
-                await $mol_test_run();
-            }
-            finally {
-                $$.$mol_test_complete();
-            }
+            await $mol_test_run();
+            $$.$mol_test_complete();
         }, 0);
     }
     $_1.$mol_test_schedule = $mol_test_schedule;
@@ -3066,7 +3062,7 @@ var $;
                 await letters.put('d');
                 $mol_assert_like(await letters.select(), ['a', 'b', 'c', 'd']);
                 $mol_assert_like(await letters.select(null, 2), ['a', 'b']);
-                $mol_assert_like(await letters.select(IDBKeyRange.bound(2, 3)), ['b', 'c']);
+                $mol_assert_like(await letters.select($mol_dom_context.IDBKeyRange.bound(2, 3)), ['b', 'c']);
             }
             finally {
                 trans.abort();
@@ -4028,7 +4024,7 @@ var $;
                 $mol_assert_like(await names.get(['Jin']), { name: 'Jin' });
                 $mol_assert_like(await names.get(['John']), { name: 'John' });
                 $mol_assert_like(await names.count(), 3);
-                $mol_assert_like(await names.select(IDBKeyRange.bound(['J'], ['J\uFFFF'])), [{ name: 'Jin' }, { name: 'John' }]);
+                $mol_assert_like(await names.select($mol_dom_context.IDBKeyRange.bound(['J'], ['J\uFFFF'])), [{ name: 'Jin' }, { name: 'John' }]);
                 try {
                     await users.put({ name: 'Jin' }, 'jin2');
                     $mol_fail(new Error('Exception expected'));
@@ -4038,7 +4034,6 @@ var $;
                 }
             }
             finally {
-                trans.abort();
                 db.kill();
             }
         },
@@ -4054,7 +4049,7 @@ var $;
                 $mol_assert_like(await names.get(['Jin', 'Johnson']), { first: 'Jin', last: 'Johnson' });
                 $mol_assert_like(await names.get(['John', 'Jinson']), { first: 'John', last: 'Jinson' });
                 $mol_assert_like(await names.count(), 3);
-                $mol_assert_like(await names.select(IDBKeyRange.bound(['Jin', 'Johnson'], ['John', 'Jinson'])), [{ first: 'Jin', last: 'Johnson' }, { first: 'John', last: 'Jinson' }]);
+                $mol_assert_like(await names.select($mol_dom_context.IDBKeyRange.bound(['Jin', 'Johnson'], ['John', 'Jinson'])), [{ first: 'Jin', last: 'Johnson' }, { first: 'John', last: 'Jinson' }]);
             }
             finally {
                 trans.abort();
