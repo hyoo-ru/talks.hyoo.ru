@@ -1249,7 +1249,7 @@ declare namespace $ {
         get stores(): (keyof Schema)[];
         read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
         change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
-        kill(): Promise<void>;
+        kill(): Promise<IDBDatabase>;
         destructor(): void;
     }
 }
