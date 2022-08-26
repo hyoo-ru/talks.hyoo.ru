@@ -3234,18 +3234,30 @@ var $;
 var $;
 (function ($_1) {
     const common = [
-        12 << 0 | 13 << 8 | 14 << 16 | 15 << 24,
-        13 << 0 | 14 << 8 | 15 << 16 | 16 << 24,
-        2 << 0 | 3 << 8 | 4 << 16 | 5 << 24,
-        3 << 0 | 4 << 8 | 5 << 16 | 6 << 24,
-        4 << 0 | 5 << 8 | 6 << 16 | 7 << 24,
-        5 << 0 | 6 << 8 | 7 << 16 | 8 << 24,
-        10 << 0 | 11 << 8 | 12 << 16 | 13 << 24,
-        11 << 0 | 12 << 8 | 13 << 16 | 14 << 24,
-        6 << 0 | 7 << 8 | 8 << 16 | 9 << 24,
-        7 << 0 | 8 << 8 | 9 << 16 | 10 << 24,
-        8 << 0 | 9 << 8 | 10 << 16 | 11 << 24,
-        9 << 0 | 10 << 8 | 11 << 16 | 12 << 24,
+        $mol_int62_to_string({
+            lo: 12 << 0 | 13 << 8 | 14 << 16 | 15 << 24,
+            hi: 13 << 0 | 14 << 8 | 15 << 16 | 16 << 24,
+        }),
+        $mol_int62_to_string({
+            lo: 2 << 0 | 3 << 8 | 4 << 16 | 5 << 24,
+            hi: 3 << 0 | 4 << 8 | 5 << 16 | 6 << 24,
+        }),
+        $mol_int62_to_string({
+            lo: 4 << 0 | 5 << 8 | 6 << 16 | 7 << 24,
+            hi: 5 << 0 | 6 << 8 | 7 << 16 | 8 << 24,
+        }),
+        $mol_int62_to_string({
+            lo: 10 << 0 | 11 << 8 | 12 << 16 | 13 << 24,
+            hi: 11 << 0 | 12 << 8 | 13 << 16 | 14 << 24,
+        }),
+        $mol_int62_to_string({
+            lo: 6 << 0 | 7 << 8 | 8 << 16 | 9 << 24,
+            hi: 7 << 0 | 8 << 8 | 9 << 16 | 10 << 24,
+        }),
+        $mol_int62_to_string({
+            lo: 8 << 0 | 9 << 8 | 10 << 16 | 11 << 24,
+            hi: 9 << 0 | 10 << 8 | 11 << 16 | 12 << 24,
+        }),
         1 << 0 | 2 << 8 | 3 << 16 | 4 << 24,
     ];
     $mol_test({
@@ -3286,132 +3298,49 @@ var $;
 var $;
 (function ($) {
     $mol_test({
-        'number'() {
-            const dict = new $mol_dict();
-            $mol_assert_equal(dict.get(123), undefined);
-            $mol_assert_equal(dict.has(123), false);
-            dict.set(123, 321);
-            $mol_assert_equal(dict.get(123), 321);
-            $mol_assert_equal(dict.has(123), true);
-            dict.delete(123);
-            $mol_assert_equal(dict.get(123), undefined);
-            $mol_assert_equal(dict.has(123), false);
-        },
-        'pojo as key'() {
-            const dict = new $mol_dict();
-            $mol_assert_equal(dict.get({ foo: 123 }), undefined);
-            $mol_assert_equal(dict.has({ foo: 123 }), false);
-            dict.set({ foo: 123 }, 321);
-            $mol_assert_equal(dict.get({ foo: 123 }), 321);
-            $mol_assert_equal(dict.has({ foo: 123 }), true);
-            dict.delete({ foo: 123 });
-            $mol_assert_equal(dict.get({ foo: 123 }), undefined);
-            $mol_assert_equal(dict.has({ foo: 123 }), false);
-        },
-        'array as key'() {
-            const dict = new $mol_dict();
-            $mol_assert_equal(dict.get([123]), undefined);
-            $mol_assert_equal(dict.has([123]), false);
-            dict.set([123], 321);
-            $mol_assert_equal(dict.get([123]), 321);
-            $mol_assert_equal(dict.has([123]), true);
-            dict.delete([123]);
-            $mol_assert_equal(dict.get([123]), undefined);
-            $mol_assert_equal(dict.has([123]), false);
-        },
-        'html element as key'() {
-            const el = $mol_jsx("div", null);
-            const dict = new $mol_dict();
-            $mol_assert_equal(dict.get(el), undefined);
-            $mol_assert_equal(dict.has(el), false);
-            dict.set(el, 321);
-            $mol_assert_equal(dict.get(el), 321);
-            $mol_assert_equal(dict.has(el), true);
-            $mol_assert_equal(dict.get($mol_jsx("div", null)), undefined);
-            $mol_assert_equal(dict.has($mol_jsx("div", null)), false);
-            dict.delete(el);
-            $mol_assert_equal(dict.get(el), undefined);
-            $mol_assert_equal(dict.has(el), false);
-        },
-        'for-of key restore'() {
-            const dict = new $mol_dict([[[123], 321]]);
-            const keys = [];
-            const vals = [];
-            for (const [key, val] of dict) {
-                keys.push(key);
-                vals.push(val);
-            }
-            $mol_assert_like(keys, [[123]]);
-            $mol_assert_like(vals, [321]);
-        },
-        'method iterators key restore'() {
-            const dict = new $mol_dict([[[123], 321]]);
-            $mol_assert_like([...dict.keys()], [[123]]);
-            $mol_assert_like([...dict.values()], [321]);
-            $mol_assert_like([...dict.entries()], [[[123], 321]]);
-        },
-        'forEach key restore'() {
-            const dict = new $mol_dict([[[123], 321]]);
-            const keys = [];
-            const vals = [];
-            dict.forEach((val, key) => {
-                keys.push(key);
-                vals.push(val);
-            });
-            $mol_assert_like(keys, [[123]]);
-            $mol_assert_like(vals, [321]);
-        },
-    });
-})($ || ($ = {}));
-//mol/dict/dict.test.tsx
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_test({
         'fresh'() {
             const clock = new $hyoo_crowd_clock;
-            clock.see_peer({ lo: 11, hi: 111 }, 1);
-            clock.see_peer({ lo: 22, hi: 222 }, 2);
-            $mol_assert_ok(clock.fresh({ lo: 22, hi: 222 }, 3));
-            $mol_assert_ok(clock.fresh({ lo: 33, hi: 333 }, 1));
-            $mol_assert_not(clock.fresh({ lo: 22, hi: 222 }, 1));
+            clock.see_peer('b_33', 1);
+            clock.see_peer('m_66', 2);
+            $mol_assert_ok(clock.fresh('m_66', 3));
+            $mol_assert_ok(clock.fresh('x_99', 1));
+            $mol_assert_not(clock.fresh('m_66', 1));
         },
         'fork'() {
             const left = new $hyoo_crowd_clock;
-            left.see_peer({ lo: 11, hi: 111 }, 1);
-            left.see_peer({ lo: 22, hi: 222 }, 2);
+            left.see_peer('b_33', 1);
+            left.see_peer('m_66', 2);
             const right = new $hyoo_crowd_clock(left);
             $mol_assert_equal(right.last_time, 2);
             $mol_assert_like([...right], [
-                [{ lo: 11, hi: 111 }, 1],
-                [{ lo: 22, hi: 222 }, 2],
+                ['b_33', 1],
+                ['m_66', 2],
             ]);
         },
         'generate'() {
             const clock = new $hyoo_crowd_clock;
-            clock.see_peer({ lo: 11, hi: 111 }, $mol_int62_min + 1);
-            clock.see_peer({ lo: 22, hi: 222 }, $mol_int62_min + 2);
+            clock.see_peer('b_33', $mol_int62_min + 1);
+            clock.see_peer('m_66', $mol_int62_min + 2);
             const now = clock.now();
-            const time1 = clock.tick({ lo: 11, hi: 111 });
+            const time1 = clock.tick('b_33');
             $mol_assert_like(time1, now);
             $mol_assert_like(clock.last_time, now);
-            clock.see_peer({ lo: 22, hi: 222 }, now + 10);
-            const time2 = clock.tick({ lo: 22, hi: 222 });
+            clock.see_peer('m_66', now + 10);
+            const time2 = clock.tick('m_66');
             $mol_assert_like(time2, now + 11);
             $mol_assert_like(clock.last_time, now + 11);
         },
         'ahead'() {
             const clock1 = new $hyoo_crowd_clock;
-            clock1.see_peer({ lo: 11, hi: 111 }, 1);
-            clock1.see_peer({ lo: 22, hi: 222 }, 2);
+            clock1.see_peer('b_33', 1);
+            clock1.see_peer('m_66', 2);
             const clock2 = new $hyoo_crowd_clock;
-            clock2.see_peer({ lo: 11, hi: 111 }, 1);
-            clock2.see_peer({ lo: 33, hi: 333 }, 2);
+            clock2.see_peer('b_33', 1);
+            clock2.see_peer('x_99', 2);
             const clock3 = new $hyoo_crowd_clock;
-            clock3.see_peer({ lo: 11, hi: 111 }, 1);
-            clock3.see_peer({ lo: 22, hi: 222 }, 2);
-            clock3.see_peer({ lo: 33, hi: 333 }, 2);
+            clock3.see_peer('b_33', 1);
+            clock3.see_peer('m_66', 2);
+            clock3.see_peer('x_99', 2);
             $mol_assert_ok(clock1.ahead(clock2));
             $mol_assert_ok(clock2.ahead(clock1));
             $mol_assert_ok(clock3.ahead(clock1));
@@ -3421,19 +3350,19 @@ var $;
         },
         'bin'() {
             const clocks1 = [new $hyoo_crowd_clock, new $hyoo_crowd_clock];
-            clocks1[$hyoo_crowd_unit_group.auth].see_peer({ lo: 11, hi: 111 }, 1);
-            clocks1[$hyoo_crowd_unit_group.data].see_peer({ lo: 11, hi: 111 }, 2);
-            const bin = $hyoo_crowd_clock_bin.from({ lo: -11, hi: -111 }, clocks1);
-            $mol_assert_like(bin.land(), { lo: -11, hi: -111 });
+            clocks1[$hyoo_crowd_unit_group.auth].see_peer('b_33', 1);
+            clocks1[$hyoo_crowd_unit_group.data].see_peer('b_33', 2);
+            const bin = $hyoo_crowd_clock_bin.from('2_b', clocks1);
+            $mol_assert_like(bin.land(), '2_b');
             const clocks2 = [new $hyoo_crowd_clock, new $hyoo_crowd_clock];
             clocks2[$hyoo_crowd_unit_group.auth].see_bin(bin, $hyoo_crowd_unit_group.auth);
             clocks2[$hyoo_crowd_unit_group.data].see_bin(bin, $hyoo_crowd_unit_group.data);
             $mol_assert_like(clocks2.map(clock => new Map(clock)), [
                 new Map([
-                    [{ lo: 11, hi: 111 }, 1],
+                    ['b_33', 1],
                 ]),
                 new Map([
-                    [{ lo: 11, hi: 111 }, 2],
+                    ['b_33', 2],
                 ]),
             ]);
         },
@@ -3985,6 +3914,89 @@ var $;
 var $;
 (function ($) {
     $mol_test({
+        'number'() {
+            const dict = new $mol_dict();
+            $mol_assert_equal(dict.get(123), undefined);
+            $mol_assert_equal(dict.has(123), false);
+            dict.set(123, 321);
+            $mol_assert_equal(dict.get(123), 321);
+            $mol_assert_equal(dict.has(123), true);
+            dict.delete(123);
+            $mol_assert_equal(dict.get(123), undefined);
+            $mol_assert_equal(dict.has(123), false);
+        },
+        'pojo as key'() {
+            const dict = new $mol_dict();
+            $mol_assert_equal(dict.get({ foo: 123 }), undefined);
+            $mol_assert_equal(dict.has({ foo: 123 }), false);
+            dict.set({ foo: 123 }, 321);
+            $mol_assert_equal(dict.get({ foo: 123 }), 321);
+            $mol_assert_equal(dict.has({ foo: 123 }), true);
+            dict.delete({ foo: 123 });
+            $mol_assert_equal(dict.get({ foo: 123 }), undefined);
+            $mol_assert_equal(dict.has({ foo: 123 }), false);
+        },
+        'array as key'() {
+            const dict = new $mol_dict();
+            $mol_assert_equal(dict.get([123]), undefined);
+            $mol_assert_equal(dict.has([123]), false);
+            dict.set([123], 321);
+            $mol_assert_equal(dict.get([123]), 321);
+            $mol_assert_equal(dict.has([123]), true);
+            dict.delete([123]);
+            $mol_assert_equal(dict.get([123]), undefined);
+            $mol_assert_equal(dict.has([123]), false);
+        },
+        'html element as key'() {
+            const el = $mol_jsx("div", null);
+            const dict = new $mol_dict();
+            $mol_assert_equal(dict.get(el), undefined);
+            $mol_assert_equal(dict.has(el), false);
+            dict.set(el, 321);
+            $mol_assert_equal(dict.get(el), 321);
+            $mol_assert_equal(dict.has(el), true);
+            $mol_assert_equal(dict.get($mol_jsx("div", null)), undefined);
+            $mol_assert_equal(dict.has($mol_jsx("div", null)), false);
+            dict.delete(el);
+            $mol_assert_equal(dict.get(el), undefined);
+            $mol_assert_equal(dict.has(el), false);
+        },
+        'for-of key restore'() {
+            const dict = new $mol_dict([[[123], 321]]);
+            const keys = [];
+            const vals = [];
+            for (const [key, val] of dict) {
+                keys.push(key);
+                vals.push(val);
+            }
+            $mol_assert_like(keys, [[123]]);
+            $mol_assert_like(vals, [321]);
+        },
+        'method iterators key restore'() {
+            const dict = new $mol_dict([[[123], 321]]);
+            $mol_assert_like([...dict.keys()], [[123]]);
+            $mol_assert_like([...dict.values()], [321]);
+            $mol_assert_like([...dict.entries()], [[[123], 321]]);
+        },
+        'forEach key restore'() {
+            const dict = new $mol_dict([[[123], 321]]);
+            const keys = [];
+            const vals = [];
+            dict.forEach((val, key) => {
+                keys.push(key);
+                vals.push(val);
+            });
+            $mol_assert_like(keys, [[123]]);
+            $mol_assert_like(vals, [321]);
+        },
+    });
+})($ || ($ = {}));
+//mol/dict/dict.test.tsx
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_test({
         async 'delta & apply'() {
             const world1 = new $hyoo_crowd_world(await $hyoo_crowd_peer.generate());
             const world2 = new $hyoo_crowd_world(await $hyoo_crowd_peer.generate());
@@ -4013,7 +4025,7 @@ var $;
             $mol_assert_like(world2.land(land.id()).delta().length, 3);
         },
         async 'ignore auth as another peer'() {
-            const world1 = new $hyoo_crowd_world({ ...await $hyoo_crowd_peer.generate(), id: { lo: 1, hi: 11 } });
+            const world1 = new $hyoo_crowd_world({ ...await $hyoo_crowd_peer.generate(), id: '1_1' });
             const world2 = new $hyoo_crowd_world(await $hyoo_crowd_peer.generate());
             const land = await world1.grab();
             land.chief.as($hyoo_crowd_reg).numb(123);
@@ -4028,7 +4040,7 @@ var $;
             const world1 = new $hyoo_crowd_world({ ...await $hyoo_crowd_peer.generate(), key_public_serial: [] });
             const world2 = new $hyoo_crowd_world(await $hyoo_crowd_peer.generate());
             const land = await world1.grab();
-            world1.land({ lo: 1, hi: 1 }).chief.as($hyoo_crowd_reg).numb(123);
+            world1.land('1_1').chief.as($hyoo_crowd_reg).numb(123);
             const broken = [];
             for (const bin of await world1.delta()) {
                 broken.push(await world2.apply_unit(bin));
@@ -4148,7 +4160,7 @@ var $;
                 $mol_assert_like(land1.delta().length, 7);
                 $mol_assert_like(land1.chief.sub('foo', $hyoo_crowd_reg).numb(), 123);
                 $mol_assert_like(land1.chief.sub('bar', $hyoo_crowd_reg).numb(), 234);
-                $mol_assert_like(land1.level(peer.id), $hyoo_crowd_peer_level.get);
+                $mol_assert_like(land1.level(peer.id), $hyoo_crowd_peer_level.add);
             }
             level_mod: {
                 land1.level_base($hyoo_crowd_peer_level.mod);
@@ -4160,7 +4172,7 @@ var $;
                 $mol_assert_like(land1.delta().length, 7);
                 $mol_assert_like(land1.chief.sub('foo', $hyoo_crowd_reg).numb(), 234);
                 $mol_assert_like(land1.chief.sub('bar', $hyoo_crowd_reg).numb(), 234);
-                $mol_assert_like(land1.level(peer.id), $hyoo_crowd_peer_level.get);
+                $mol_assert_like(land1.level(peer.id), $hyoo_crowd_peer_level.mod);
             }
             level_law: {
                 land1.level_base($hyoo_crowd_peer_level.law);
@@ -4168,11 +4180,11 @@ var $;
                 for (const bin of await world2.delta()) {
                     broken.push(await world1.apply_unit(bin));
                 }
-                $mol_assert_like(broken, ['Already join', '', 'Already join', 'Already join', 'Need law level', '', '']);
-                $mol_assert_like(land1.delta().length, 7);
+                $mol_assert_like(broken, ['Already join', '', 'Already join', 'Already join', '', '', '']);
+                $mol_assert_like(land1.delta().length, 8);
                 $mol_assert_like(land1.chief.sub('foo', $hyoo_crowd_reg).numb(), 234);
                 $mol_assert_like(land1.chief.sub('bar', $hyoo_crowd_reg).numb(), 234);
-                $mol_assert_like(land1.level(peer.id), $hyoo_crowd_peer_level.get);
+                $mol_assert_like(land1.level(peer.id), $hyoo_crowd_peer_level.law);
             }
         },
     });
@@ -4182,7 +4194,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    async function make_land(id = { lo: -1, hi: -11 }) {
+    async function make_land(id = '2_b') {
         return $hyoo_crowd_land.make({
             id: $mol_const(id),
             peer: $mol_const(await $hyoo_crowd_peer.generate()),
@@ -4232,7 +4244,7 @@ var $;
         async 'Name spaces merging'() {
             const left = await make_land();
             left.chief.sub('foo', $hyoo_crowd_list).list([111]);
-            const right = await make_land({ lo: 2, hi: 22 });
+            const right = await make_land('a_2');
             right.clock_data.tick(right.peer().id);
             right.chief.sub('foo', $hyoo_crowd_list).list([222]);
             const left_delta = left.delta();
@@ -4399,7 +4411,7 @@ var $;
         async 'Merge different sequences'() {
             const left = await make_land();
             left.chief.as($hyoo_crowd_text).text('foo bar.');
-            const right = await make_land({ lo: 2, hi: 22 });
+            const right = await make_land('a_2');
             right.clock_data.tick(right.peer().id);
             right.chief.as($hyoo_crowd_text).text('xxx yyy.');
             const left_delta = left.delta();
@@ -4429,7 +4441,7 @@ var $;
             left.chief.as($hyoo_crowd_text).text('FooXxxBarZak');
             const right = base.fork(await $hyoo_crowd_peer.generate());
             right.clock_data.tick(right.peer().id);
-            right.insert(right.chief.units()[0], { lo: 0, hi: 0 }, 2);
+            right.insert(right.chief.units()[0], '0_0', 2);
             const left_delta = left.delta(base.clocks);
             const right_delta = right.delta(base.clocks);
             left.apply(right_delta);
@@ -4443,7 +4455,7 @@ var $;
             left.chief.as($hyoo_crowd_text).text('FooXxxBarZak');
             const right = base.fork(await $hyoo_crowd_peer.generate());
             right.clock_data.tick(right.peer().id);
-            right.insert(right.chief.units()[1], { lo: 0, hi: 0 }, 0);
+            right.insert(right.chief.units()[1], '0_0', 0);
             const left_delta = left.delta(base.clocks);
             const right_delta = right.delta(base.clocks);
             left.apply(right_delta);
@@ -4457,7 +4469,7 @@ var $;
             left.chief.as($hyoo_crowd_text).text('FooXxxBarZak');
             const right = base.fork(await $hyoo_crowd_peer.generate());
             right.clock_data.tick(right.peer().id);
-            right.insert(right.chief.units()[1], { lo: 0, hi: 0 }, 3);
+            right.insert(right.chief.units()[1], '0_0', 3);
             const left_delta = left.delta(base.clocks);
             const right_delta = right.delta(base.clocks);
             left.apply(right_delta);
@@ -4480,18 +4492,18 @@ var $;
         },
         async 'Insert after removed out'() {
             const base = await make_land();
-            $hyoo_crowd_text.for(base, { lo: 1, hi: 11 }).text('FooBarZak');
+            $hyoo_crowd_text.for(base, '1_1').text('FooBarZak');
             const left = base.fork(await $hyoo_crowd_peer.generate());
-            $hyoo_crowd_text.for(left, { lo: 1, hi: 11 }).text('FooBarXxxZak');
+            $hyoo_crowd_text.for(left, '1_1').text('FooBarXxxZak');
             const right = base.fork(await $hyoo_crowd_peer.generate());
             right.clock_data.tick(right.peer().id);
-            right.insert($hyoo_crowd_node.for(right, { lo: 1, hi: 11 }).units()[1], { lo: 2, hi: 22 }, 0);
+            right.insert($hyoo_crowd_node.for(right, '1_1').units()[1], '2_2', 0);
             const left_delta = left.delta(base.clocks);
             const right_delta = right.delta(base.clocks);
             left.apply(right_delta);
             right.apply(left_delta);
-            $mol_assert_like($hyoo_crowd_text.for(left, { lo: 1, hi: 11 }).text(), $hyoo_crowd_text.for(right, { lo: 1, hi: 11 }).text(), 'FooXxxZak');
-            $mol_assert_like($hyoo_crowd_text.for(left, { lo: 2, hi: 22 }).text(), $hyoo_crowd_text.for(right, { lo: 2, hi: 22 }).text(), 'Bar');
+            $mol_assert_like($hyoo_crowd_text.for(left, '1_1').text(), $hyoo_crowd_text.for(right, '1_1').text(), 'FooXxxZak');
+            $mol_assert_like($hyoo_crowd_text.for(left, '2_2').text(), $hyoo_crowd_text.for(right, '2_2').text(), 'Bar');
         },
         async 'Insert before changed'() {
             const base = await make_land();
@@ -4514,8 +4526,8 @@ var $;
             left.chief.as($hyoo_crowd_list).list([111, 222, 777, 333, 444, 555, 666]);
             const right = base.fork(await $hyoo_crowd_peer.generate());
             right.clock_data.tick(right.peer().id);
-            right.insert(right.chief.units()[1], { lo: 0, hi: 0 }, 5);
-            right.insert(right.chief.units()[1], { lo: 0, hi: 0 }, 5);
+            right.insert(right.chief.units()[1], '0_0', 5);
+            right.insert(right.chief.units()[1], '0_0', 5);
             const left_delta = left.delta(base.clocks);
             const right_delta = right.delta(base.clocks);
             left.apply(right_delta);
@@ -4582,15 +4594,15 @@ var $;
             const store = await make_land();
             store.chief.as($hyoo_crowd_text).text('fooBar');
             const [first, second] = store.chief.units();
-            $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(0), { self: first.self(), offset: 0 });
+            $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(0), { self: first.self, offset: 0 });
             $mol_assert_like(store.chief.as($hyoo_crowd_text)
-                .offset_by_point({ self: first.self(), offset: 0 }), 0);
-            $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(3), { self: second.self(), offset: 0 });
+                .offset_by_point({ self: first.self, offset: 0 }), 0);
+            $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(3), { self: second.self, offset: 0 });
             $mol_assert_like(store.chief.as($hyoo_crowd_text)
-                .offset_by_point({ self: second.self(), offset: 0 }), 3);
-            $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(5), { self: second.self(), offset: 2 });
+                .offset_by_point({ self: second.self, offset: 0 }), 3);
+            $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(5), { self: second.self, offset: 2 });
             $mol_assert_like(store.chief.as($hyoo_crowd_text)
-                .offset_by_point({ self: second.self(), offset: 2 }), 5);
+                .offset_by_point({ self: second.self, offset: 2 }), 5);
             $mol_assert_like(store.chief.as($hyoo_crowd_text).point_by_offset(6), { self: store.chief.head, offset: 6 });
             $mol_assert_like(store.chief.as($hyoo_crowd_text)
                 .offset_by_point({ self: store.chief.head, offset: 6 }), 6);
