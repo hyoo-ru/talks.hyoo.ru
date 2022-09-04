@@ -1625,7 +1625,7 @@ var $;
         if (left instanceof RegExp)
             return left.source === right['source'] && left.flags === right['flags'];
         if (left instanceof Error)
-            return left.stack === right['stack'];
+            return left.message === right['message'] && left.stack === right['stack'];
         let left_cache = $.$mol_compare_deep_cache.get(left);
         if (left_cache) {
             const right_cache = left_cache.get(right);
@@ -4082,18 +4082,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $hyoo_crowd_struct extends $hyoo_crowd_node {
-        sub(key, Node) {
-            return new Node(this.land, $mol_int62_hash_string(key + '\n' + this.head));
-        }
-    }
-    $.$hyoo_crowd_struct = $hyoo_crowd_struct;
-})($ || ($ = {}));
-//hyoo/crowd/struct/struct.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $hyoo_crowd_reg extends $hyoo_crowd_node {
         value(next) {
             const units = this.units();
@@ -4132,6 +4120,8 @@ var $;
             let land_id = (this.value() ?? '0_0');
             if (land_id !== '0_0')
                 return world.land_sync(land_id);
+            if (this.land.level(this.land.peer().id) < $hyoo_crowd_peer_level.add)
+                return null;
             const land = $mol_wire_sync(world).grab(king_level, base_level);
             this.value(land.id());
             return land;
@@ -4140,6 +4130,24 @@ var $;
     $.$hyoo_crowd_reg = $hyoo_crowd_reg;
 })($ || ($ = {}));
 //hyoo/crowd/reg/reg.ts
+;
+"use strict";
+var $;
+(function ($) {
+    class $hyoo_crowd_struct extends $hyoo_crowd_node {
+        sub(key, Node) {
+            return new Node(this.land, $mol_int62_hash_string(key + '\n' + this.head));
+        }
+        yoke(key, Node, king_level, base_level) {
+            return this.sub(key, $hyoo_crowd_reg)
+                .yoke(king_level, base_level)?.chief
+                .sub(key, Node)
+                ?? null;
+        }
+    }
+    $.$hyoo_crowd_struct = $hyoo_crowd_struct;
+})($ || ($ = {}));
+//hyoo/crowd/struct/struct.ts
 ;
 "use strict";
 var $;
@@ -5235,6 +5243,16 @@ var $;
             this._unit_all.set(level_id, level_unit);
             this.pub.emit();
             return next;
+        }
+        lords() {
+            this.pub.promote();
+            const lords = [];
+            for (const unit of this._unit_all.values()) {
+                if (unit.kind() !== $hyoo_crowd_unit_kind.give)
+                    continue;
+                lords.push(unit.self);
+            }
+            return lords;
         }
         put(head, self, prev, data) {
             this.join();
