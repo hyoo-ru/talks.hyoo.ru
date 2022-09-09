@@ -1,30 +1,20 @@
 namespace $ {
 	
-	export class $hyoo_talks_person extends $mol_object2 {
+	export class $hyoo_talks_person extends $hyoo_talks_entity {
 		
-		id(): string {
-			return this.$.$mol_fail( new Error( 'id is not defined' ) )
-		}
-		
-		domain(): $hyoo_talks_domain {
-			return this.$.$mol_fail( new Error( 'domain is not defined' ) )
+		@ $mol_mem
+		name( next?: string ) {
+			return this.state().sub( 'name', $hyoo_crowd_reg ).str( next )
 		}
 		
 		@ $mol_mem
-		state() {
-			return this.domain().state().doc( 'person' ).doc( this.id() )
-		}
-		
-		name( next?: string ) {
-			return String( this.state().sub( 'name' ).value( next ) ?? '' )
-		}
-		
 		background( next?: string ) {
-			return String( this.state().sub( 'background' ).value( next ) ?? '' )
+			return this.state().sub( 'background', $hyoo_crowd_reg ).str( next )
 		}
 		
+		@ $mol_mem
 		avatar( next?: string ) {
-			return String( this.state().sub( 'avatar' ).value( next ) ?? '' )
+			return this.state().sub( 'avatar', $hyoo_crowd_reg ).str( next )
 		}
 		
 		@ $mol_mem
@@ -40,40 +30,40 @@ namespace $ {
 		
 		@ $mol_mem
 		online_time() {
-			const str = this.state().sub( 'online' ).value()
-			return str ? new $mol_time_moment( String( str ) ) : null
+			const stamp = this.state().land.clock_data.last_stamp()
+			return stamp ? new $mol_time_moment( stamp ) : null
 		}
 		
-		online_update() {
-			this.state().sub( 'online' ).value(
-				new $mol_time_moment().toString( 'YYYY-MM-DDThh:mmZ' )
-			)
-		}
-		
-		chats( next?: $hyoo_talks_chat[] ) {
-			const ids = this.state().sub( 'chats' ).list( next && next.map( m => m.id() ) )
-			if( !ids ) return []
-			return ids.map( id => this.domain().chat( String( id ) ) )
+		@ $mol_mem
+		chats( next?: $hyoo_talks_chat[] ): readonly $hyoo_talks_chat[] {
+			
+			const ids = this.state().sub( 'chats', $hyoo_crowd_list )
+				.list( next && next.map( m => m.id ) ) as readonly $mol_int62_string[]
+			
+			const domain = this.$.$hyoo_talks_domain
+			return ids.map( id => domain.Chat( id ) )
+			
 		}
 		
 		@ $mol_mem_key
-		draft( chat: $hyoo_talks_chat, next?: null ) {
+		chat_watch( chat: $hyoo_talks_chat, next?: boolean ) {
 			
-			const drafts = this.state().sub( 'drafts' )
-			let id = String( next === undefined ? drafts.sub( chat.id() ).value() ?? '' : '' )
+			const node = this.state().sub( 'chats', $hyoo_crowd_list )
+			if( next === undefined ) return node.has( chat.id )
 			
-			if( !id ) {
-				id = $mol_guid()
-				drafts.sub( chat.id() ).value( id )
-			}
+			if( next ) node.add( chat.id )
+			else node.drop( chat.id )
 			
-			return this.domain().message( id )
+			return next
 		}
 		
 		@ $mol_mem_key
-		read_messages( chat: $hyoo_talks_chat , next?: number ) {
-			const sub = this.state().sub( 'read_messages' )
-			return Number( sub.sub( chat.id() ).value( next ) ) ?? chat.messages().length
+		last_seen_message( chat: $hyoo_talks_chat, next?: $hyoo_talks_message ) {
+			const id = this.state()
+				.sub( 'last_seen_message', $hyoo_crowd_struct )
+				.sub( chat.id, $hyoo_crowd_reg )
+				.str( next?.id ) as $mol_int62_string
+			return id ? this.domain().Message( id ) : null
 		}
 		
 	}

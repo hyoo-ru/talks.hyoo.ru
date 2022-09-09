@@ -23,11 +23,15 @@ namespace $.$$ {
 		Roster: {
 			
 			flex: {
-				basis: rem(26),
+				basis: rem(20),
 				shrink: 0,
 			},
 			
 			Body: {
+				padding: $mol_gap.block,
+			},
+			
+			Foot: {
 				padding: $mol_gap.block,
 			},
 			

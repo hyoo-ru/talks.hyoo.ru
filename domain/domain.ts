@@ -1,46 +1,44 @@
 namespace $ {
 	
-	export class $hyoo_talks_domain extends $mol_object2 {
+	export class $hyoo_talks_domain extends $mol_object {
 		
 		@ $mol_mem
-		state() {
-			return new this.$.$mol_state_shared
+		static yard() {
+			return new this.$.$hyoo_sync_client
 		}
 		
 		@ $mol_mem
-		user() {
-			
-			let id = this.$.$mol_store_local.value( 'user' ) as string | null
-			if( !id ) {
-				id = Math.random().toString( 16 ).slice( 2 )
-				new $mol_after_tick( ()=> this.$.$mol_store_local.value( 'user', id ) )
-			}
-			
-			return this.person( id )
+		static User() {
+			return this.Person( this.yard().peer().id )
 		}
 		
 		@ $mol_mem_key
-		person( id: string ) {
-			const person = new $hyoo_talks_person()
-			person.id = $mol_const( id )
-			person.domain = $mol_const( this )
-			return person
+		static Person( id: $mol_int62_string ) {
+			return $hyoo_talks_person.make({ id })
 		}
 		
 		@ $mol_mem_key
-		chat( id: string ) {
-			const chat = new $hyoo_talks_chat
-			chat.id = $mol_const( id )
-			chat.domain = $mol_const( this )
-			return chat
+		static Chat( id: $mol_int62_string ) {
+			return $hyoo_talks_chat.make({ id })
+		}
+		
+		static chat_new() {
+			return this.Chat( this.yard().land_grab(
+				$hyoo_crowd_peer_level.law,
+				$hyoo_crowd_peer_level.add,	
+			).id() )
 		}
 		
 		@ $mol_mem_key
-		message( id: string ) {
-			const message = new $hyoo_talks_message()
-			message.id = $mol_const( id )
-			message.domain = $mol_const( this )
-			return message
+		static Message( id: $mol_int62_string ) {
+			return $hyoo_talks_message.make({ id })
+		}
+		
+		static message_new() {
+			return this.Message( this.yard().land_grab(
+				$hyoo_crowd_peer_level.law,
+				$hyoo_crowd_peer_level.get,	
+			).id() )
 		}
 		
 	}

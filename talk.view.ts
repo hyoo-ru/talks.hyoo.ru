@@ -2,12 +2,16 @@ namespace $.$$ {
 	
 	export class $hyoo_talks extends $.$hyoo_talks {
 		
-		@ $mol_mem
+		domain() {
+			return this.$.$hyoo_talks_domain
+		}
+		
+		yard() {
+			return this.domain().yard()
+		}
+		
 		chat_id_current() {
-			const opener = this.$.$mol_state_arg.value( 'embed' )
-			const origin = opener ? new URL( opener ).origin : ''
-			const id = this.$.$mol_state_arg.value( 'chat' ) ?? ''
-			return origin ? origin + '/' + id : id
+			return this.$.$mol_state_arg.value( 'chat' ) ?? ''
 		}
 		
 		settings_opened() {
@@ -34,8 +38,6 @@ namespace $.$$ {
 		@ $mol_mem
 		pages() {
 			
-			this.user().online_update()
-			
 			const chat = this.chat_id_current()
 			const roster = !this.embed()
 			
@@ -47,90 +49,82 @@ namespace $.$$ {
 			
 		}
 		
-		user() {
-			return this.domain().user()
+		User() {
+			return this.domain().User()
 		}
 		
 		background() {
-			const uri = this.user().background()
+			const uri = this.User().background()
 			const shade = `hsl( var(--mol_theme_hue), 0% , calc( 50% + 50% * var(--mol_theme_luma) ), .8 )`
 			return uri ? `linear-gradient( ${shade}, ${shade} ), url(${ JSON.stringify( uri ) })` : shade
 		}
 		
 		roster_body() {
 			return [
-				... this.user().chats().length > 1 ? [ this.Links_query() ] : [],
+				... this.User().chats().length > 1 ? [ this.Links_query() ] : [],
 				this.Links(),
 			]
 		}
 		
 		@ $mol_mem
 		links() {
-			return this.user().chats()
+			return this.User().chats()
 				.filter( $mol_match_text( this.links_query(), chat => [ chat.title() ] ) )
-				.map( chat => this.Chat_link( chat.id() ) )
+				.map( chat => this.Chat_link( chat.id ) )
+				.reverse()
 		}
 		
-		chat( id: string ) {
-			return this.domain().chat( id )
+		chat( id: $mol_int62_string ) {
+			return this.domain().Chat( id )
+		}
+		
+		person( id: $mol_int62_string ) {
+			return this.domain().Person( id )
 		}
 		
 		@ $mol_mem_key
-		chat_title( id: string ) {
-			const talkers = id.split( '-' )
-			if ( talkers.length === 1 ) return this.chat( id ).title() || id
-			
-			const unnamed = this.$.$mol_locale.text( '$hyoo_talks_unnamed_person' )
-			const auto_title = talkers
-				.filter( id => id !== this.domain().user().id() )
-				.map( id => this.domain().person( id ).name() || unnamed ).join( ',' )
-			
-			return this.chat( id ).title() || auto_title
+		chat_title( id: $mol_int62_string ) {
+			return this.chat( id ).title() || this.unnamed()
 		}
 		
 		chat_arg( id: string ) {
 			return { chat: id }
 		}
 		
-		chat_new_id() {
-			return $mol_guid()
+		chat_new() {
+			const chat = this.domain().chat_new()
+			this.$.$mol_dom_context.location.href = '#!chat=' + chat.id
 		}
 		
 		@ $mol_mem_key
-		chat_unread_count( id: string ) {
-			const chat = this.chat( id )
-			
-			const last_index = this.user().read_messages( chat )
-			const messages = this.chat( id ).messages()
-			const messages_completed = messages.slice( last_index ).filter( msg => msg.complete() )
-			
-			return messages_completed.length
+		chat_unread_count( id: $mol_int62_string ) {
+			return this.chat( id ).unread_count()
 		}
 		
 		@ $mol_mem_key
-		message_notify( chat : $hyoo_talks_chat ) {
+		message_notify( chat: $hyoo_talks_chat ) {
 
-			if( !this.chat_unread_count( chat.id() ) ) return null
+			if( !this.chat_unread_count( chat.id ) ) return null
 
 			this.$.$mol_notify.show({
 				context: `${chat.title()}`,
-				message: `Новое сообщение`,
-				uri: this.$.$mol_state_arg.link({ chat: chat.id() })
+				message: this.new_message(),
+				uri: this.$.$mol_state_arg.link({ chat: chat.id })
 			})
 
 			return null
 		}
 		
-		chat_link_sub( id : string ) {	
+		chat_link_sub( id: $mol_int62_string ) {	
 			return [
 				... this.chat_unread_count( id ) === 0 ? [] : [ this.Chat_unread_count( id ) ],
-				this.Chat_link_title(  id ),
+				this.Chat_link_title( id ),
 			]
 		}
 		
 		auto() {
 			
-			for( const chat of this.user().chats() ) {
+			for( const chat of this.User().chats() ) {
 				this.message_notify( chat )
 			}
 			

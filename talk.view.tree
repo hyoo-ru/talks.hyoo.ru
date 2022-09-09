@@ -1,5 +1,4 @@
 $hyoo_talks $mol_book2
-	domain $hyoo_talks_domain
 	embed false
 	attr *
 		^
@@ -12,34 +11,36 @@ $hyoo_talks $mol_book2
 	Roster $mol_page
 		title @ \Talks
 		tools /
-			<= Chat_new $mol_link
-				arg * chat <= chat_new_id \
+			<= Chat_new $mol_button_minor
 				hint @ \New Chat
+				click? <=> chat_new? null
 				sub /
 					<= Chat_new_icon $mol_icon_plus
-			<= Lights $mol_lights_toggle
+		body <= roster_body /
+			<= Links_query $mol_search
+				query?val <=> links_query?val \
+			<= Links $mol_list rows <= links /
+		foot /
+			<= Online $hyoo_sync_online
+				yard <= yard
 			<= Source $mol_link_source
 				uri \https://github.com/hyoo-ru/talks.hyoo.ru
+			<= Lights $mol_lights_toggle
 			<= Settings_link $mol_link
 				arg * settings \
 				hint @ \Open Settings
 				sub /
 					<= Settings_icon $mol_icon_settings
-		body <= roster_body /
-			<= Links_query $mol_search
-				query?val <=> links_query?val \
-			<= Links $mol_list rows <= links /
 	Settings $hyoo_talks_person_settings
-		person <= user $hyoo_talks_person
+		person <= User $hyoo_talks_person
 		tools /
 			<= Settings_close $mol_link
 				arg * settings null
 				sub /
 					<= Settings_close_icon $mol_icon_cross
-	Chat_page!id $hyoo_talks_chat_page
-		chat <= chat!id $hyoo_talks_chat
+	Chat_page* $hyoo_talks_chat_page
+		chat <= chat* $hyoo_talks_chat
 		embed <= embed
-		default_title <= chat_title!id
 		Close <= Chat_close $mol_link
 			arg * chat null
 			sub /
@@ -48,15 +49,16 @@ $hyoo_talks $mol_book2
 		Title null
 		Tools null
 		bg_transparent <= embed
-	Chat_unread_count!id $mol_speck
-		value <= chat_unread_count!id 0
-	Chat_link_title!id $mol_dimmer
-		haystack <= chat_title!id \
+	Chat_unread_count* $mol_speck
+		value <= chat_unread_count* 0
+	Chat_link_title* $mol_dimmer
+		haystack <= chat_title* \
 		needle <= links_query
-	Chat_link!id $mol_link
-		arg <= chat_arg!id *
-		sub <= chat_link_sub!id /
-	unnamed_person @ \Unnamed
+	Chat_link* $mol_link
+		arg <= chat_arg* *
+		sub <= chat_link_sub* /
+	unnamed @ \Unnamed
+	new_message @ \New Message
 
 $hyoo_talks_placeholder $mol_page
 	bg_transparent false

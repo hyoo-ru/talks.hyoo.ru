@@ -1,8 +1,7 @@
 $hyoo_talks_chat_page $mol_page
 	messages?val /$hyoo_talks_message
 	chat $hyoo_talks_chat
-	chat_id \global
-	default_title \
+	chat_id \0_0
 	embed false
 	attr *
 		^
@@ -32,8 +31,6 @@ $hyoo_talks_chat_page $mol_page
 			Root <= Body
 			escape?val <=> search_end?val null
 	body /
-		<= Disclaimer $mol_paragraph
-			title @ \Alpha version, release is coming soon!
 		<= Bubbles $mol_list rows <= bubbles /
 	foot <= draft_controls /
 		<= Draft_text $mol_textarea

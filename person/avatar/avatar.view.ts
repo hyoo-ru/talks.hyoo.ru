@@ -2,20 +2,19 @@ namespace $.$$ {
 	
 	export class $hyoo_talks_person_avatar extends $.$hyoo_talks_person_avatar {
 		
-		name() {
-			return this.person()?.name() ?? ''
+		id() {
+			return this.person()?.id ?? ''
 		}
 		
-		image() {
-			return this.person()?.avatar() ||
-				`https://gravatar.com/avatar/${ this.person()?.id() }?d=robohash`
+		name() {
+			return this.person()?.name()
 		}
 		
 		@ $mol_mem
 		uri() {
 			const talkers = [
-				this.person()?.id() ?? '',
-				this.person()?.domain().user().id() ?? '',
+				this.person()?.id ?? '',
+				this.person()?.domain().User().id ?? '',
 			]
 			talkers.sort()
 			return `#chat=${ talkers.join('-') }`

@@ -13,12 +13,15 @@ namespace $.$$ {
 		},
 		
 		flex: {
-			basis: rem(54),
+			basis: rem(50),
 			shrink: 0,
 		},
 		
 		Title: {
 			width: rem(12),
+			box: {
+				shadow: 'none',
+			},
 			background: {
 				color: 'transparent',
 			},

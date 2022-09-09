@@ -1,24 +1,21 @@
 namespace $.$$ {
 	export class $hyoo_talks_message_bubble extends $.$hyoo_talks_message_bubble {
 		
-		@ $mol_mem
-		rows() {
+		// @ $mol_mem
+		// rows() {
 			
-			if( !this.message().complete() && !this.peek() ) {
-				return [
-					this.Meta(),
-					this.Peek(),
-				]
-			}
+		// 	if( !this.message().complete() && !this.peek() ) {
+		// 		return [
+		// 			this.Meta(),
+		// 			this.Peek(),
+		// 		]
+		// 	}
 			
-			return super.rows()
-		}
+		// 	return super.rows()
+		// }
 		
 		text( next?: string ) {
 			return this.message().text( next )
-		}
-		text_selection( next?: number[] ) {
-			return this.message().text_selection( next )
 		}
 		
 		author() {
@@ -28,7 +25,7 @@ namespace $.$$ {
 		@ $mol_mem
 		side() {
 			const message = this.message()
-			return message.domain().user() === message.author() ? 'self' : 'other'
+			return message.domain().User() === message.author() ? 'self' : 'other'
 		}
 		
 		@ $mol_mem
@@ -57,7 +54,7 @@ namespace $.$$ {
 		}
 		
 		moment() {
-			return this.message().moment()?.toString( 'YYYY-MM-DD hh:mm' ) ?? ''
+			return this.message().changed()?.toString( 'YYYY-MM-DD hh:mm' ) ?? ''
 		}
 		
 		@ $mol_mem

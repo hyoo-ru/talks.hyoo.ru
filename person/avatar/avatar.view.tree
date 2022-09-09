@@ -2,9 +2,8 @@ $hyoo_talks_person_avatar $mol_link
 	person $hyoo_talks_person
 	current false
 	sub /
-		<= Image $mol_image
-			title \
-			uri <= image \
+		<= Image $mol_avatar
+			id <= id \
 		<= Name $mol_paragraph
 			sub <= name_content /
 				<= Online $mol_speck
