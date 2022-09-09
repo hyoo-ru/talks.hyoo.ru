@@ -7753,22 +7753,6 @@ var $;
             obj.control = () => this.Name();
             return obj;
         }
-        avatar(val) {
-            if (val !== undefined)
-                return val;
-            return "";
-        }
-        Avatar() {
-            const obj = new this.$.$mol_string();
-            obj.value = (val) => this.avatar(val);
-            return obj;
-        }
-        Avatar_field() {
-            const obj = new this.$.$mol_form_field();
-            obj.name = () => this.$.$mol_locale.text('$hyoo_talks_person_settings_Avatar_field_name');
-            obj.control = () => this.Avatar();
-            return obj;
-        }
         background(val) {
             if (val !== undefined)
                 return val;
@@ -7789,7 +7773,6 @@ var $;
             const obj = new this.$.$mol_form();
             obj.form_fields = () => [
                 this.Name_field(),
-                this.Avatar_field(),
                 this.Background_field()
             ];
             return obj;
@@ -7807,15 +7790,6 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_talks_person_settings.prototype, "Name_field", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_talks_person_settings.prototype, "avatar", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_talks_person_settings.prototype, "Avatar", null);
-    __decorate([
-        $mol_mem
-    ], $hyoo_talks_person_settings.prototype, "Avatar_field", null);
     __decorate([
         $mol_mem
     ], $hyoo_talks_person_settings.prototype, "background", null);

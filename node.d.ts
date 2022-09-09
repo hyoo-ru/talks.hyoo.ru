@@ -2279,9 +2279,6 @@ declare namespace $ {
         name(val?: any): string;
         Name(): $$.$mol_string;
         Name_field(): $$.$mol_form_field;
-        avatar(val?: any): string;
-        Avatar(): $$.$mol_string;
-        Avatar_field(): $$.$mol_form_field;
         background(val?: any): string;
         Background(): $$.$mol_string;
         Background_field(): $$.$mol_form_field;
