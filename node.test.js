@@ -13610,6 +13610,7 @@ var $;
             }
             chat_new() {
                 const chat = this.domain().chat_new();
+                this.User().chat_watch(chat, true);
                 this.$.$mol_dom_context.location.href = '#!chat=' + chat.id;
             }
             chat_unread_count(id) {
