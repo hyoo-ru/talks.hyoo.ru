@@ -22,7 +22,7 @@ $hyoo_talks $mol_book2
 			<= Links $mol_list rows <= links /
 		foot /
 			<= Online $hyoo_sync_online
-				yard <= yard
+				yard <= yard $hyoo_sync_yard
 			<= Source $mol_link_source
 				uri \https://github.com/hyoo-ru/talks.hyoo.ru
 			<= Lights $mol_lights_toggle

@@ -85,6 +85,7 @@ namespace $.$$ {
 			return this.domain().User().chat_watch( this.chat(), next  )
 		}
 		
+		@ $mol_mem
 		draft_text( next?: string ) {
 			
 			const chat = this.chat()
@@ -109,7 +110,7 @@ namespace $.$$ {
 			this.$.$mol_wait_rest()
 			this.scroll_end()
 			
-			this.$.$mol_notify.allowed( true )
+			this.joined( true )
 
 		}
 		
