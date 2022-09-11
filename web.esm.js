@@ -3576,7 +3576,7 @@ var $;
 //mol/int62/int62.ts
 ;
 "use strict";
-let $hyoo_sync_revision = "78da2de";
+let $hyoo_sync_revision = "4c0ec2e";
 //hyoo/sync/-meta.tree/revision.meta.tree.ts
 ;
 "use strict";
@@ -4793,6 +4793,22 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_solid() {
+        const current = $mol_wire_auto();
+        if (current.reap !== nothing) {
+            current?.sub_on(sub, sub.data.length);
+        }
+        current.reap = nothing;
+    }
+    $.$mol_wire_solid = $mol_wire_solid;
+    const nothing = () => { };
+    const sub = new $mol_wire_pub_sub;
+})($ || ($ = {}));
+//mol/wire/solid/solid.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_log3_area_lazy(event) {
         const self = this;
         const stack = self.$mol_log3_stack;
@@ -4856,22 +4872,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    function $mol_wire_solid() {
-        const current = $mol_wire_auto();
-        if (current.reap !== nothing) {
-            current?.sub_on(sub, sub.data.length);
-        }
-        current.reap = nothing;
-    }
-    $.$mol_wire_solid = $mol_wire_solid;
-    const nothing = () => { };
-    const sub = new $mol_wire_pub_sub;
-})($ || ($ = {}));
-//mol/wire/solid/solid.ts
-;
-"use strict";
-var $;
-(function ($) {
     class $hyoo_sync_yard extends $mol_object2 {
         log_pack(data) {
             return data;
@@ -4890,7 +4890,7 @@ var $;
         }
         world() {
             const world = new this.$.$hyoo_crowd_world(this.peer());
-            world.land_init = land => this.land_sync(land);
+            world.land_init = land => this.db_land_init(land);
             return world;
         }
         land(id) {
@@ -4937,6 +4937,7 @@ var $;
             }
         }
         db_land_clocks(land, next) {
+            $mol_wire_solid();
             return next;
         }
         db_land_sync(land) {
@@ -12352,10 +12353,6 @@ var $;
                     basis: 'auto',
                 },
             },
-            Disclaimer: {
-                color: $mol_theme.shade,
-                justifyContent: 'center',
-            },
             Bubble: {
                 margin: $mol_gap.block,
             },
@@ -12460,7 +12457,7 @@ var $;
                 chat.draft(null);
                 this.$.$mol_wait_rest();
                 this.scroll_end();
-                this.$.$mol_notify.allowed(true);
+                this.joined(true);
             }
             body_scroll_top(next) {
                 const key = `${this}.body_scroll_top()`;
@@ -12549,6 +12546,9 @@ var $;
         __decorate([
             $mol_mem
         ], $hyoo_talks_chat_page.prototype, "joined", null);
+        __decorate([
+            $mol_mem
+        ], $hyoo_talks_chat_page.prototype, "draft_text", null);
         __decorate([
             $mol_mem
         ], $hyoo_talks_chat_page.prototype, "update_last_seen_message", null);
@@ -13042,6 +13042,10 @@ var $;
                 this.Links()
             ];
         }
+        yard() {
+            const obj = new this.$.$hyoo_sync_yard();
+            return obj;
+        }
         Online() {
             const obj = new this.$.$hyoo_sync_online();
             obj.yard = () => this.yard();
@@ -13162,6 +13166,9 @@ var $;
     __decorate([
         $mol_mem
     ], $hyoo_talks.prototype, "Links", null);
+    __decorate([
+        $mol_mem
+    ], $hyoo_talks.prototype, "yard", null);
     __decorate([
         $mol_mem
     ], $hyoo_talks.prototype, "Online", null);

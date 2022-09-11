@@ -1390,11 +1390,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $hyoo_sync_masters: string[];
+    function $mol_wire_solid(): void;
 }
 
 declare namespace $ {
-    function $mol_wire_solid(): void;
+    let $hyoo_sync_masters: string[];
 }
 
 declare namespace $ {
@@ -3598,6 +3598,7 @@ declare namespace $ {
         links(): readonly any[];
         Links(): $$.$mol_list;
         roster_body(): readonly any[];
+        yard(): $hyoo_sync_yard<unknown>;
         Online(): $$.$hyoo_sync_online;
         Source(): $mol_link_source;
         Lights(): $$.$mol_lights_toggle;
