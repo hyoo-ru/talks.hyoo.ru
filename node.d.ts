@@ -3500,6 +3500,8 @@ declare namespace $ {
 
 declare namespace $ {
     class $hyoo_sync_online extends $mol_link {
+        minimal_width(): number;
+        minimal_height(): number;
         yard(): $hyoo_sync_yard<unknown>;
         uri(): string;
         sub(): readonly any[];
