@@ -339,6 +339,7 @@ $mol_textarea $mol_stack
 			value?val <=> value?val \
 			hint <= hint \ 
 			enabled <= enabled true
+			spellcheck <= spellcheck true
 			length_max <= length_max +Infinity
 			selection?val <=> selection?val /number
 		<= View $mol_text_code
@@ -367,6 +368,8 @@ $mol_embed_native $mol_scroll
 			uri <= uri
 			sub /
 				<= title \
+	message *
+		hashchange? <=> uri_change? null
 
 $hyoo_talks_message_bubble $mol_list
 	message $hyoo_talks_message
