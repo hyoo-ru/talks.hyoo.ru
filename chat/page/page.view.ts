@@ -226,7 +226,7 @@ namespace $.$$ {
 			const message = doamin.User().last_seen_message( this.chat() )
 			if( !message ) return
 			
-			$mol_wire_sync( this ).ensure_visible( this.Bubble( message.id ), 'end' )
+			this.ensure_visible( this.Bubble( message.id ), 'end' )
 			
 		}
 		

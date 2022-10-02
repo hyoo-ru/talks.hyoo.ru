@@ -23,10 +23,7 @@ namespace $ {
 		}
 		
 		static chat_new() {
-			return this.Chat( this.yard().land_grab(
-				$hyoo_crowd_peer_level.law,
-				$hyoo_crowd_peer_level.add,	
-			).id() )
+			return this.Chat( this.yard().land_grab( [''], [], ['0_0'] ).id() )
 		}
 		
 		@ $mol_mem_key
@@ -35,10 +32,7 @@ namespace $ {
 		}
 		
 		static message_new() {
-			return this.Message( this.yard().land_grab(
-				$hyoo_crowd_peer_level.law,
-				$hyoo_crowd_peer_level.get,	
-			).id() )
+			return this.Message( this.yard().land_grab().id() )
 		}
 		
 	}
