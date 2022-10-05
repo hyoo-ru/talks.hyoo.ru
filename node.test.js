@@ -3875,7 +3875,7 @@ var $;
 //mol/int62/int62.ts
 ;
 "use strict";
-let $hyoo_sync_revision = "7cdbf46";
+let $hyoo_sync_revision = "979075f";
 //hyoo/sync/-meta.tree/revision.meta.tree.ts
 ;
 "use strict";
@@ -10051,6 +10051,9 @@ var $;
             if (val !== undefined)
                 return val;
             return [];
+        }
+        bring() {
+            return this.Edit().bring();
         }
         Edit() {
             const obj = new this.$.$mol_textarea_edit();
