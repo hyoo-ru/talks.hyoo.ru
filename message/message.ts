@@ -15,7 +15,7 @@ namespace $ {
 		
 		@ $mol_mem
 		changed() {
-			const stamp = this.state().land.clock_data.last_stamp()
+			const stamp = this.state().land.last_stamp()
 			return stamp ? new $mol_time_moment( stamp ).toOffset( new $mol_time_moment().offset! ): null
 		}
 		
