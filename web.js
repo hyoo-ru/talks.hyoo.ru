@@ -13592,12 +13592,6 @@ var $;
                     this.Chat_link_title(id),
                 ];
             }
-            auto() {
-                for (const chat of this.User().chats()) {
-                    this.message_notify(chat);
-                }
-                return null;
-            }
         }
         __decorate([
             $mol_mem

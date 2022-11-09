@@ -3661,7 +3661,6 @@ declare namespace $.$$ {
         chat_unread_count(id: $mol_int62_string): number;
         message_notify(chat: $hyoo_talks_chat): null;
         chat_link_sub(id: $mol_int62_string): ($mol_speck | $mol_dimmer)[];
-        auto(): null;
     }
 }
 
