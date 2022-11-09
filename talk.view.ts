@@ -123,14 +123,14 @@ namespace $.$$ {
 			]
 		}
 		
-		auto() {
+		// auto() {
 			
-			for( const chat of this.User().chats() ) {
-				this.message_notify( chat )
-			}
+		// 	for( const chat of this.User().chats() ) {
+		// 		this.message_notify( chat )
+		// 	}
 			
-			return null
-		}
+		// 	return null
+		// }
 
 	}
 	
