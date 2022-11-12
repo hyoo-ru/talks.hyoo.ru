@@ -2149,6 +2149,22 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_solid() {
+        const current = $mol_wire_auto();
+        if (current.reap !== nothing) {
+            current?.sub_on(sub, sub.data.length);
+        }
+        current.reap = nothing;
+    }
+    $.$mol_wire_solid = $mol_wire_solid;
+    const nothing = () => { };
+    const sub = new $mol_wire_pub_sub;
+})($ || ($ = {}));
+//mol/wire/solid/solid.ts
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_const(value) {
         var getter = (() => value);
         getter['()'] = value;
@@ -2469,6 +2485,7 @@ var $;
             return this.toString();
         }
         dom_node(next) {
+            $mol_wire_solid();
             const node = next || $mol_dom_context.document.createElementNS(this.dom_name_space(), this.dom_name());
             const id = this.dom_id();
             node.setAttribute('id', id);
@@ -4536,6 +4553,9 @@ var $;
         nodes(Node) {
             return this.units().map(unit => new Node(this.land, unit.self));
         }
+        virgin() {
+            return this.land.unit_list(this.head).length === 0;
+        }
         [Symbol.toPrimitive]() {
             return `${this.constructor.name}("${this.land.id()}","${this.head}")`;
         }
@@ -5205,22 +5225,6 @@ var $;
     $.$mol_wire_race = $mol_wire_race;
 })($ || ($ = {}));
 //mol/wire/race/race.ts
-;
-"use strict";
-var $;
-(function ($) {
-    function $mol_wire_solid() {
-        const current = $mol_wire_auto();
-        if (current.reap !== nothing) {
-            current?.sub_on(sub, sub.data.length);
-        }
-        current.reap = nothing;
-    }
-    $.$mol_wire_solid = $mol_wire_solid;
-    const nothing = () => { };
-    const sub = new $mol_wire_pub_sub;
-})($ || ($ = {}));
-//mol/wire/solid/solid.ts
 ;
 "use strict";
 var $;
