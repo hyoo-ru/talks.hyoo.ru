@@ -3916,7 +3916,7 @@ var $;
 //mol/int62/int62.ts
 ;
 "use strict";
-let $hyoo_sync_revision = "64cd80d";
+let $hyoo_sync_revision = "95333f3";
 //hyoo/sync/-meta.tree/revision.meta.tree.ts
 ;
 "use strict";
@@ -5323,12 +5323,6 @@ var $;
             for (const unit of units) {
                 db_clocks[unit.group()].see_peer(unit.auth, unit.time);
             }
-            this.$.$mol_log3_rise({
-                place: this,
-                land: land.id(),
-                message: 'Base Save',
-                units: this.log_pack(units),
-            });
         }
         db_land_init(land) {
             try {
@@ -5351,12 +5345,6 @@ var $;
             for (const unit of units) {
                 clocks[unit.group()].see_peer(unit.auth, unit.time);
             }
-            this.$.$mol_log3_rise({
-                place: this,
-                land: land.id(),
-                message: 'Base Load',
-                units: this.log_pack(units),
-            });
         }
         async db_land_load(land) {
             return [];
@@ -5414,13 +5402,6 @@ var $;
         line_land_init({ line, land }) {
             this.db_land_init(land);
             this.line_send_clocks(line, land);
-            this.$.$mol_log3_come({
-                place: this,
-                land: land.id(),
-                message: 'Sync Open',
-                line: $mol_key(line),
-                clocks: land._clocks,
-            });
         }
         line_land_neck({ line, land }, next = []) {
             return next;
@@ -5461,13 +5442,6 @@ var $;
                     }
                     else {
                         this.line_lands(line, [...lands, land]);
-                        this.$.$mol_log3_done({
-                            place: this,
-                            land: land.id(),
-                            message: 'Sync Pair',
-                            line: $mol_key(line),
-                            clocks,
-                        });
                     }
                     return;
                 }
