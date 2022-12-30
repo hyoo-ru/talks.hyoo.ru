@@ -1411,6 +1411,23 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    function $mol_promise<Result = void>(): Promise<Result> & {
+        done: (res: Result | PromiseLike<Result>) => void;
+        fail: (error?: any) => void;
+    };
+}
+
+declare namespace $ {
+    function $mol_wait_timeout_async(this: $, timeout: number): Promise<void> & {
+        done: (res: void | PromiseLike<void>) => void;
+        fail: (error?: any) => void;
+    } & {
+        destructor: () => void;
+    };
+    function $mol_wait_timeout(this: $, timeout: number): void;
+}
+
+declare namespace $ {
     function $mol_wire_race<Tasks extends (() => any)[]>(...tasks: Tasks): {
         [index in keyof Tasks]: ReturnType<Tasks[index]>;
     };
@@ -2288,6 +2305,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_form extends $mol_list {
+        submit_allowed(): boolean;
         submit_blocked(): boolean;
         event(): {
             keydown: (event?: any) => any;
@@ -2302,9 +2320,6 @@ declare namespace $ {
         foot(): readonly $mol_view[];
         Foot(): $mol_row;
     }
-}
-
-declare namespace $ {
 }
 
 declare namespace $.$$ {
@@ -2989,23 +3004,6 @@ declare namespace $ {
         Fallback(): $$.$mol_link;
         uri_change(next?: any): any;
     }
-}
-
-declare namespace $ {
-    function $mol_promise<Result = void>(): Promise<Result> & {
-        done: (res: Result | PromiseLike<Result>) => void;
-        fail: (error?: any) => void;
-    };
-}
-
-declare namespace $ {
-    function $mol_wait_timeout_async(this: $, timeout: number): Promise<void> & {
-        done: (res: void | PromiseLike<void>) => void;
-        fail: (error?: any) => void;
-    } & {
-        destructor: () => void;
-    };
-    function $mol_wait_timeout(this: $, timeout: number): void;
 }
 
 declare namespace $ {

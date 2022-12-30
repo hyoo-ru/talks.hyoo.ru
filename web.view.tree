@@ -109,6 +109,7 @@ $mol_form_field $mol_labeler
 $mol_row $mol_view
 
 $mol_form $mol_list
+	submit_allowed true
 	submit_blocked false
 	event *
 		^
