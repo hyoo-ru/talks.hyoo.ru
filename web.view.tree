@@ -245,6 +245,7 @@ $mol_paragraph $mol_view
 	line_height 24
 	letter_width 7
 	width_limit +Infinity
+	row_width 0
 	sub / <= title
 
 $hyoo_talks_person_avatar $mol_link
