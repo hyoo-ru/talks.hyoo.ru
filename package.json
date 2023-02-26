@@ -1,10 +1,19 @@
 {
   "name": "hyoo_talks",
   "version": "0.0.1",
-  "main": "node.js",
-  "module": "node.esm.js",
-  "browser": "web.js",
-  "types": "web.d.ts",
+  "exports": {
+    "node": {
+      "import": "./node.mjs",
+      "default": "./node.js"
+    },
+    "types": "./web.d.ts",
+    "import": "./web.mjs",
+    "default": "./web.js"
+  },
+  "main": "./web.js",
+  "module": "./web.mjs",
+  "browser": "./web.js",
+  "types": "./web.d.ts",
   "keywords": [
     "$hyoo_talks",
     "$hyoo",
@@ -89,11 +98,10 @@
     "$mol_type_keys_extract",
     "$mol_type_keys",
     "$mol_style_guard",
-    "$mol_type_result",
-    "$mol_type_error",
     "$mol_style_properties",
     "$mol_type_override",
     "$mol_style_pseudo",
+    "$mol_type_error",
     "$mol_style_sheet",
     "$mol_book2",
     "$mol_scroll",

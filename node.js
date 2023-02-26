@@ -1899,8 +1899,9 @@ var $;
             return fiber;
         }
         static watching = new Set();
+        static watcher = null;
         static watch() {
-            new $mol_after_frame($mol_wire_atom.watch);
+            $mol_wire_atom.watcher = new $mol_after_frame($mol_wire_atom.watch);
             for (const atom of $mol_wire_atom.watching) {
                 if (atom.cursor === $mol_wire_cursor.final) {
                     $mol_wire_atom.watching.delete(atom);
@@ -1912,6 +1913,9 @@ var $;
             }
         }
         watch() {
+            if (!$mol_wire_atom.watcher) {
+                $mol_wire_atom.watcher = new $mol_after_frame($mol_wire_atom.watch);
+            }
             $mol_wire_atom.watching.add(this);
         }
         resync(args) {
@@ -1988,7 +1992,6 @@ var $;
         $mol_wire_method
     ], $mol_wire_atom.prototype, "once", null);
     $.$mol_wire_atom = $mol_wire_atom;
-    $mol_wire_atom.watch();
 })($ || ($ = {}));
 //mol/wire/atom/atom.ts
 ;
@@ -2796,12 +2799,6 @@ var $;
 //mol/view/view/view.ts
 ;
 "use strict";
-//mol/type/result/result.ts
-;
-"use strict";
-//mol/type/error/error.ts
-;
-"use strict";
 //mol/type/override/override.ts
 ;
 "use strict";
@@ -2812,6 +2809,9 @@ var $;
 ;
 "use strict";
 //mol/style/pseudo/element.ts
+;
+"use strict";
+//mol/type/error/error.ts
 ;
 "use strict";
 //mol/style/guard/guard.ts
@@ -7836,6 +7836,8 @@ var $;
                 const from = el.selectionStart;
                 const to = el.selectionEnd;
                 el.value = this.value_changed(el.value);
+                if (to === null)
+                    return;
                 el.selectionEnd = to;
                 el.selectionStart = from;
                 this.selection_change(next);
@@ -7864,9 +7866,15 @@ var $;
                 el.selectionStart = from;
             }
             selection_start() {
+                const el = this.dom_node();
+                if (el.selectionStart === null)
+                    return undefined;
                 return this.selection()[0];
             }
             selection_end() {
+                const el = this.dom_node();
+                if (el.selectionEnd === null)
+                    return undefined;
                 return this.selection()[1];
             }
         }
@@ -10925,12 +10933,6 @@ var $;
                 },
                 border: {
                     radius: $mol_gap.round,
-                },
-                Edit: {
-                    background: {
-                        color: 'transparent',
-                    },
-                    boxShadow: 'none',
                 },
             },
             Peek: {
