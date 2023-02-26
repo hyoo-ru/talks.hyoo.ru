@@ -43,12 +43,6 @@ namespace $.$$ {
 			border: {
 				radius: $mol_gap.round,
 			},
-			Edit: {
-				background: {
-					color: 'transparent',
-				},
-				boxShadow: 'none',
-			},
 		},
 		
 		Peek: {
