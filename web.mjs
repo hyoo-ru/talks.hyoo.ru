@@ -2998,7 +2998,6 @@ var $;
                 justifyContent: 'space-between',
                 flex: 'none',
                 margin: 0,
-                overflow: 'hidden',
                 background: {
                     color: $mol_theme.card,
                 },
@@ -3633,7 +3632,7 @@ var $;
 //mol/int62/int62.ts
 ;
 "use strict";
-let $hyoo_sync_revision = "b5b9292";
+let $hyoo_sync_revision = "44aabf8";
 //hyoo/sync/-meta.tree/revision.meta.tree.ts
 ;
 "use strict";
