@@ -3972,7 +3972,7 @@ var $;
 //mol/int62/int62.ts
 ;
 "use strict";
-let $hyoo_sync_revision = "18dcd8d";
+let $hyoo_sync_revision = "792f351";
 //hyoo/sync/-meta.tree/revision.meta.tree.ts
 ;
 "use strict";
