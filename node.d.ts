@@ -1136,9 +1136,8 @@ declare namespace $ {
     function $mol_wire_sync<Host extends object>(obj: Host): (Host extends (...args: infer Args) => infer Res ? Res extends Promise<infer Res2> ? (...args: Args) => Res2 : Host : {}) & { [key in keyof Host]: Host[key] extends (...args: infer Args_1) => Promise<infer Res_1> ? (...args: Args_1) => Res_1 : Host[key]; };
 }
 
-/// <reference types="node" />
 declare namespace $ {
-    var $mol_crypto_native: import("crypto").webcrypto.Crypto;
+    var $mol_crypto_native: Crypto;
 }
 
 declare namespace $ {
