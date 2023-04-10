@@ -1217,8 +1217,8 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_huggingface_run(this: $, space: string, method: string | number, ...data: readonly any[]): readonly string[];
-    function $mol_huggingface_async(space: string, method: number, ...data: readonly any[]): Promise<[string]> & {
+    function $mol_huggingface_run(this: $, space: string, method: string | number, ...data: readonly any[]): any[] | readonly string[];
+    function $mol_huggingface_async(space: string, method: number, ...data: readonly any[]): Promise<any[]> & {
         destructor: () => void;
     };
 }
@@ -1236,7 +1236,7 @@ declare namespace $ {
         static lang(next?: string): string;
         static source(lang: string): any;
         static texts(lang: string, next?: $mol_locale_dict): $mol_locale_dict;
-        static text(key: string): {} | null;
+        static text(key: string): string;
         static warn(key: string): null;
     }
 }
@@ -2471,7 +2471,7 @@ declare namespace $ {
 declare namespace $ {
     class $hyoo_talks_person_settings extends $mol_page {
         person(): $hyoo_talks_person;
-        title(): {} | null;
+        title(): string;
         body(): readonly any[];
         name(val?: any): string;
         Name(): $$.$mol_string;
@@ -3491,7 +3491,7 @@ declare namespace $ {
         nav_focused(component?: any): any;
         Nav(): $$.$mol_nav;
         suggests_showed(val?: any): boolean;
-        hint(): {} | null;
+        hint(): string;
         submit(event?: any): any;
         enabled(): boolean;
         keyboard(): string;
@@ -3556,13 +3556,13 @@ declare namespace $ {
 declare namespace $ {
     class $mol_paginator extends $mol_bar {
         sub(): readonly any[];
-        backward_hint(): {} | null;
+        backward_hint(): string;
         backward(event?: any): any;
         Backward_icon(): $mol_icon_chevron_left;
         Backward(): $mol_button_minor;
         value(val?: any): number;
         Value(): $mol_view;
-        forward_hint(): {} | null;
+        forward_hint(): string;
         forward(event?: any): any;
         Forward_icon(): $mol_icon_chevron_right;
         Forward(): $mol_button_minor;
@@ -3858,7 +3858,7 @@ declare namespace $ {
 
 declare namespace $ {
     class $mol_link_source extends $mol_link {
-        hint(): {} | null;
+        hint(): string;
         sub(): readonly any[];
         Icon(): $mol_icon_github_circle;
     }
@@ -3873,7 +3873,7 @@ declare namespace $ {
 declare namespace $ {
     class $mol_lights_toggle extends $mol_check_icon {
         Icon(): $mol_icon_brightness_6;
-        hint(): {} | null;
+        hint(): string;
         checked(val?: any): boolean;
         Lights_icon(): $mol_icon_brightness_6;
         lights(val?: any): boolean;
@@ -3909,8 +3909,8 @@ declare namespace $ {
         Chat_unread_count(id: any): $mol_speck;
         Chat_link_title(id: any): $$.$mol_dimmer;
         Chat_link(id: any): $$.$mol_link;
-        unnamed(): {} | null;
-        new_message(): {} | null;
+        unnamed(): string;
+        new_message(): string;
         background(): string;
         Theme(): $$.$mol_theme_auto;
         chat_new(next?: any): any;
@@ -3965,7 +3965,7 @@ declare namespace $.$$ {
         links(): $mol_link[];
         chat(id: $mol_int62_string): $hyoo_talks_chat;
         person(id: $mol_int62_string): $hyoo_talks_person;
-        chat_title(id: $mol_int62_string): {} | null;
+        chat_title(id: $mol_int62_string): string;
         chat_arg(id: string): {
             chat: string;
         };
