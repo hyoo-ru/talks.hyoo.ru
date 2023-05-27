@@ -749,10 +749,6 @@ $hyoo_talks $mol_book2
 			arg * chat null
 			sub /
 				<= Chat_icon $mol_icon_cross
-	Placeholder $hyoo_talks_placeholder
-		Title null
-		Tools null
-		bg_transparent <= embed
 	Chat_unread_count* $mol_speck
 		value <= chat_unread_count* 0
 	Chat_link_title* $mol_dimmer
@@ -763,9 +759,3 @@ $hyoo_talks $mol_book2
 		sub <= chat_link_sub* /
 	unnamed @ \Unnamed
 	new_message @ \New Message
-
-$hyoo_talks_placeholder $mol_page
-	bg_transparent false
-	attr *
-		^
-		hyoo_talks_placeholder_transparent <= bg_transparent

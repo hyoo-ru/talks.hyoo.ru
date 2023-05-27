@@ -3740,7 +3740,6 @@ declare namespace $ {
         Roster(): $mol_page;
         Settings(): $$.$hyoo_talks_person_settings;
         Chat_page(id: any): $$.$hyoo_talks_chat_page;
-        Placeholder(): $hyoo_talks_placeholder;
         Chat_unread_count(id: any): $mol_speck;
         Chat_link_title(id: any): $$.$mol_dimmer;
         Chat_link(id: any): $$.$mol_link;
@@ -3772,10 +3771,6 @@ declare namespace $ {
         chat_title(id: any): string;
         chat_arg(id: any): Record<string, any>;
         chat_link_sub(id: any): readonly any[];
-    }
-    class $hyoo_talks_placeholder extends $mol_page {
-        bg_transparent(): boolean;
-        attr(): Record<string, any>;
     }
 }
 

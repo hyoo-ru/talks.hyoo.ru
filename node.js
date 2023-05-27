@@ -14272,13 +14272,6 @@ var $;
             obj.Close = () => this.Chat_close();
             return obj;
         }
-        Placeholder() {
-            const obj = new this.$.$hyoo_talks_placeholder();
-            obj.Title = () => null;
-            obj.Tools = () => null;
-            obj.bg_transparent = () => this.embed();
-            return obj;
-        }
         Chat_unread_count(id) {
             const obj = new this.$.$mol_speck();
             obj.value = () => this.chat_unread_count(id);
@@ -14443,9 +14436,6 @@ var $;
         $mol_mem_key
     ], $hyoo_talks.prototype, "Chat_page", null);
     __decorate([
-        $mol_mem
-    ], $hyoo_talks.prototype, "Placeholder", null);
-    __decorate([
         $mol_mem_key
     ], $hyoo_talks.prototype, "Chat_unread_count", null);
     __decorate([
@@ -14512,18 +14502,6 @@ var $;
         $mol_mem
     ], $hyoo_talks.prototype, "Chat_close", null);
     $.$hyoo_talks = $hyoo_talks;
-    class $hyoo_talks_placeholder extends $mol_page {
-        bg_transparent() {
-            return false;
-        }
-        attr() {
-            return {
-                ...super.attr(),
-                hyoo_talks_placeholder_transparent: this.bg_transparent()
-            };
-        }
-    }
-    $.$hyoo_talks_placeholder = $hyoo_talks_placeholder;
 })($ || ($ = {}));
 //hyoo/talks/-view.tree/talk.view.tree.ts
 ;
@@ -14667,8 +14645,6 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        const { rem } = $mol_style_unit;
-        const { url } = $mol_style_func;
         $mol_style_define($hyoo_talks, {
             '@': {
                 hyoo_talks_embed: {
@@ -14685,7 +14661,7 @@ var $;
             },
             Roster: {
                 flex: {
-                    basis: rem(20),
+                    basis: `20rem`,
                     shrink: 0,
                 },
                 Body: {
@@ -14700,21 +14676,6 @@ var $;
                 flex: {
                     grow: 0,
                     shrink: 0,
-                },
-            },
-            Placeholder: {
-                Head: {
-                    padding: 0,
-                },
-                Body: {
-                    padding: 0,
-                },
-                '@': {
-                    hyoo_talks_placeholder_transparent: {
-                        'true': {
-                            backgroundColor: 'transparent',
-                        }
-                    }
                 },
             },
             Chat_unread_count: {
