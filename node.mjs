@@ -14741,4 +14741,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/talks/talk.view.css.ts
 
+export default $
 //# sourceMappingURL=node.js.map

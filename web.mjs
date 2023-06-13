@@ -14297,4 +14297,5 @@ var $;
 })($ || ($ = {}));
 //hyoo/talks/talk.view.css.ts
 
+export default $
 //# sourceMappingURL=web.js.map
