@@ -1312,6 +1312,7 @@ var $;
             }
         };
         Reflect.defineProperty(descr2.value, 'name', { value: orig.name + ' ' });
+        Reflect.defineProperty(descr2.value, 'length', { value: orig.length });
         Object.assign(descr2.value, { orig });
         Reflect.defineProperty(host, field, descr2);
         return descr2;
@@ -1349,6 +1350,7 @@ var $;
             }
         };
         Reflect.defineProperty(descr2.value, 'name', { value: orig.name + ' ' });
+        Reflect.defineProperty(descr2.value, 'length', { value: orig.length });
         Object.assign(descr2.value, { orig });
         Reflect.defineProperty(host, field, descr2);
         return descr2;
@@ -2334,6 +2336,15 @@ var $;
     let all = [];
     let el = null;
     let timer = null;
+    function $mol_style_attach_force() {
+        if (all.length) {
+            el.innerHTML += '\n' + all.join('\n\n');
+            all = [];
+        }
+        timer = null;
+        return el;
+    }
+    $.$mol_style_attach_force = $mol_style_attach_force;
     function $mol_style_attach(id, text) {
         all.push(`/* ${id} */\n\n${text}`);
         if (timer)
@@ -2344,12 +2355,7 @@ var $;
         el = doc.createElement('style');
         el.id = `$mol_style_attach`;
         doc.head.appendChild(el);
-        timer = new $mol_after_tick(() => {
-            el.innerHTML = '\n' + all.join('\n\n');
-            all = [];
-            el = null;
-            timer = null;
-        });
+        timer = new $mol_after_tick($mol_style_attach_force);
         return el;
     }
     $.$mol_style_attach = $mol_style_attach;
@@ -2822,6 +2828,9 @@ var $;
             }
             return names;
         }
+        theme(next = null) {
+            return next;
+        }
         attr_static() {
             let attrs = {};
             for (let name of this.view_names())
@@ -2829,7 +2838,9 @@ var $;
             return attrs;
         }
         attr() {
-            return {};
+            return {
+                mol_theme: this.theme(),
+            };
         }
         style_size() {
             return {
@@ -2945,6 +2956,9 @@ var $;
     __decorate([
         $mol_memo.method
     ], $mol_view.prototype, "view_names", null);
+    __decorate([
+        $mol_mem
+    ], $mol_view.prototype, "theme", null);
     __decorate([
         $mol_mem_key
     ], $mol_view, "Root", null);
@@ -13611,7 +13625,7 @@ var $;
         if (typeof HTMLElement !== 'function')
             return;
         class Component extends HTMLElement {
-            static tag = View.name.replace(/\W/g, '').replace(/^(?=\d+)/, '-').replace(/_/g, '-');
+            static tag = $$.$mol_func_name(View).replace(/\W/g, '').replace(/^(?=\d+)/, '-').replace(/_/g, '-');
             static observedAttributes = new Set;
             view = new View;
             root;
@@ -13620,7 +13634,7 @@ var $;
                     this.attachShadow({ mode: 'open' });
                     const node = this.view.dom_node();
                     node.setAttribute('mol_view_root', '');
-                    this.shadowRoot.append(document.getElementById(`$mol_style_attach`).cloneNode(true), node);
+                    this.shadowRoot.append($mol_style_attach_force().cloneNode(true), node);
                 }
                 this.root = $mol_wire_auto();
                 try {
@@ -13655,14 +13669,13 @@ var $;
                 const descr = Reflect.getOwnPropertyDescriptor(proto, field);
                 if (typeof descr.value !== 'function')
                     continue;
-                if (descr.value.length === 0)
-                    continue;
                 Component.observedAttributes.add(field);
             }
             attributes_observe(Reflect.getPrototypeOf(proto));
         }
         attributes_observe(View.prototype);
         customElements.define(Component.tag, Component);
+        return Component;
     }
     $.$mol_view_component = $mol_view_component;
 })($ || ($ = {}));
