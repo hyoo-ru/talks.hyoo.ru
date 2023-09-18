@@ -276,6 +276,11 @@
     "$mol_lights",
     "$mol_icon_plus",
     "$hyoo_sync_online",
+    "$mol_select",
+    "$mol_pick",
+    "$mol_icon_dots_vertical",
+    "$mol_icon_dots",
+    "$mol_match",
     "$mol_icon_sync_off",
     "$mol_icon_sync",
     "$mol_link_source",
@@ -284,8 +289,7 @@
     "$mol_lights_toggle",
     "$mol_icon_brightness_6",
     "$mol_icon_brightness",
-    "$mol_icon_settings",
-    "$mol_match"
+    "$mol_icon_settings"
   ],
   "dependencies": {
     "jsdom": "*",
