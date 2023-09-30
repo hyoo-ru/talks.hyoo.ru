@@ -71,7 +71,8 @@
 \/mol/view
 	include \/mol/view/tree/test
 \/hyoo/sync
-	build $hyoo_sync_revision \git rev-parse --short HEAD
+	- build $hyoo_sync_revision \git rev-parse --short HEAD
+	build $hyoo_sync_revision \echo echo
 \/mol/notify
 	include \/mol/offline/install
 \/hyoo/talks
