@@ -41,7 +41,7 @@ namespace $.$$ {
 			},
 		},
 		
-		Body: {
+		Body_content: {
 			padding: 0,
 			flex: {
 				grow: 0,

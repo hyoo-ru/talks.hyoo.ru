@@ -24,14 +24,6 @@ namespace $.$$ {
 				shrink: 0,
 			},
 			
-			Body: {
-				padding: $mol_gap.block,
-			},
-			
-			Foot: {
-				padding: $mol_gap.block,
-			},
-			
 		},
 		
 		Links_query: {
