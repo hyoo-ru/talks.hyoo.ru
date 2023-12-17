@@ -130,12 +130,6 @@
     "$mol_charset_encoding",
     "$mol_charset_encode",
     "$mol_compare_array",
-    "$hyoo_lingua_translate",
-    "$hyoo_lingua",
-    "$mol_huggingface",
-    "$mol_fetch",
-    "$mol_action",
-    "$mol_dom_parse",
     "$hyoo_talks_person_settings",
     "$hyoo_talks_person",
     "$hyoo_talks_entity",
@@ -171,6 +165,7 @@
     "$hyoo_crowd_struct",
     "$hyoo_crowd_reg",
     "$hyoo_crowd_fund",
+    "$mol_action",
     "$mol_dict",
     "$mol_wait_timeout",
     "$mol_wait",
@@ -300,7 +295,6 @@
   "dependencies": {
     "jsdom": "*",
     "chokidar": "*",
-    "undici": "*",
     "fake-indexeddb": "*"
   }
 }
