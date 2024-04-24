@@ -37,14 +37,14 @@ $hyoo_talks $mol_book2
 			<= Settings_close $mol_link
 				arg * settings null
 				sub /
-					<= Settings_close_icon $mol_icon_cross
+					<= Settings_close_icon $mol_icon_close
 	Chat_page* $hyoo_talks_chat_page
 		chat <= chat* $hyoo_talks_chat
 		embed <= embed
 		Close <= Chat_close $mol_link
 			arg * chat null
 			sub /
-				<= Chat_icon $mol_icon_cross
+				<= Chat_icon $mol_icon_close
 	Chat_unread_count* $mol_speck
 		value <= chat_unread_count* 0
 	Chat_link_title* $mol_dimmer
