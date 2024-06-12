@@ -55,3 +55,4 @@ $hyoo_talks $mol_book2
 		sub <= chat_link_sub* /
 	unnamed @ \Unnamed
 	new_message @ \New Message
+	Placeholder null

@@ -26,6 +26,10 @@ namespace $.$$ {
 			
 		},
 		
+		Chat_page: {
+			margin: [ 0, 'auto' ],
+		},
+		
 		Links_query: {
 			alignSelf: 'auto',
 			flex: {
