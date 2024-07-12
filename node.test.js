@@ -13876,14 +13876,13 @@ var $;
             return;
         class Component extends HTMLElement {
             static tag = $$.$mol_func_name(View).replace(/\W/g, '').replace(/^(?=\d+)/, '-').replace(/_/g, '-');
-            static observedAttributes = new Set;
+            static observedAttributes = new Set();
             view = new View;
             root;
             connectedCallback() {
                 if (!this.shadowRoot) {
                     this.attachShadow({ mode: 'open' });
                     const node = this.view.dom_node();
-                    node.setAttribute('mol_view_root', '');
                     for (const style of $mol_dom_context.document.getElementsByTagName('style')) {
                         this.shadowRoot.append(style.cloneNode(true));
                     }
@@ -13904,7 +13903,10 @@ var $;
                 this.root = undefined;
             }
             attributeChangedCallback(name, prev, next) {
-                this.view[name](JSON.parse(next));
+                if (name[0] === '#')
+                    this.view[name.slice(1)](JSON.parse(next));
+                else
+                    this.view[name](next);
             }
             toString() {
                 return '<' + this.constructor.tag + '#' + this.id + '/>';
@@ -13923,6 +13925,7 @@ var $;
                 if (typeof descr.value !== 'function')
                     continue;
                 Component.observedAttributes.add(field);
+                Component.observedAttributes.add('#' + field);
             }
             attributes_observe(Reflect.getPrototypeOf(proto));
         }
