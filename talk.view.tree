@@ -38,8 +38,8 @@ $hyoo_talks $mol_book2
 				arg * settings null
 				sub /
 					<= Settings_close_icon $mol_icon_close
-	Chat_page* $hyoo_talks_chat_page
-		chat <= chat* $hyoo_talks_chat
+	Chat_page* $hyoo_talks_topic_page
+		chat_id <= chat* \
 		embed <= embed
 		Close <= Chat_close $mol_link
 			arg * chat null

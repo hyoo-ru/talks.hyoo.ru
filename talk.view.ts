@@ -2,14 +2,6 @@ namespace $.$$ {
 	
 	export class $hyoo_talks extends $.$hyoo_talks {
 		
-		domain() {
-			return this.$.$hyoo_talks_domain
-		}
-		
-		yard() {
-			return this.domain().yard()
-		}
-		
 		chat_id_current() {
 			return this.$.$mol_state_arg.value( 'chat' ) ?? ''
 		}
@@ -49,8 +41,9 @@ namespace $.$$ {
 			
 		}
 		
+		@ $mol_mem
 		User() {
-			return this.domain().User()
+			return this.$.$hyoo_crus_glob.home().cast( $hyoo_talks_person )
 		}
 		
 		background() {
@@ -70,40 +63,35 @@ namespace $.$$ {
 		links() {
 			return this.User().chats()
 				.filter( $mol_match_text( this.links_query(), chat => [ chat.title() ] ) )
-				.map( chat => this.Chat_link( chat.id ) )
+				.map( chat => this.Chat_link( chat ) )
 				.reverse()
 		}
 		
-		chat( id: $mol_int62_string ) {
-			return this.domain().Chat( id )
-		}
-		
-		person( id: $mol_int62_string ) {
-			return this.domain().Person( id )
+		chat( chat: $hyoo_talks_topic ) {
+			return chat
 		}
 		
 		@ $mol_mem_key
-		chat_title( id: $mol_int62_string ) {
-			return this.chat( id ).title() || this.unnamed()
+		chat_title( chat: $hyoo_talks_topic ) {
+			return chat.title() || this.unnamed()
 		}
 		
-		chat_arg( id: string ) {
-			return { chat: id }
+		chat_arg( chat: $hyoo_talks_topic  ) {
+			return { chat: chat.ref().description! }
 		}
 		
 		chat_new() {
-			const chat = this.domain().chat_new()
-			this.User().chat_watch( chat, true )
-			this.$.$mol_dom_context.location.href = '#!chat=' + chat.id
+			const chat = this.User().chat_make()
+			this.$.$mol_dom_context.location.href = '#!chat=' + chat.ref().description!
 		}
 		
-		@ $mol_mem_key
-		chat_unread_count( id: $mol_int62_string ) {
-			return this.chat( id ).unread_count()
-		}
+		// @ $mol_mem_key
+		// chat_unread_count( id: $mol_int62_string ) {
+		// 	return this.chat( id ).unread_count()
+		// }
 		
 		@ $mol_mem_key
-		message_notify( chat: $hyoo_talks_chat ) {
+		message_notify( chat: $hyoo_talks_topic ) {
 
 			if( !this.chat_unread_count( chat.id ) ) return null
 

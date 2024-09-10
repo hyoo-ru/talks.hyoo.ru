@@ -1,20 +1,20 @@
 namespace $ {
 	
-	export class $hyoo_talks_person extends $hyoo_talks_entity {
+	export class $hyoo_talks_person extends $hyoo_crus_home.with({
+		Avatar: $hyoo_crus_atom_str,
+		Background: $hyoo_crus_atom_str,
+		Chats: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_list_ref_to( ()=> $hyoo_talks_topic ) ),
+		Outboxes: $hyoo_crus_atom_ref_to( ()=> $hyoo_crus_dict_to( $hyoo_crus_atom_ref_to( ()=> $hyoo_talks_channel ) ) ),
+	}) {
 		
 		@ $mol_mem
-		name( next?: string ) {
-			return this.state().sub( 'name', $hyoo_crowd_reg ).str( next )
+		avatar( next?: string ) {
+			return this.Avatar( next )?.val( next ) ?? ''
 		}
 		
 		@ $mol_mem
 		background( next?: string ) {
-			return this.state().sub( 'background', $hyoo_crowd_reg ).str( next )
-		}
-		
-		@ $mol_mem
-		avatar( next?: string ) {
-			return this.state().sub( 'avatar', $hyoo_crowd_reg ).str( next )
+			return this.Background( next )?.val( next ) ?? ''
 		}
 		
 		@ $mol_mem
@@ -30,41 +30,37 @@ namespace $ {
 		
 		@ $mol_mem
 		online_time() {
-			const stamp = this.state().land.last_stamp()
-			return stamp ? new $mol_time_moment( stamp ) : null
+			return this.land().faces.last_moment()
 		}
 		
 		@ $mol_mem
-		chats( next?: $hyoo_talks_chat[] ): readonly $hyoo_talks_chat[] {
-			
-			const ids = this.state().sub( 'chats', $hyoo_crowd_list )
-				.list( next && next.map( m => m.id ) ) as readonly $mol_int62_string[]
-			
-			const domain = this.$.$hyoo_talks_domain
-			return ids.map( id => domain.Chat( id ) )
-			
+		chats( next?: $hyoo_talks_topic[] ): readonly $hyoo_talks_topic[] {
+			return this.Chats( next )?.ensure({})?.remote_list( next ) ?? []
 		}
 		
 		@ $mol_mem_key
-		chat_watch( chat: $hyoo_talks_chat, next?: boolean ) {
-			
-			const node = this.state().sub( 'chats', $hyoo_crowd_list )
-			if( next === undefined ) return node.has( chat.id )
-			
-			if( next ) node.add( chat.id )
-			else node.drop( chat.id )
-			
-			return next
+		chat_watch( chat: $hyoo_talks_topic, next?: boolean ) {
+			return this.Chats( next )?.ensure({})?.has( chat.ref(), next ) ?? false
+		}
+		
+		@ $mol_action
+		chat_make() {
+			return this.Chats( null )!.ensure({})!.make({ '': $hyoo_crus_rank.add })
 		}
 		
 		@ $mol_mem_key
-		last_seen_message( chat: $hyoo_talks_chat, next?: $hyoo_talks_message ) {
-			const id = this.state()
-				.sub( 'last_seen_message', $hyoo_crowd_struct )
-				.sub( chat.id, $hyoo_crowd_reg )
-				.str( next?.id ) as $mol_int62_string
-			return id ? this.domain().Message( id ) : null
+		outbox( chat: $hyoo_talks_topic ) {
+			return this.Outboxes(null)?.ensure({})?.key( chat.ref(), null )?.ensure({ '': $hyoo_crus_rank.get }) ?? null
 		}
+		
+		// @ $mol_mem_key
+		// last_seen_message( chat: $hyoo_talks_topic, next?: $hyoo_talks_message ) {
+		// 	const id = this.state()
+		// 		.sub( 'last_seen_message', $hyoo_crowd_struct )
+		// 		.sub( chat.id, $hyoo_crowd_reg )
+		// 		.str( next?.id ) as $mol_int62_string
+		// 	return id ? this.domain().Message( id ) : null
+		// }
 		
 	}
 	

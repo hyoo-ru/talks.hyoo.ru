@@ -1,22 +1,23 @@
 namespace $ {
 	
-	export class $hyoo_talks_message extends $hyoo_talks_entity {
+	export class $hyoo_talks_message extends $hyoo_crus_entity.with({
+		Text: $hyoo_crus_atom_str,
+	}) {
 		
 		@ $mol_mem
 		text( next?: string ) {
-			return this.state().sub( 'text', $hyoo_crowd_reg ).str( next )
+			return this.Text( next )?.val( next ) ?? ''
 		}
 		
 		@ $mol_mem
-		author() {
-			const id = [ ... this.state().land.authors() ][0]
-			return id ? this.$.$hyoo_talks_domain.Person( id ) : null
+		authors() {
+			const glob = this.$.$hyoo_crus_glob
+			return this.author_lords().map( ref => glob.Node( ref, $hyoo_talks_person ) )
 		}
 		
 		@ $mol_mem
 		changed() {
-			const stamp = this.state().land.last_stamp()
-			return stamp ? new $mol_time_moment( stamp ).toOffset( new $mol_time_moment().offset! ): null
+			return this.last_change()?.toOffset( new $mol_time_moment().offset! )
 		}
 		
 	}

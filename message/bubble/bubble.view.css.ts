@@ -38,27 +38,7 @@ namespace $.$$ {
 				shrink: 1,
 			},
 			background: {
-				color: $mol_theme.back,
-			},
-			border: {
-				radius: $mol_gap.round,
-			},
-		},
-		
-		Peek: {
-			wordBreak: 'break-all',
-		},
-		
-		Previews: {
-			alignSelf: 'stretch',
-		},
-		
-		Preview: {
-			padding: 0,
-			flex: {
-				grow: 1,
-				shrink: 1,
-				basis: 'auto',
+				color: $mol_theme.card,
 			},
 		},
 		

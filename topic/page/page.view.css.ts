@@ -2,7 +2,7 @@ namespace $.$$ {
 	
 	const { rem, px, per } = $mol_style_unit
 	
-	$mol_style_define( $hyoo_talks_chat_page, {
+	$mol_style_define( $hyoo_talks_topic_page, {
 		
 		'@': {
 			hyoo_talks_chat_page_embed: {
@@ -46,6 +46,9 @@ namespace $.$$ {
 			flex: {
 				grow: 0,
 				basis: 'auto',
+			},
+			margin: {
+				top: 'auto',
 			},
 		},
 		

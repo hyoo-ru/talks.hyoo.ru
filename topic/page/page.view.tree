@@ -1,7 +1,7 @@
-$hyoo_talks_chat_page $mol_page
+$hyoo_talks_topic_page $mol_page
 	messages?val /$hyoo_talks_message
-	chat $hyoo_talks_chat
-	chat_id \0_0
+	chat $hyoo_talks_topic
+	chat_id \
 	embed false
 	attr *
 		^
@@ -44,7 +44,7 @@ $hyoo_talks_chat_page $mol_page
 			hint @ \Ctrl+Enter to send
 			sub /
 				<= Draft_send_icon $mol_icon_arrow_up_bold
-			click?val <=> draft_send?val null
+			click? <=> draft_send? null
 	Bubble!id $hyoo_talks_message_bubble
 		minimal_height 80
 		message <= message!id $hyoo_talks_message
@@ -53,5 +53,5 @@ $hyoo_talks_chat_page $mol_page
 		<= Send_key $mol_hotkey
 			mod_ctrl true
 			key *
-				enter?event <=> draft_send?event null
-				F?event <=> search_start?event null
+				enter? <=> draft_send? null
+				F? <=> search_start? null

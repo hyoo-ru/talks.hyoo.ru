@@ -1,11 +1,7 @@
 namespace $.$$ {
 	
-	export class $hyoo_talks_chat_page extends $.$hyoo_talks_chat_page {
+	export class $hyoo_talks_topic_page extends $.$hyoo_talks_topic_page {
 
-		domain() {
-			return this.$.$hyoo_talks_domain
-		}
-		
 		Head() {
 			return this.embed() ? null! : super.Head()
 		}
@@ -45,7 +41,7 @@ namespace $.$$ {
 		
 		@ $mol_mem
 		chat() {
-			return this.domain().Chat( this.chat_id() as $mol_int62_string )
+			return this.$.$hyoo_crus_glob.Node( $hyoo_crus_ref( this.chat_id() ), $hyoo_talks_topic )
 		}
 		
 		title( next?: string ) {
@@ -59,16 +55,16 @@ namespace $.$$ {
 					this.scroll_end()
 				}
 			} ) )
-			return this.chat().messages( next )
+			return this.chat().messages( next )?.remote_list( next ) ?? []
 		}
 		
-		message( id: $mol_int62_string ) {
-			return this.domain().Message( id )
+		message( msg: $hyoo_talks_message ) {
+			return msg
 		}
 		
 		@ $mol_mem
 		bubbles() {
-			return this.messages().map( msg => this.Bubble( msg.id ) )
+			return this.messages().map( msg => this.Bubble( msg ) )
 		}
 		
 		draft_controls () {
@@ -82,30 +78,22 @@ namespace $.$$ {
 		@ $mol_mem
 		joined( next?: boolean ) {
 			this.$.$mol_notify.allowed( true )
-			return this.domain().User().chat_watch( this.chat(), next  )
+			return this.chat().watch_my( next )
 		}
 		
 		@ $mol_mem
 		draft_text( next?: string ) {
-			
-			const chat = this.chat()
-			let draft = chat.draft()
-			if( next === undefined ) return draft?.text() ?? ''
-			
-			if( !draft ) draft = chat.draft_new()
-			return draft.text( next )
-			
+			return this.chat().draft_my( next )
 		}
 		
 		draft_send() {
 			
-			if ( !this.draft_text().trim() ) return
+			const text = this.draft_text()
+			if ( !text ) return 
 			
-			const chat = this.chat()
-			const draft = chat.draft()!
-			
-			chat.message_add( draft )
-			chat.draft( null )
+			const message = this.chat().message_make()!
+			message.text( text )
+			this.draft_text( '' )
 			
 			this.$.$mol_wait_rest()
 			this.scroll_end()
@@ -125,17 +113,24 @@ namespace $.$$ {
 		}
 		
 		@ $mol_mem
-		update_last_seen_message() {
+		update_anchor() {
 			
 			const all = this.messages()
-			let bottom = this.Bubbles().view_window()[1] - 1
-			const user = this.domain().User()
+			let top = this.Bubbles().view_window()[0]
 			
-			const last_seen = user.last_seen_message( this.chat() )
-			if( last_seen && all.indexOf( last_seen ) >= bottom ) return
-			
-			user.last_seen_message( this.chat(), all[ bottom ] )
+			this.chat().anchor_my( all[ top ] )
 
+		}
+		
+		@ $mol_mem
+		@ $mol_action
+		autoscroll() {
+			
+			const message = this.chat().anchor_my()
+			if( !message ) return
+			
+			this.ensure_visible( this.Bubble( message ), 'start' )
+			
 		}
 		
 		/** All messages in CSV (actually TSV) as Blob */
@@ -217,27 +212,14 @@ namespace $.$$ {
 			return null
 		}
 		
-		@ $mol_mem
-		@ $mol_action
-		autoscroll() {
-			
-			const doamin = this.domain()
-			
-			const message = doamin.User().last_seen_message( this.chat() )
-			if( !message ) return
-			
-			this.ensure_visible( this.Bubble( message.id ), 'end' )
-			
-		}
-		
 		auto() {
 			this.speech_to_text()
 			this.autoscroll()
-			this.update_last_seen_message()
+			this.update_anchor()
 		}
 		
 	}
 	
-	$mol_view_component( $hyoo_talks_chat_page )
+	$mol_view_component( $hyoo_talks_topic_page )
 	
 }

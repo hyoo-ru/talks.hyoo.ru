@@ -19,7 +19,7 @@ namespace $ {
 		
 		@ $mol_mem_key
 		static Chat( id: $mol_int62_string ) {
-			return $hyoo_talks_chat.make({ id })
+			return $hyoo_talks_topic.make({ id })
 		}
 		
 		static chat_new() {
