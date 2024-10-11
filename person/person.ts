@@ -45,7 +45,7 @@ namespace $ {
 		
 		@ $mol_action
 		chat_make() {
-			return this.Chats( null )!.ensure({})!.make({ '': $hyoo_crus_rank.add })
+			return this.Chats( null )!.ensure({})!.make({ '': $hyoo_crus_rank.reg })
 		}
 		
 		@ $mol_mem_key
