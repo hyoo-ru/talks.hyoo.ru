@@ -11516,7 +11516,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mol_text_code_row) = class $mol_text_code_row extends ($.$mol_paragraph) {
+	($.$mol_text_code_line) = class $mol_text_code_line extends ($.$mol_paragraph) {
 		numb(){
 			return 0;
 		}
@@ -11570,9 +11570,9 @@ var $;
 			return null;
 		}
 	};
-	($mol_mem(($.$mol_text_code_row.prototype), "Numb"));
-	($mol_mem_key(($.$mol_text_code_row.prototype), "Token"));
-	($mol_mem_key(($.$mol_text_code_row.prototype), "Token_link"));
+	($mol_mem(($.$mol_text_code_line.prototype), "Numb"));
+	($mol_mem_key(($.$mol_text_code_line.prototype), "Token"));
+	($mol_mem_key(($.$mol_text_code_line.prototype), "Token_link"));
 
 
 ;
@@ -11632,7 +11632,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $mol_text_code_row extends $.$mol_text_code_row {
+        class $mol_text_code_line extends $.$mol_text_code_line {
             maximal_width() {
                 return this.text().length * this.letter_width();
             }
@@ -11714,29 +11714,29 @@ var $;
         }
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "tokens", null);
+        ], $mol_text_code_line.prototype, "tokens", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "row_content", null);
+        ], $mol_text_code_line.prototype, "row_content", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_type", null);
+        ], $mol_text_code_line.prototype, "token_type", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_content", null);
+        ], $mol_text_code_line.prototype, "token_content", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_text", null);
+        ], $mol_text_code_line.prototype, "token_text", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "token_uri", null);
+        ], $mol_text_code_line.prototype, "token_uri", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "find_pos", null);
+        ], $mol_text_code_line.prototype, "find_pos", null);
         __decorate([
             $mol_mem_key
-        ], $mol_text_code_row.prototype, "find_token_pos", null);
-        $$.$mol_text_code_row = $mol_text_code_row;
+        ], $mol_text_code_line.prototype, "find_token_pos", null);
+        $$.$mol_text_code_line = $mol_text_code_line;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -11747,11 +11747,11 @@ var $;
     var $$;
     (function ($$) {
         const { rem } = $mol_style_unit;
-        $mol_style_define($mol_text_code_row, {
+        $mol_style_define($mol_text_code_line, {
             display: 'block',
             position: 'relative',
             font: {
-                family: 'inherit',
+                family: 'monospace',
             },
             Numb: {
                 textAlign: 'right',
@@ -11916,7 +11916,7 @@ var $;
 			return "";
 		}
 		Row(id){
-			const obj = new this.$.$mol_text_code_row();
+			const obj = new this.$.$mol_text_code_line();
 			(obj.numb_showed) = () => ((this.sidebar_showed()));
 			(obj.numb) = () => ((this.row_numb(id)));
 			(obj.text) = () => ((this.row_text(id)));
@@ -12068,6 +12068,11 @@ var $;
             Rows: {
                 padding: $mol_gap.text,
             },
+            Row: {
+                font: {
+                    family: 'inherit',
+                },
+            },
             Copy: {
                 alignSelf: 'flex-start',
                 justifySelf: 'flex-start',
@@ -12075,7 +12080,7 @@ var $;
             '@': {
                 'mol_text_code_sidebar_showed': {
                     true: {
-                        $mol_text_code_row: {
+                        $mol_text_code_line: {
                             margin: {
                                 left: rem(1.75),
                             },
