@@ -3424,7 +3424,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_reconcile<Prev, Next>({ prev, from, to, next, equal, drop, insert, update, }: {
+    function $mol_reconcile<Prev, Next>({ prev, from, to, next, equal, drop, insert, update, replace, }: {
         prev: readonly Prev[];
         from: number;
         to: number;
@@ -3433,6 +3433,7 @@ declare namespace $ {
         drop: (prev: Prev, lead: Prev | null) => Prev | null;
         insert: (next: Next, lead: Prev | null) => Prev;
         update?: (next: Next, prev: Prev, lead: Prev | null) => Prev;
+        replace?: (next: Next, prev: Prev, lead: Prev | null) => Prev;
     }): void;
 }
 
