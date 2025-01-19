@@ -5,7 +5,7 @@ namespace $ {
 	}) {
 		
 		messages( auto?: any ) {
-			return this.Messages(null)?.ensure({ '': $hyoo_crus_rank.mod }) ?? null
+			return this.Messages(null)?.ensure({ '': $hyoo_crus_rank_post( 'just' ) }) ?? null
 		}
 		
 		@ $mol_action

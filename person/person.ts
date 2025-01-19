@@ -45,12 +45,12 @@ namespace $ {
 		
 		@ $mol_action
 		chat_make() {
-			return this.Chats( null )!.ensure({})!.make({ '': $hyoo_crus_rank.reg })
+			return this.Chats( null )!.ensure({})!.make({ '': $hyoo_crus_rank_join( 'just' ) })
 		}
 		
 		@ $mol_mem_key
 		outbox( chat: $hyoo_talks_topic ) {
-			return this.Outboxes(null)?.ensure({})?.key( chat.ref(), null )?.ensure({ '': $hyoo_crus_rank.get }) ?? null
+			return this.Outboxes(null)?.ensure({})?.key( chat.ref(), null )?.ensure({ '': $hyoo_crus_rank_read }) ?? null
 		}
 		
 		// @ $mol_mem_key
