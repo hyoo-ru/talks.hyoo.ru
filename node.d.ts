@@ -537,8 +537,8 @@ declare namespace $ {
         dir: string;
     }> {
     }
-    const $mol_run_spawn: (command: string, args: readonly string[], options: import("child_process").SpawnOptions) => import("child_process").ChildProcess;
-    const $mol_run_spawn_sync: (command: string, args?: readonly string[] | undefined, options?: import("child_process").SpawnSyncOptions | undefined) => import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
+    const $mol_run_spawn: (...args: Parameters<(typeof $node)["child_process"]["spawn"]>) => import("child_process").ChildProcess;
+    const $mol_run_spawn_sync: (...args: Parameters<(typeof $node)["child_process"]["spawnSync"]>) => import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
     type $mol_run_options = {
         command: readonly string[] | string;
         dir: string;
@@ -4974,13 +4974,14 @@ declare namespace $ {
             click(): void;
             hidePopover(): void;
             showPopover(): void;
-            togglePopover(force?: boolean): boolean;
+            togglePopover(options?: boolean): boolean;
             addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
             addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
             removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
             removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
             readonly attributes: NamedNodeMap;
-            readonly classList: DOMTokenList;
+            get classList(): DOMTokenList;
+            set classList(value: string);
             className: string;
             readonly clientHeight: number;
             readonly clientLeft: number;
@@ -4995,7 +4996,8 @@ declare namespace $ {
             onfullscreenerror: ((this: Element, ev: Event) => any) | null;
             outerHTML: string;
             readonly ownerDocument: Document;
-            readonly part: DOMTokenList;
+            get part(): DOMTokenList;
+            set part(value: string);
             readonly prefix: string | null;
             readonly scrollHeight: number;
             scrollLeft: number;
@@ -5072,7 +5074,7 @@ declare namespace $ {
             readonly previousSibling: ChildNode | null;
             textContent: string | null;
             appendChild<T extends Node>(node: T): T;
-            cloneNode(deep?: boolean): Node;
+            cloneNode(subtree?: boolean): Node;
             compareDocumentPosition(other: Node): number;
             contains(other: Node | null): boolean;
             getRootNode(options?: GetRootNodeOptions): Node;
@@ -5134,6 +5136,7 @@ declare namespace $ {
             ariaPosInSet: string | null;
             ariaPressed: string | null;
             ariaReadOnly: string | null;
+            ariaRelevant: string | null;
             ariaRequired: string | null;
             ariaRoleDescription: string | null;
             ariaRowCount: string | null;
@@ -5175,7 +5178,8 @@ declare namespace $ {
             replaceChildren(...nodes: (Node | string)[]): void;
             readonly assignedSlot: HTMLSlotElement | null;
             readonly attributeStyleMap: StylePropertyMap;
-            readonly style: CSSStyleDeclaration;
+            get style(): CSSStyleDeclaration;
+            set style(cssText: string);
             contentEditable: string;
             enterKeyHint: string;
             inputMode: string;
