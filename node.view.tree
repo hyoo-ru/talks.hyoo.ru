@@ -679,13 +679,11 @@ $hyoo_talks_person_avatar $mol_link
 				<= name \
 
 $mol_embed_native $mol_scroll
-	uri? \
-	dom_name \object
+	dom_name \iframe
 	window null
 	attr *
 		^
-		data <= uri
-		type <= mime \
+		src <= uri? \about:config
 	sub /
 		<= Fallback $mol_link
 			uri <= uri
