@@ -1567,7 +1567,7 @@ declare namespace $ {
         message(): string;
         headers(): Headers;
         mime(): string | null;
-        stream(): ReadableStream<Uint8Array<ArrayBufferLike>> | null;
+        stream(): ReadableStream<Uint8Array<ArrayBuffer>> | null;
         text(): string;
         json(): unknown;
         blob(): Blob;
@@ -1582,7 +1582,7 @@ declare namespace $ {
         };
         static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
         static success(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
-        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array<ArrayBufferLike>> | null;
+        static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array<ArrayBuffer>> | null;
         static text(input: RequestInfo, init?: RequestInit): string;
         static json(input: RequestInfo, init?: RequestInit): unknown;
         static blob(input: RequestInfo, init?: RequestInit): Blob;
@@ -3208,7 +3208,7 @@ declare namespace $ {
         readonly native: IDBObjectStore;
         constructor(native: IDBObjectStore);
         get name(): string;
-        get path(): string | string[];
+        get path(): string | string[] | null;
         get incremental(): boolean;
         get indexes(): { [Name in keyof Schema["Indexes"]]: $mol_db_index<{
             Key: Schema["Indexes"][Name];
@@ -3274,7 +3274,7 @@ declare namespace $ {
         get name(): string;
         get version(): number;
         get stores(): (keyof Schema)[];
-        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T extends $mol_db_schema ? { [Name in keyof T]: $mol_db_store<Pick<Schema, Names>[Name]>; } : never;
+        read<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): Pick<Schema, Names> extends infer T extends $mol_db_schema ? { [Name in keyof T]: $mol_db_store<T[Name]>; } : never;
         change<Names extends Exclude<keyof Schema, symbol | number>>(...names: Names[]): $mol_db_transaction<Pick<Schema, Names>>;
         kill(): Promise<IDBDatabase>;
         destructor(): void;
@@ -4897,6 +4897,7 @@ declare namespace $ {
             accessKey: string;
             readonly accessKeyLabel: string;
             autocapitalize: string;
+            autocorrect: boolean;
             dir: string;
             draggable: boolean;
             hidden: boolean;
@@ -5004,6 +5005,8 @@ declare namespace $ {
             setPointerCapture(pointerId: number): void;
             toggleAttribute(qualifiedName: string, force?: boolean): boolean;
             webkitMatchesSelector(selectors: string): boolean;
+            get textContent(): string;
+            set textContent(value: string | null);
             readonly baseURI: string;
             readonly childNodes: NodeListOf<ChildNode>;
             readonly firstChild: ChildNode | null;
@@ -5016,7 +5019,6 @@ declare namespace $ {
             readonly parentElement: HTMLElement | null;
             readonly parentNode: ParentNode | null;
             readonly previousSibling: ChildNode | null;
-            textContent: string | null;
             appendChild<T extends Node>(node: T): T;
             cloneNode(subtree?: boolean): Node;
             compareDocumentPosition(other: Node): number;
@@ -5051,6 +5053,7 @@ declare namespace $ {
             readonly DOCUMENT_POSITION_CONTAINED_BY: 16;
             readonly DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: 32;
             dispatchEvent(event: Event): boolean;
+            ariaActiveDescendantElement: Element | null;
             ariaAtomic: string | null;
             ariaAutoComplete: string | null;
             ariaBrailleLabel: string | null;
@@ -5061,21 +5064,28 @@ declare namespace $ {
             ariaColIndex: string | null;
             ariaColIndexText: string | null;
             ariaColSpan: string | null;
+            ariaControlsElements: ReadonlyArray<Element> | null;
             ariaCurrent: string | null;
+            ariaDescribedByElements: ReadonlyArray<Element> | null;
             ariaDescription: string | null;
+            ariaDetailsElements: ReadonlyArray<Element> | null;
             ariaDisabled: string | null;
+            ariaErrorMessageElements: ReadonlyArray<Element> | null;
             ariaExpanded: string | null;
+            ariaFlowToElements: ReadonlyArray<Element> | null;
             ariaHasPopup: string | null;
             ariaHidden: string | null;
             ariaInvalid: string | null;
             ariaKeyShortcuts: string | null;
             ariaLabel: string | null;
+            ariaLabelledByElements: ReadonlyArray<Element> | null;
             ariaLevel: string | null;
             ariaLive: string | null;
             ariaModal: string | null;
             ariaMultiLine: string | null;
             ariaMultiSelectable: string | null;
             ariaOrientation: string | null;
+            ariaOwnsElements: ReadonlyArray<Element> | null;
             ariaPlaceholder: string | null;
             ariaPosInSet: string | null;
             ariaPressed: string | null;
@@ -5133,18 +5143,19 @@ declare namespace $ {
             onanimationend: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
             onanimationiteration: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
             onanimationstart: ((this: GlobalEventHandlers, ev: AnimationEvent) => any) | null;
-            onauxclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+            onauxclick: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onbeforeinput: ((this: GlobalEventHandlers, ev: InputEvent) => any) | null;
-            onbeforetoggle: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            onbeforematch: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            onbeforetoggle: ((this: GlobalEventHandlers, ev: ToggleEvent) => any) | null;
             onblur: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
             oncancel: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncanplay: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncanplaythrough: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             onchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-            onclick: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+            onclick: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onclose: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncontextlost: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-            oncontextmenu: ((this: GlobalEventHandlers, ev: MouseEvent) => any) | null;
+            oncontextmenu: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             oncontextrestored: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncopy: ((this: GlobalEventHandlers, ev: ClipboardEvent) => any) | null;
             oncuechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -5192,6 +5203,7 @@ declare namespace $ {
             onpointermove: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onpointerout: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onpointerover: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
+            onpointerrawupdate: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             onpointerup: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onprogress: ((this: GlobalEventHandlers, ev: ProgressEvent) => any) | null;
             onratechange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -5210,7 +5222,7 @@ declare namespace $ {
             onsubmit: ((this: GlobalEventHandlers, ev: SubmitEvent) => any) | null;
             onsuspend: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             ontimeupdate: ((this: GlobalEventHandlers, ev: Event) => any) | null;
-            ontoggle: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            ontoggle: ((this: GlobalEventHandlers, ev: ToggleEvent) => any) | null;
             ontouchcancel?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
             ontouchend?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
             ontouchmove?: ((this: GlobalEventHandlers, ev: TouchEvent) => any) | null | undefined;
