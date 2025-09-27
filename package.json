@@ -255,6 +255,8 @@
     "$hyoo_talks_person_settings",
     "$mol_form_field",
     "$mol_form",
+    "$mol_button_major",
+    "$mol_status",
     "$mol_row",
     "$mol_labeler",
     "$hyoo_talks_chat_page",
