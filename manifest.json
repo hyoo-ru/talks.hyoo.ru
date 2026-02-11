@@ -1,0 +1,18 @@
+{
+	"name": "Talks.HyOO.ru",
+	"short_name": "Talks",
+	"description": "",
+	"id": "hyoo_talks",
+	"start_url": "../..",
+	"display": "standalone",
+	"background_color": "#000000",
+	"theme_color": "#000000",
+	"gcm_sender_id": "467083537830",
+	"icons": [
+		{
+			"src": "../../hyoo/talks/logo/logo.svg",
+			"type": "image/svg+xml",
+			"sizes": "512x512"
+		}
+	]
+}
