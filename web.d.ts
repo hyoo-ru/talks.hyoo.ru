@@ -2201,7 +2201,7 @@ declare namespace $ {
     export class $mol_regexp<Groups extends Record<string, string>> extends RegExp {
         readonly groups: (Extract<keyof Groups, string>)[];
         constructor(source: string, flags?: string, groups?: (Extract<keyof Groups, string>)[]);
-        [Symbol.matchAll](str: string): RegExpStringIterator<RegExpMatchArray & $mol_type_override<RegExpMatchArray, {
+        [Symbol.matchAll](str: string): RegExpStringIterator<RegExpExecArray & $mol_type_override<RegExpExecArray, {
             groups?: {
                 [key in keyof Groups]: string;
             };
@@ -5159,7 +5159,7 @@ declare namespace $ {
             autocorrect: boolean;
             dir: string;
             draggable: boolean;
-            hidden: boolean;
+            hidden: boolean | "until-found";
             inert: boolean;
             innerText: string;
             lang: string;
@@ -5177,8 +5177,8 @@ declare namespace $ {
             attachInternals(): ElementInternals;
             click(): void;
             hidePopover(): void;
-            showPopover(): void;
-            togglePopover(options?: boolean): boolean;
+            showPopover(options?: ShowPopoverOptions): void;
+            togglePopover(options?: TogglePopoverOptions | boolean): boolean;
             addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
             addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
             removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
@@ -5192,6 +5192,7 @@ declare namespace $ {
             readonly clientTop: number;
             readonly clientWidth: number;
             readonly currentCSSZoom: number;
+            readonly customElementRegistry: CustomElementRegistry | null;
             id: string;
             innerHTML: string;
             readonly localName: string;
@@ -5242,6 +5243,9 @@ declare namespace $ {
             insertAdjacentElement(where: InsertPosition, element: Element): Element | null;
             insertAdjacentHTML(position: InsertPosition, string: string): void;
             insertAdjacentText(where: InsertPosition, data: string): void;
+            matches<K extends keyof HTMLElementTagNameMap>(selectors: K): this is HTMLElementTagNameMap[K];
+            matches<K extends keyof SVGElementTagNameMap>(selectors: K): this is SVGElementTagNameMap[K];
+            matches<K extends keyof MathMLElementTagNameMap>(selectors: K): this is MathMLElementTagNameMap[K];
             matches(selectors: string): boolean;
             releasePointerCapture(pointerId: number): void;
             removeAttribute(qualifiedName: string): void;
@@ -5377,6 +5381,7 @@ declare namespace $ {
             readonly firstElementChild: Element | null;
             readonly lastElementChild: Element | null;
             append(...nodes: (Node | string)[]): void;
+            moveBefore(node: Node, child: Node | null): void;
             prepend(...nodes: (Node | string)[]): void;
             querySelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K] | null;
             querySelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K] | null;
@@ -5413,6 +5418,7 @@ declare namespace $ {
             onchange: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             onclick: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             onclose: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            oncommand: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncontextlost: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             oncontextmenu: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
             oncontextrestored: ((this: GlobalEventHandlers, ev: Event) => any) | null;
@@ -5434,7 +5440,7 @@ declare namespace $ {
             onfocus: ((this: GlobalEventHandlers, ev: FocusEvent) => any) | null;
             onformdata: ((this: GlobalEventHandlers, ev: FormDataEvent) => any) | null;
             ongotpointercapture: ((this: GlobalEventHandlers, ev: PointerEvent) => any) | null;
-            oninput: ((this: GlobalEventHandlers, ev: Event) => any) | null;
+            oninput: ((this: GlobalEventHandlers, ev: InputEvent) => any) | null;
             oninvalid: ((this: GlobalEventHandlers, ev: Event) => any) | null;
             onkeydown: ((this: GlobalEventHandlers, ev: KeyboardEvent) => any) | null;
             onkeypress: ((this: GlobalEventHandlers, ev: KeyboardEvent) => any) | null;
@@ -5499,7 +5505,7 @@ declare namespace $ {
             onwheel: ((this: GlobalEventHandlers, ev: WheelEvent) => any) | null;
             autofocus: boolean;
             readonly dataset: DOMStringMap;
-            nonce?: string;
+            nonce: string;
             tabIndex: number;
             blur(): void;
             focus(options?: FocusOptions): void;
