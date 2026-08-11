@@ -231,6 +231,7 @@
     "$mol_icon_sync_off",
     "$mol_icon_sync",
     "$mol_link",
+    "$mol_dom_safe",
     "$mol_link_source",
     "$mol_icon_script_text",
     "$mol_icon_script",
