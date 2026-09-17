@@ -171,6 +171,7 @@
     "$mol_follower",
     "$mol_ghost",
     "$mol_hotkey",
+    "$mol_hotkey2",
     "$mol_nav",
     "$mol_string",
     "$mol_icon_close",
