@@ -3190,10 +3190,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $hyoo_sync_revision: string;
-}
-
-declare namespace $ {
     type $mol_int62_string = `${string}_${string}`;
     function $mol_int62_string_ensure(str: unknown): `${string}_${string}` | null;
     type $mol_int62_pair = {
@@ -4166,7 +4162,6 @@ declare namespace $.$$ {
     class $hyoo_sync_online extends $.$hyoo_sync_online {
         message(): string;
         link_content(): $mol_icon_sync_off[];
-        hint(): string;
         master_link(): string;
         master_id(index: number): string;
         option_label(index: number): string;
