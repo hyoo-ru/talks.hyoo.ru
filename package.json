@@ -220,6 +220,7 @@
     "$mol_pick",
     "$mol_check",
     "$mol_dom_event",
+    "$mol_dom_transfer",
     "$mol_icon_dots_vertical",
     "$mol_icon_dots",
     "$mol_match",
